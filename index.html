@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -35,6 +36,12 @@ body{
         var(--bg);
     color:#fff;
     min-height:100vh;
+}
+
+button,
+input,
+textarea{
+    font-family:inherit;
 }
 
 header{
@@ -238,6 +245,12 @@ td{
     transform:translateY(-2px);
 }
 
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none;
+}
+
 .btn-green{
     background:var(--green);
     color:#041008;
@@ -421,17 +434,16 @@ td{
     background:rgba(255,255,255,.04);
     color:#fff;
     padding:12px 13px;
-    font-family:inherit;
-}
-
-.field textarea{
-    min-height:90px;
-    resize:vertical;
 }
 
 .field input:focus,
 .field textarea:focus{
     border-color:rgba(37,211,102,.4);
+}
+
+.field textarea{
+    min-height:90px;
+    resize:vertical;
 }
 
 .submit{
@@ -443,27 +455,17 @@ td{
     color:#041008;
     font-weight:bold;
     cursor:pointer;
+    transition:.2s;
 }
 
-.toast{
-    position:fixed;
-    left:20px;
-    bottom:20px;
-    z-index:300;
-    max-width:calc(100% - 40px);
-    padding:14px 17px;
-    border-radius:14px;
-    background:#101c2a;
-    border:1px solid rgba(255,255,255,.08);
-    font-size:10px;
-    opacity:0;
-    transform:translateY(60px);
-    transition:.3s;
+.submit:hover{
+    transform:translateY(-1px);
 }
 
-.toast.show{
-    opacity:1;
-    transform:translateY(0);
+.submit:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    transform:none;
 }
 
 .login{
@@ -488,6 +490,7 @@ td{
     border-radius:25px;
     background:#101b28;
     border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 25px 80px rgba(0,0,0,.4);
 }
 
 .login-box h2{
@@ -500,13 +503,68 @@ td{
     margin-bottom:25px;
 }
 
+.login-error{
+    display:none;
+    margin-bottom:15px;
+    padding:12px;
+    border-radius:12px;
+    color:#ff7180;
+    background:rgba(255,80,100,.08);
+    border:1px solid rgba(255,80,100,.15);
+    font-size:9px;
+    line-height:1.8;
+}
+
+.login-error.show{
+    display:block;
+}
+
+.login-success{
+    display:none;
+    margin-bottom:15px;
+    padding:12px;
+    border-radius:12px;
+    color:var(--green);
+    background:rgba(37,211,102,.08);
+    border:1px solid rgba(37,211,102,.15);
+    font-size:9px;
+}
+
+.login-success.show{
+    display:block;
+}
+
+.toast{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    z-index:300;
+    max-width:calc(100% - 40px);
+    padding:14px 17px;
+    border-radius:14px;
+    background:#101c2a;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:10px;
+    opacity:0;
+    transform:translateY(60px);
+    transition:.3s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
 @media(max-width:900px){
+
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:600px){
+
     main{
         padding:25px 15px 70px;
     }
@@ -518,394 +576,694 @@ td{
     .header{
         padding:12px 15px;
     }
+
+    .login-box{
+        padding:24px 20px;
+    }
+
+    .submit{
+        height:52px;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
+<!-- ================= LOGIN ================= -->
+
 <div class="login" id="loginScreen">
 
-<div class="login-box">
+    <div class="login-box">
 
-<h2>🔐 V2GUARD</h2>
+        <h2>🔐 V2GUARD</h2>
 
-<p>ورود به پنل مدیریت</p>
+        <p>ورود به پنل مدیریت</p>
 
-<div class="field">
-<label>ایمیل مدیر</label>
-<input id="loginEmail" type="email" placeholder="admin@example.com">
+        <div class="login-error" id="loginError"></div>
+
+        <div class="login-success" id="loginSuccess">
+            ورود موفق بود ✓
+        </div>
+
+        <div class="field">
+
+            <label>ایمیل مدیر / نماینده</label>
+
+            <input
+                id="loginEmail"
+                type="email"
+                autocomplete="username"
+                placeholder="admin@example.com"
+            >
+
+        </div>
+
+        <div class="field">
+
+            <label>رمز عبور</label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="••••••••"
+            >
+
+        </div>
+
+        <button
+            class="submit"
+            id="loginButton"
+            onclick="login()"
+        >
+            ورود به پنل
+        </button>
+
+    </div>
+
 </div>
 
-<div class="field">
-<label>رمز عبور</label>
-<input id="loginPassword" type="password" placeholder="••••••••">
-</div>
 
-<button class="submit" onclick="login()">
-ورود به پنل
-</button>
-
-</div>
-
-</div>
-
+<!-- ================= HEADER ================= -->
 
 <header>
 
-<div class="header">
+    <div class="header">
 
-<div class="logo-area">
+        <div class="logo-area">
 
-<div class="logo">V2</div>
+            <div class="logo">
+                V2
+            </div>
 
-<div>
+            <div>
 
-<div class="logo-text">V2GUARD</div>
+                <div class="logo-text">
+                    V2GUARD
+                </div>
 
-<div class="logo-sub">پنل مدیریت مالی</div>
+                <div class="logo-sub">
+                    پنل مدیریت مالی
+                </div>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
-<div class="live">
-<div class="live-dot"></div>
-LIVE
-</div>
+        <div class="live">
 
-</div>
+            <div class="live-dot"></div>
+
+            LIVE
+
+        </div>
+
+    </div>
 
 </header>
 
 
+<!-- ================= APP ================= -->
+
 <main id="app" style="display:none">
 
-<section class="title">
+    <section class="title">
 
-<div class="badge">
-V2GUARD • ADMIN • REALTIME
-</div>
+        <div class="badge">
+            V2GUARD • ADMIN • REALTIME
+        </div>
 
-<h1>
-مدیریت <span>V2GUARD</span>
-</h1>
+        <h1>
+            مدیریت <span>V2GUARD</span>
+        </h1>
 
-<p>
-مدیریت نمایندگان، محصولات، سفارش‌ها و تسویه حساب‌ها
-</p>
+        <p>
+            مدیریت نمایندگان، محصولات، سفارش‌ها و تسویه حساب‌ها
+        </p>
 
-</section>
+    </section>
 
 
-<section class="stats">
+    <!-- STATS -->
 
-<div class="stat">
-<div class="stat-label">کل نمایندگان</div>
-<div class="stat-value green" id="users">۰</div>
-</div>
+    <section class="stats">
 
-<div class="stat">
-<div class="stat-label">کل سفارش‌ها</div>
-<div class="stat-value yellow" id="orders">۰</div>
-</div>
+        <div class="stat">
 
-<div class="stat">
-<div class="stat-label">کل خرید</div>
-<div class="stat-value" id="sales">۰ تومان</div>
-</div>
+            <div class="stat-label">
+                کل نمایندگان
+            </div>
 
-<div class="stat">
-<div class="stat-label">کل بدهی</div>
-<div class="stat-value red" id="debt">۰ تومان</div>
-</div>
+            <div
+                class="stat-value green"
+                id="users"
+            >
+                ۰
+            </div>
 
-</section>
+        </div>
 
 
-<section class="section">
+        <div class="stat">
 
-<div class="section-title">
+            <div class="stat-label">
+                کل سفارش‌ها
+            </div>
 
-<h2>👥 حساب نمایندگان</h2>
+            <div
+                class="stat-value yellow"
+                id="orders"
+            >
+                ۰
+            </div>
 
-<button class="add" onclick="openRepresentativeModal()">
-+ نماینده جدید
-</button>
+        </div>
 
-</div>
 
-<div class="card">
+        <div class="stat">
 
-<div class="table-scroll">
+            <div class="stat-label">
+                کل خرید
+            </div>
 
-<table>
+            <div
+                class="stat-value"
+                id="sales"
+            >
+                ۰ تومان
+            </div>
 
-<thead>
-<tr>
-<th>نماینده</th>
-<th>شماره</th>
-<th>مجموع خرید</th>
-<th>تسویه</th>
-<th>بدهی</th>
-<th>وضعیت</th>
-<th>عملیات</th>
-</tr>
-</thead>
+        </div>
 
-<tbody id="representatives">
-<tr>
-<td colspan="7">
-<div class="empty">در حال دریافت...</div>
-</td>
-</tr>
-</tbody>
 
-</table>
+        <div class="stat">
 
-</div>
+            <div class="stat-label">
+                کل بدهی
+            </div>
 
-</div>
+            <div
+                class="stat-value red"
+                id="debt"
+            >
+                ۰ تومان
+            </div>
 
-</section>
+        </div>
 
+    </section>
 
-<section class="section">
 
-<div class="section-title">
+    <!-- REPRESENTATIVES -->
 
-<h2>📦 مدیریت محصولات</h2>
+    <section class="section">
 
-<button class="add" onclick="openProductModal()">
-+ محصول جدید
-</button>
+        <div class="section-title">
 
-</div>
+            <h2>
+                👥 حساب نمایندگان
+            </h2>
 
-<div class="card">
+            <button
+                class="add"
+                onclick="openRepresentativeModal()"
+            >
+                + نماینده جدید
+            </button>
 
-<div class="table-scroll">
+        </div>
 
-<table>
+        <div class="card">
 
-<thead>
-<tr>
-<th>محصول</th>
-<th>توضیحات</th>
-<th>قیمت</th>
-<th>وضعیت</th>
-<th>عملیات</th>
-</tr>
-</thead>
+            <div class="table-scroll">
 
-<tbody id="productsTable">
-<tr>
-<td colspan="5">
-<div class="empty">در حال دریافت محصولات...</div>
-</td>
-</tr>
-</tbody>
+                <table>
 
-</table>
+                    <thead>
 
-</div>
+                        <tr>
 
-</div>
+                            <th>نماینده</th>
+                            <th>شماره</th>
+                            <th>مجموع خرید</th>
+                            <th>تسویه</th>
+                            <th>بدهی</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
 
-</section>
+                        </tr>
 
+                    </thead>
 
-<section class="section" id="ordersSection">
+                    <tbody id="representatives">
 
-<div class="section-title">
+                        <tr>
 
-<h2>📋 سفارش‌ها</h2>
+                            <td colspan="7">
 
-<button class="refresh" onclick="loadAll()">
-↻ بروزرسانی
-</button>
+                                <div class="empty">
+                                    در حال دریافت...
+                                </div>
 
-</div>
+                            </td>
 
-<div class="card">
+                        </tr>
 
-<div class="table-scroll">
+                    </tbody>
 
-<table>
+                </table>
 
-<thead>
-<tr>
-<th>نماینده</th>
-<th>محصول</th>
-<th>تعداد</th>
-<th>مبلغ</th>
-<th>وضعیت</th>
-<th>عملیات</th>
-</tr>
-</thead>
+            </div>
 
-<tbody id="ordersTable">
-<tr>
-<td colspan="6">
-<div class="empty">در حال دریافت...</div>
-</td>
-</tr>
-</tbody>
+        </div>
 
-</table>
+    </section>
 
-</div>
 
-</div>
+    <!-- PRODUCTS -->
 
-</section>
+    <section class="section">
 
+        <div class="section-title">
 
-<section class="section">
+            <h2>
+                📦 مدیریت محصولات
+            </h2>
 
-<div class="section-title">
+            <button
+                class="add"
+                onclick="openProductModal()"
+            >
+                + محصول جدید
+            </button>
 
-<h2>💳 آخرین تسویه‌ها</h2>
+        </div>
 
-</div>
+        <div class="card">
 
-<div class="card">
+            <div class="table-scroll">
 
-<div id="paymentsList">
-<div class="empty">در حال دریافت...</div>
-</div>
+                <table>
 
-</div>
+                    <thead>
 
-</section>
+                        <tr>
+
+                            <th>محصول</th>
+                            <th>توضیحات</th>
+                            <th>قیمت</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productsTable">
+
+                        <tr>
+
+                            <td colspan="5">
+
+                                <div class="empty">
+                                    در حال دریافت محصولات...
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ORDERS -->
+
+    <section
+        class="section"
+        id="ordersSection"
+    >
+
+        <div class="section-title">
+
+            <h2>
+                📋 سفارش‌ها
+            </h2>
+
+            <button
+                class="refresh"
+                onclick="loadAll()"
+            >
+                ↻ بروزرسانی
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>نماینده</th>
+                            <th>محصول</th>
+                            <th>تعداد</th>
+                            <th>مبلغ</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="ordersTable">
+
+                        <tr>
+
+                            <td colspan="6">
+
+                                <div class="empty">
+                                    در حال دریافت...
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAYMENTS -->
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <h2>
+                💳 آخرین تسویه‌ها
+            </h2>
+
+        </div>
+
+        <div class="card">
+
+            <div id="paymentsList">
+
+                <div class="empty">
+                    در حال دریافت...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </main>
 
 
-<div class="modal" id="repModal">
+<!-- ================= REPRESENTATIVE MODAL ================= -->
 
-<div class="modal-box">
+<div
+    class="modal"
+    id="repModal"
+>
 
-<div class="modal-head">
+    <div class="modal-box">
 
-<h3 id="repModalTitle">
-👤 نماینده جدید
-</h3>
+        <div class="modal-head">
 
-<button class="close" onclick="closeModal('repModal')">
-×
-</button>
+            <h3 id="repModalTitle">
+                👤 نماینده جدید
+            </h3>
 
-</div>
+            <button
+                class="close"
+                onclick="closeModal('repModal')"
+            >
+                ×
+            </button>
 
-<div class="field">
-<label>نام نماینده</label>
-<input id="repName" placeholder="مثلاً احسان">
-</div>
-
-<div class="field">
-<label>ایمیل</label>
-<input id="repEmail" type="email" placeholder="example@gmail.com">
-</div>
-
-<div class="field">
-<label>شماره تلفن</label>
-<input id="repPhone" placeholder="09xxxxxxxxx">
-</div>
-
-<div class="field">
-<label id="passwordLabel">رمز عبور</label>
-<input id="repPassword" type="password" placeholder="حداقل ۶ کاراکتر">
-</div>
-
-<button class="submit" onclick="saveRepresentative()">
-ذخیره نماینده
-</button>
-
-</div>
-
-</div>
+        </div>
 
 
-<div class="modal" id="productModal">
+        <div class="field">
 
-<div class="modal-box">
+            <label>
+                نام نماینده
+            </label>
 
-<div class="modal-head">
+            <input
+                id="repName"
+                placeholder="مثلاً احسان"
+            >
 
-<h3 id="productModalTitle">
-📦 محصول جدید
-</h3>
-
-<button class="close" onclick="closeModal('productModal')">
-×
-</button>
-
-</div>
-
-<div class="field">
-<label>نام محصول</label>
-<input id="productName" placeholder="مثلاً ۱۰ گیگ">
-</div>
-
-<div class="field">
-<label>توضیحات</label>
-<textarea id="productDescription" placeholder="توضیحات محصول"></textarea>
-</div>
-
-<div class="field">
-<label>قیمت تومان</label>
-<input id="productPrice" type="number" min="0" placeholder="20000">
-</div>
-
-<button class="submit" onclick="saveProduct()">
-ذخیره محصول
-</button>
-
-</div>
-
-</div>
+        </div>
 
 
-<div class="modal" id="paymentModal">
+        <div class="field">
 
-<div class="modal-box">
+            <label>
+                ایمیل
+            </label>
 
-<div class="modal-head">
+            <input
+                id="repEmail"
+                type="email"
+                placeholder="example@gmail.com"
+            >
 
-<h3>💳 ثبت تسویه</h3>
+        </div>
 
-<button class="close" onclick="closeModal('paymentModal')">
-×
-</button>
 
-</div>
+        <div class="field">
 
-<div id="selectedRep" class="field"></div>
+            <label>
+                شماره تلفن
+            </label>
 
-<div class="field">
-<label>مبلغ</label>
-<input id="paymentAmount" type="number" min="1">
-</div>
+            <input
+                id="repPhone"
+                placeholder="09xxxxxxxxx"
+            >
 
-<div class="field">
-<label>توضیحات</label>
-<input id="paymentDescription" placeholder="تسویه حساب">
-</div>
+        </div>
 
-<button class="submit" onclick="submitPayment()">
-ثبت تسویه
-</button>
 
-</div>
+        <div class="field">
+
+            <label id="passwordLabel">
+                رمز عبور
+            </label>
+
+            <input
+                id="repPassword"
+                type="password"
+                placeholder="حداقل ۶ کاراکتر"
+            >
+
+        </div>
+
+
+        <button
+            class="submit"
+            onclick="saveRepresentative()"
+        >
+            ذخیره نماینده
+        </button>
+
+    </div>
 
 </div>
 
 
-<div class="toast" id="toast"></div>
+<!-- ================= PRODUCT MODAL ================= -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-head">
+
+            <h3 id="productModalTitle">
+                📦 محصول جدید
+            </h3>
+
+            <button
+                class="close"
+                onclick="closeModal('productModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                نام محصول
+            </label>
+
+            <input
+                id="productName"
+                placeholder="مثلاً ۱۰ گیگ"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                توضیحات
+            </label>
+
+            <textarea
+                id="productDescription"
+                placeholder="توضیحات محصول"
+            ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                قیمت تومان
+            </label>
+
+            <input
+                id="productPrice"
+                type="number"
+                min="0"
+                placeholder="20000"
+            >
+
+        </div>
+
+
+        <button
+            class="submit"
+            onclick="saveProduct()"
+        >
+            ذخیره محصول
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PAYMENT MODAL ================= -->
+
+<div
+    class="modal"
+    id="paymentModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-head">
+
+            <h3>
+                💳 ثبت تسویه
+            </h3>
+
+            <button
+                class="close"
+                onclick="closeModal('paymentModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="selectedRep"
+            class="field"
+        ></div>
+
+
+        <div class="field">
+
+            <label>
+                مبلغ
+            </label>
+
+            <input
+                id="paymentAmount"
+                type="number"
+                min="1"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                توضیحات
+            </label>
+
+            <input
+                id="paymentDescription"
+                placeholder="تسویه حساب"
+            >
+
+        </div>
+
+
+        <button
+            class="submit"
+            onclick="submitPayment()"
+        >
+            ثبت تسویه
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
 
 
 <script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
 "https://fmrocoflspugyaprvrve.supabase.co";
@@ -917,6 +1275,7 @@ const EDGE_FUNCTION_URL =
 SUPABASE_URL +
 "/functions/v1/admin-manager";
 
+
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
@@ -924,25 +1283,40 @@ supabase.createClient(
 );
 
 
-let profiles=[];
-let orders=[];
-let payments=[];
-let products=[];
+/* =====================================================
+   DATA
+===================================================== */
 
-let editingRepresentativeId=null;
-let editingProductId=null;
-let selectedRepresentative=null;
+let profiles = [];
+let orders = [];
+let payments = [];
+let products = [];
 
+let editingRepresentativeId = null;
+let editingProductId = null;
+let selectedRepresentative = null;
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
 
 function money(number){
+
     return new Intl.NumberFormat("fa-IR")
-        .format(Math.round(Number(number||0)))+
-        " تومان";
+        .format(
+            Math.round(
+                Number(number || 0)
+            )
+        )
+        + " تومان";
 }
 
 
 function dateFa(date){
-    if(!date) return "—";
+
+    if(!date)
+        return "—";
 
     return new Date(date)
         .toLocaleString("fa-IR");
@@ -950,7 +1324,8 @@ function dateFa(date){
 
 
 function escapeHtml(value){
-    return String(value??"")
+
+    return String(value ?? "")
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
@@ -961,740 +1336,1604 @@ function escapeHtml(value){
 
 function showToast(message){
 
-    const el=document.getElementById("toast");
+    const el =
+        document.getElementById("toast");
 
-    el.textContent=message;
+    el.textContent = message;
 
     el.classList.add("show");
 
-    setTimeout(()=>{
+    setTimeout(() => {
+
         el.classList.remove("show");
+
     },3500);
 }
 
 
-async function login(){
+/* =====================================================
+   LOGIN ERROR
+===================================================== */
 
-    const email=
-        document.getElementById("loginEmail").value.trim();
+function showLoginError(message){
 
-    const password=
-        document.getElementById("loginPassword").value;
+    const error =
+        document.getElementById("loginError");
 
-    if(!email || !password){
-        showToast("ایمیل و رمز عبور را وارد کنید");
-        return;
-    }
+    const success =
+        document.getElementById("loginSuccess");
 
-    const {error}=
-        await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
+    success.classList.remove("show");
 
-    if(error){
-        showToast("ورود ناموفق: "+error.message);
-        return;
-    }
+    error.textContent = message;
 
-    await startApp();
+    error.classList.add("show");
 }
 
+
+function showLoginSuccess(){
+
+    const error =
+        document.getElementById("loginError");
+
+    const success =
+        document.getElementById("loginSuccess");
+
+    error.classList.remove("show");
+
+    success.classList.add("show");
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+async function login(){
+
+    const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+    const button =
+        document
+        .getElementById("loginButton");
+
+
+    if(!email){
+
+        showLoginError(
+            "ایمیل را وارد کنید."
+        );
+
+        return;
+    }
+
+
+    if(!password){
+
+        showLoginError(
+            "رمز عبور را وارد کنید."
+        );
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "در حال ورود...";
+
+
+    try{
+
+        console.log(
+            "LOGIN START",
+            email
+        );
+
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.auth
+            .signInWithPassword({
+
+                email: email,
+
+                password: password
+
+            });
+
+
+        console.log(
+            "LOGIN RESPONSE",
+            data,
+            error
+        );
+
+
+        if(error){
+
+            console.error(
+                "SUPABASE LOGIN ERROR:",
+                error
+            );
+
+
+            let message =
+                error.message ||
+                "ورود ناموفق بود.";
+
+
+            if(
+                error.message
+                ===
+                "Invalid login credentials"
+            ){
+
+                message =
+                    "ایمیل یا رمز عبور اشتباه است.";
+
+            }
+
+
+            showLoginError(
+                message
+            );
+
+            return;
+        }
+
+
+        if(!data){
+
+            showLoginError(
+                "پاسخی از سرور دریافت نشد."
+            );
+
+            return;
+        }
+
+
+        if(!data.session){
+
+            showLoginError(
+                "ورود انجام شد اما نشست کاربری ساخته نشد."
+            );
+
+            console.error(
+                "NO SESSION",
+                data
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "LOGIN SUCCESS",
+            data.user
+        );
+
+
+        showLoginSuccess();
+
+
+        button.textContent =
+            "ورود موفق ✓";
+
+
+        await startApp();
+
+
+    }catch(error){
+
+        console.error(
+            "LOGIN EXCEPTION:",
+            error
+        );
+
+
+        showLoginError(
+            error?.message ||
+            "خطای غیرمنتظره در ورود."
+        );
+
+
+    }finally{
+
+        setTimeout(() => {
+
+            button.disabled = false;
+
+            button.textContent =
+                "ورود به پنل";
+
+        },1000);
+
+    }
+
+}
+
+
+/* =====================================================
+   ENTER KEY LOGIN
+===================================================== */
+
+document
+.getElementById("loginPassword")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            event.preventDefault();
+
+            login();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START APP
+===================================================== */
 
 async function startApp(){
 
-    const {
-        data:{
-            session
-        }
-    }=
-    await supabaseClient.auth.getSession();
+    try{
 
-    if(!session){
-        document.getElementById("loginScreen")
+        const {
+            data:{
+                session
+            }
+        } =
+        await supabaseClient
+            .auth
+            .getSession();
+
+
+        console.log(
+            "CURRENT SESSION:",
+            session
+        );
+
+
+        if(!session){
+
+            document
+                .getElementById("loginScreen")
+                .classList.remove("hidden");
+
+            return;
+        }
+
+
+        document
+            .getElementById("loginScreen")
+            .classList.add("hidden");
+
+
+        document
+            .getElementById("app")
+            .style.display = "block";
+
+
+        await loadAll();
+
+
+    }catch(error){
+
+        console.error(
+            "START APP ERROR:",
+            error
+        );
+
+
+        document
+            .getElementById("app")
+            .style.display = "none";
+
+
+        document
+            .getElementById("loginScreen")
             .classList.remove("hidden");
 
-        return;
+
+        showToast(
+            "خطا در باز کردن پنل: " +
+            error.message
+        );
+
     }
 
-    document.getElementById("loginScreen")
-        .classList.add("hidden");
-
-    document.getElementById("app")
-        .style.display="block";
-
-    await loadAll();
 }
 
 
-async function edgeAction(action,data={}){
+/* =====================================================
+   EDGE FUNCTION
+===================================================== */
+
+async function edgeAction(
+    action,
+    data = {}
+){
 
     const {
         data:{
             session
         }
-    }=
-    await supabaseClient.auth.getSession();
+    } =
+    await supabaseClient
+        .auth
+        .getSession();
+
 
     if(!session){
-        throw new Error("ابتدا وارد حساب مدیریت شوید");
+
+        throw new Error(
+            "ابتدا وارد حساب مدیریت شوید"
+        );
+
     }
 
-    const response=
+
+    const response =
         await fetch(
             EDGE_FUNCTION_URL,
             {
                 method:"POST",
+
                 headers:{
-                    "Content-Type":"application/json",
+                    "Content-Type":
+                        "application/json",
+
                     "Authorization":
-                        "Bearer "+session.access_token,
-                    "apikey":SUPABASE_KEY
+                        "Bearer " +
+                        session.access_token,
+
+                    "apikey":
+                        SUPABASE_KEY
                 },
-                body:JSON.stringify({
-                    action,
-                    ...data
-                })
+
+                body:
+                    JSON.stringify({
+                        action,
+                        ...data
+                    })
             }
         );
 
-    const result=
-        await response.json();
 
-    if(!response.ok || result.success===false){
+    let result;
+
+    try{
+
+        result =
+            await response.json();
+
+    }catch{
+
+        throw new Error(
+            "پاسخ نامعتبر از Edge Function"
+        );
+
+    }
+
+
+    if(
+        !response.ok ||
+        result.success === false
+    ){
+
         throw new Error(
             result.error ||
             "خطای سرور"
         );
+
     }
 
+
     return result.data;
+
 }
 
+
+/* =====================================================
+   LOAD ALL
+===================================================== */
 
 async function loadAll(){
 
     try{
 
         await Promise.all([
+
             loadProfiles(),
+
             loadOrders(),
+
             loadPayments(),
+
             loadProducts()
+
         ]);
 
+
         renderRepresentatives();
+
         renderOrders();
+
         renderPayments();
+
         renderProducts();
+
         updateStats();
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "LOAD ALL ERROR:",
+            error
+        );
+
 
         showToast(
-            "خطا: "+error.message
+            "خطا: " +
+            error.message
         );
+
     }
+
 }
 
+
+/* =====================================================
+   PROFILES
+===================================================== */
 
 async function loadProfiles(){
 
     const {
         data,
         error
-    }=
+    } =
     await supabaseClient
         .from("profiles")
         .select("*")
-        .eq("role","representative")
+        .eq(
+            "role",
+            "representative"
+        )
         .order(
             "created_at",
-            {ascending:false}
+            {
+                ascending:false
+            }
         );
 
-    if(error) throw error;
 
-    profiles=data||[];
+    if(error)
+        throw error;
 
-    document.getElementById("users")
-        .textContent=
-        profiles.length.toLocaleString("fa-IR");
+
+    profiles =
+        data || [];
+
+
+    document
+        .getElementById("users")
+        .textContent =
+        profiles.length
+            .toLocaleString("fa-IR");
+
 }
 
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
 
 async function loadProducts(){
 
     const {
         data,
         error
-    }=
+    } =
     await supabaseClient
         .from("products")
         .select("*")
         .order(
             "created_at",
-            {ascending:false}
+            {
+                ascending:false
+            }
         );
 
-    if(error) throw error;
 
-    products=data||[];
+    if(error)
+        throw error;
+
+
+    products =
+        data || [];
+
 }
 
+
+/* =====================================================
+   ORDERS
+===================================================== */
 
 async function loadOrders(){
 
     const {
         data,
         error
-    }=
+    } =
     await supabaseClient
         .from("orders")
         .select("*")
         .order(
             "created_at",
-            {ascending:false}
+            {
+                ascending:false
+            }
         );
 
-    if(error) throw error;
 
-    orders=data||[];
+    if(error)
+        throw error;
 
-    document.getElementById("orders")
-        .textContent=
-        orders.length.toLocaleString("fa-IR");
+
+    orders =
+        data || [];
+
+
+    document
+        .getElementById("orders")
+        .textContent =
+        orders.length
+            .toLocaleString("fa-IR");
+
 }
 
+
+/* =====================================================
+   PAYMENTS
+===================================================== */
 
 async function loadPayments(){
 
     const {
         data,
         error
-    }=
+    } =
     await supabaseClient
         .from("payments")
         .select("*")
         .order(
             "created_at",
-            {ascending:false}
+            {
+                ascending:false
+            }
         );
 
-    if(error) throw error;
 
-    payments=data||[];
+    if(error)
+        throw error;
+
+
+    payments =
+        data || [];
+
 }
 
+
+/* =====================================================
+   PROFILE
+===================================================== */
 
 function getProfile(id){
-    return profiles.find(p=>p.id===id);
+
+    return profiles.find(
+        p => p.id === id
+    );
+
 }
 
+
+/* =====================================================
+   REPRESENTATIVE DATA
+===================================================== */
 
 function getRepData(profile){
 
-    const repOrders=
+    const repOrders =
         orders.filter(
-            o=>o.representative_id===profile.id
+            o =>
+                o.representative_id
+                ===
+                profile.id
         );
 
-    const repPayments=
+
+    const repPayments =
         payments.filter(
-            p=>p.representative_id===profile.id
+            p =>
+                p.representative_id
+                ===
+                profile.id
         );
 
-    let purchases=0;
-    let paid=0;
 
-    repOrders.forEach(order=>{
+    let purchases = 0;
 
-        if(order.status==="cancelled")
+    let paid = 0;
+
+
+    repOrders.forEach(order => {
+
+        if(
+            order.status
+            ===
+            "cancelled"
+        )
             return;
 
-        purchases+=Number(
-            order.total_price ||
-            Number(order.quantity||0)*
-            Number(order.unit_price||0)
-        );
+
+        purchases +=
+            Number(
+                order.total_price ||
+                Number(
+                    order.quantity || 0
+                ) *
+                Number(
+                    order.unit_price || 0
+                )
+            );
+
     });
 
-    repPayments.forEach(payment=>{
-        paid+=Number(payment.amount||0);
-    });
+
+    repPayments.forEach(
+        payment => {
+
+            paid +=
+                Number(
+                    payment.amount || 0
+                );
+
+        }
+    );
+
 
     return {
+
         purchases,
+
         paid,
-        debt:Math.max(0,purchases-paid)
+
+        debt:
+            Math.max(
+                0,
+                purchases - paid
+            )
+
     };
+
 }
 
 
+/* =====================================================
+   RENDER REPRESENTATIVES
+===================================================== */
+
 function renderRepresentatives(){
 
-    const table=
-        document.getElementById("representatives");
+    const table =
+        document
+        .getElementById(
+            "representatives"
+        );
+
 
     if(!profiles.length){
 
-        table.innerHTML=`
+        table.innerHTML = `
+
         <tr>
-        <td colspan="7">
-        <div class="empty">
-        هنوز نماینده‌ای وجود ندارد.
-        </div>
-        </td>
-        </tr>`;
+
+            <td colspan="7">
+
+                <div class="empty">
+
+                    هنوز نماینده‌ای وجود ندارد.
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
 
         return;
     }
 
-    table.innerHTML=
-        profiles.map(profile=>{
 
-            const data=
+    table.innerHTML =
+        profiles
+        .map(profile => {
+
+            const data =
                 getRepData(profile);
 
-            const name=
+
+            const name =
                 profile.name ||
                 profile.email ||
                 "بدون نام";
 
+
+            const active =
+                profile.is_active !== false;
+
+
             return `
+
             <tr>
 
-            <td>
-            <strong>
-            ${escapeHtml(name)}
-            </strong>
+                <td>
 
-            <div style="color:#667282;font-size:8px;margin-top:5px">
-            ${escapeHtml(profile.email||"")}
-            </div>
-            </td>
+                    <strong>
+                        ${escapeHtml(name)}
+                    </strong>
 
-            <td>
-            ${escapeHtml(profile.phone||"—")}
-            </td>
+                    <div
+                        style="
+                        color:#667282;
+                        font-size:8px;
+                        margin-top:5px
+                        "
+                    >
+                        ${escapeHtml(
+                            profile.email || ""
+                        )}
+                    </div>
 
-            <td>
-            ${money(data.purchases)}
-            </td>
+                </td>
 
-            <td class="green">
-            ${money(data.paid)}
-            </td>
 
-            <td class="red">
-            ${money(data.debt)}
-            </td>
+                <td>
+                    ${escapeHtml(
+                        profile.phone || "—"
+                    )}
+                </td>
 
-            <td>
-            ${
-                profile.is_active!==false
-                ?
-                `<span class="status active">فعال</span>`
-                :
-                `<span class="status inactive">غیرفعال</span>`
-            }
-            </td>
 
-            <td>
+                <td>
+                    ${money(data.purchases)}
+                </td>
 
-            <div class="actions">
 
-            <button
-            class="btn btn-blue"
-            onclick="editRepresentative('${profile.id}')">
-            ویرایش
-            </button>
+                <td class="green">
+                    ${money(data.paid)}
+                </td>
 
-            <button
-            class="btn btn-green"
-            onclick="openPayment('${profile.id}')"
-            ${data.debt<=0?"disabled":""}>
-            تسویه
-            </button>
 
-            <button
-            class="btn btn-yellow"
-            onclick="toggleRepresentative('${profile.id}',${profile.is_active!==false})">
-            ${profile.is_active!==false?"غیرفعال":"فعال"}
-            </button>
+                <td class="red">
+                    ${money(data.debt)}
+                </td>
 
-            <button
-            class="btn btn-red"
-            onclick="deleteRepresentative('${profile.id}')">
-            حذف
-            </button>
 
-            </div>
+                <td>
 
-            </td>
+                    ${
+                        active
+
+                        ?
+
+                        `
+                        <span class="status active">
+                            فعال
+                        </span>
+                        `
+
+                        :
+
+                        `
+                        <span class="status inactive">
+                            غیرفعال
+                        </span>
+                        `
+                    }
+
+                </td>
+
+
+                <td>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-blue"
+                            onclick="
+                            editRepresentative(
+                                '${profile.id}'
+                            )
+                            "
+                        >
+                            ویرایش
+                        </button>
+
+
+                        <button
+                            class="btn btn-green"
+                            onclick="
+                            openPayment(
+                                '${profile.id}'
+                            )
+                            "
+                            ${data.debt <= 0
+                                ? "disabled"
+                                : ""}
+                        >
+                            تسویه
+                        </button>
+
+
+                        <button
+                            class="btn btn-yellow"
+                            onclick="
+                            toggleRepresentative(
+                                '${profile.id}',
+                                ${active}
+                            )
+                            "
+                        >
+                            ${
+                                active
+                                ? "غیرفعال"
+                                : "فعال"
+                            }
+                        </button>
+
+
+                        <button
+                            class="btn btn-red"
+                            onclick="
+                            deleteRepresentative(
+                                '${profile.id}'
+                            )
+                            "
+                        >
+                            حذف
+                        </button>
+
+                    </div>
+
+                </td>
 
             </tr>
+
             `;
-        }).join("");
+
+        })
+        .join("");
+
 }
 
+
+/* =====================================================
+   RENDER PRODUCTS
+===================================================== */
 
 function renderProducts(){
 
-    const table=
-        document.getElementById("productsTable");
+    const table =
+        document
+        .getElementById(
+            "productsTable"
+        );
+
 
     if(!products.length){
 
-        table.innerHTML=`
+        table.innerHTML = `
+
         <tr>
-        <td colspan="5">
-        <div class="empty">
-        هنوز محصولی وجود ندارد.
-        </div>
-        </td>
-        </tr>`;
+
+            <td colspan="5">
+
+                <div class="empty">
+
+                    هنوز محصولی وجود ندارد.
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
 
         return;
     }
 
-    table.innerHTML=
-        products.map(product=>{
+
+    table.innerHTML =
+        products
+        .map(product => {
+
+            const active =
+                product.is_active !== false;
+
 
             return `
+
             <tr>
 
-            <td>
-            <strong>
-            ${escapeHtml(product.name)}
-            </strong>
-            </td>
+                <td>
 
-            <td>
-            ${escapeHtml(product.description||"—")}
-            </td>
+                    <strong>
+                        ${escapeHtml(
+                            product.name
+                        )}
+                    </strong>
 
-            <td>
-            <strong>
-            ${money(product.price)}
-            </strong>
-            </td>
+                </td>
 
-            <td>
-            ${
-                product.is_active
-                ?
-                `<span class="status active">فعال</span>`
-                :
-                `<span class="status inactive">غیرفعال</span>`
-            }
-            </td>
 
-            <td>
+                <td>
+                    ${escapeHtml(
+                        product.description || "—"
+                    )}
+                </td>
 
-            <div class="actions">
 
-            <button
-            class="btn btn-blue"
-            onclick="editProduct('${product.id}')">
-            ویرایش
-            </button>
+                <td>
 
-            <button
-            class="btn btn-yellow"
-            onclick="toggleProduct('${product.id}',${product.is_active})">
-            ${product.is_active?"غیرفعال":"فعال"}
-            </button>
+                    <strong>
+                        ${money(product.price)}
+                    </strong>
 
-            <button
-            class="btn btn-red"
-            onclick="deleteProduct('${product.id}')">
-            حذف
-            </button>
+                </td>
 
-            </div>
 
-            </td>
+                <td>
+
+                    ${
+                        active
+
+                        ?
+
+                        `
+                        <span class="status active">
+                            فعال
+                        </span>
+                        `
+
+                        :
+
+                        `
+                        <span class="status inactive">
+                            غیرفعال
+                        </span>
+                        `
+                    }
+
+                </td>
+
+
+                <td>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-blue"
+                            onclick="
+                            editProduct(
+                                '${product.id}'
+                            )
+                            "
+                        >
+                            ویرایش
+                        </button>
+
+
+                        <button
+                            class="btn btn-yellow"
+                            onclick="
+                            toggleProduct(
+                                '${product.id}',
+                                ${active}
+                            )
+                            "
+                        >
+                            ${
+                                active
+                                ? "غیرفعال"
+                                : "فعال"
+                            }
+                        </button>
+
+
+                        <button
+                            class="btn btn-red"
+                            onclick="
+                            deleteProduct(
+                                '${product.id}'
+                            )
+                            "
+                        >
+                            حذف
+                        </button>
+
+                    </div>
+
+                </td>
 
             </tr>
+
             `;
-        }).join("");
+
+        })
+        .join("");
+
 }
 
+
+/* =====================================================
+   ORDER STATUS
+===================================================== */
 
 function statusHtml(status){
 
-    if(status==="approved")
-        return `<span class="status approved">تأیید شده</span>`;
+    if(status === "approved"){
 
-    if(status==="cancelled")
-        return `<span class="status cancelled">لغو شده</span>`;
+        return `
+        <span class="status approved">
+            تأیید شده
+        </span>
+        `;
 
-    return `<span class="status pending">در انتظار</span>`;
+    }
+
+
+    if(status === "cancelled"){
+
+        return `
+        <span class="status cancelled">
+            لغو شده
+        </span>
+        `;
+
+    }
+
+
+    return `
+    <span class="status pending">
+        در انتظار
+    </span>
+    `;
+
 }
 
+
+/* =====================================================
+   RENDER ORDERS
+===================================================== */
 
 function renderOrders(){
 
-    const table=
-        document.getElementById("ordersTable");
+    const table =
+        document
+        .getElementById(
+            "ordersTable"
+        );
+
 
     if(!orders.length){
 
-        table.innerHTML=`
+        table.innerHTML = `
+
         <tr>
-        <td colspan="6">
-        <div class="empty">
-        هنوز سفارشی ثبت نشده است.
-        </div>
-        </td>
-        </tr>`;
+
+            <td colspan="6">
+
+                <div class="empty">
+
+                    هنوز سفارشی ثبت نشده است.
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
 
         return;
     }
 
-    table.innerHTML=
-        orders.slice(0,100)
-        .map(order=>{
 
-            const profile=
-                getProfile(order.representative_id);
+    table.innerHTML =
+        orders
+        .slice(0,100)
+        .map(order => {
 
-            const name=
+            const profile =
+                getProfile(
+                    order.representative_id
+                );
+
+
+            const name =
                 profile?.name ||
                 profile?.email ||
                 "نماینده";
 
-            const total=
+
+            const total =
                 Number(
                     order.total_price ||
-                    Number(order.quantity||0)*
-                    Number(order.unit_price||0)
+                    Number(
+                        order.quantity || 0
+                    ) *
+                    Number(
+                        order.unit_price || 0
+                    )
                 );
 
-            const pending=
+
+            const pending =
                 !order.status ||
-                order.status==="pending";
+                order.status === "pending";
+
 
             return `
+
             <tr>
 
-            <td>
-            ${escapeHtml(name)}
-            </td>
+                <td>
+                    ${escapeHtml(name)}
+                </td>
 
-            <td>
-            ${escapeHtml(order.product_name||"—")}
-            </td>
 
-            <td>
-            ${Number(order.quantity||0)
-                .toLocaleString("fa-IR")}
-            </td>
+                <td>
+                    ${escapeHtml(
+                        order.product_name || "—"
+                    )}
+                </td>
 
-            <td>
-            <strong>${money(total)}</strong>
-            </td>
 
-            <td>
-            ${statusHtml(order.status)}
-            </td>
+                <td>
+                    ${Number(
+                        order.quantity || 0
+                    ).toLocaleString("fa-IR")}
+                </td>
 
-            <td>
 
-            ${
-                pending
-                ?
-                `
-                <div class="actions">
+                <td>
+                    <strong>
+                        ${money(total)}
+                    </strong>
+                </td>
 
-                <button
-                class="btn btn-green"
-                onclick="approveOrder('${order.id}')">
-                تأیید
-                </button>
 
-                <button
-                class="btn btn-red"
-                onclick="cancelOrder('${order.id}')">
-                لغو
-                </button>
+                <td>
+                    ${statusHtml(
+                        order.status
+                    )}
+                </td>
 
-                </div>
-                `
-                :
-                "—"
-            }
 
-            </td>
+                <td>
+
+                    ${
+                        pending
+
+                        ?
+
+                        `
+                        <div class="actions">
+
+                            <button
+                                class="btn btn-green"
+                                onclick="
+                                approveOrder(
+                                    '${order.id}'
+                                )
+                                "
+                            >
+                                تأیید
+                            </button>
+
+
+                            <button
+                                class="btn btn-red"
+                                onclick="
+                                cancelOrder(
+                                    '${order.id}'
+                                )
+                                "
+                            >
+                                لغو
+                            </button>
+
+                        </div>
+                        `
+
+                        :
+
+                        "—"
+                    }
+
+                </td>
 
             </tr>
+
             `;
-        }).join("");
+
+        })
+        .join("");
+
 }
 
+
+/* =====================================================
+   RENDER PAYMENTS
+===================================================== */
 
 function renderPayments(){
 
-    const box=
-        document.getElementById("paymentsList");
+    const box =
+        document
+        .getElementById(
+            "paymentsList"
+        );
+
 
     if(!payments.length){
 
-        box.innerHTML=
-        `<div class="empty">
-        هنوز تسویه‌ای ثبت نشده است.
-        </div>`;
+        box.innerHTML = `
+
+        <div class="empty">
+
+            هنوز تسویه‌ای ثبت نشده است.
+
+        </div>
+
+        `;
 
         return;
     }
 
-    box.innerHTML=
-        payments.slice(0,30)
-        .map(payment=>{
 
-            const profile=
-                getProfile(payment.representative_id);
+    box.innerHTML =
+        payments
+        .slice(0,30)
+        .map(payment => {
 
-            const name=
+            const profile =
+                getProfile(
+                    payment.representative_id
+                );
+
+
+            const name =
                 profile?.name ||
                 profile?.email ||
                 "نماینده";
 
+
             return `
+
             <div class="payment-item">
 
-            <div class="payment-left">
+                <div class="payment-left">
 
-            <strong>
-            + ${money(payment.amount)}
-            </strong>
+                    <strong>
+                        + ${money(
+                            payment.amount
+                        )}
+                    </strong>
 
-            <small>
-            ${escapeHtml(name)}
-            ${payment.description?
-                " • "+escapeHtml(payment.description):
-                ""}
-            </small>
+                    <small>
+
+                        ${escapeHtml(name)}
+
+                        ${
+                            payment.description
+                            ?
+
+                            " • " +
+                            escapeHtml(
+                                payment.description
+                            )
+
+                            :
+
+                            ""
+                        }
+
+                    </small>
+
+                </div>
+
+
+                <div class="payment-right">
+
+                    <strong>
+                        تسویه ثبت شد
+                    </strong>
+
+                    <small>
+                        ${dateFa(
+                            payment.created_at
+                        )}
+                    </small>
+
+                </div>
 
             </div>
 
-            <div class="payment-right">
-
-            <strong>
-            تسویه ثبت شد
-            </strong>
-
-            <small>
-            ${dateFa(payment.created_at)}
-            </small>
-
-            </div>
-
-            </div>
             `;
-        }).join("");
+
+        })
+        .join("");
+
 }
 
+
+/* =====================================================
+   STATS
+===================================================== */
 
 function updateStats(){
 
-    let sales=0;
-    let debt=0;
+    let sales = 0;
 
-    orders.forEach(order=>{
+    let debt = 0;
 
-        if(order.status==="cancelled")
+
+    orders.forEach(order => {
+
+        if(
+            order.status ===
+            "cancelled"
+        )
             return;
 
-        sales+=Number(
-            order.total_price ||
-            Number(order.quantity||0)*
-            Number(order.unit_price||0)
+
+        sales +=
+            Number(
+                order.total_price ||
+                Number(
+                    order.quantity || 0
+                ) *
+                Number(
+                    order.unit_price || 0
+                )
+            );
+
+    });
+
+
+    payments.forEach(payment => {
+
+        debt -=
+            Number(
+                payment.amount || 0
+            );
+
+    });
+
+
+    debt += sales;
+
+
+    document
+        .getElementById("sales")
+        .textContent =
+        money(sales);
+
+
+    document
+        .getElementById("debt")
+        .textContent =
+        money(
+            Math.max(
+                0,
+                debt
+            )
         );
-    });
 
-    payments.forEach(payment=>{
-        debt-=Number(payment.amount||0);
-    });
-
-    debt+=sales;
-
-    document.getElementById("sales")
-        .textContent=money(sales);
-
-    document.getElementById("debt")
-        .textContent=money(Math.max(0,debt));
 }
 
+
+/* =====================================================
+   REPRESENTATIVE MODAL
+===================================================== */
 
 function openRepresentativeModal(){
 
-    editingRepresentativeId=null;
+    editingRepresentativeId =
+        null;
 
-    document.getElementById("repModalTitle")
-        .textContent="👤 نماینده جدید";
 
-    document.getElementById("repName").value="";
-    document.getElementById("repEmail").value="";
-    document.getElementById("repPhone").value="";
-    document.getElementById("repPassword").value="";
+    document
+        .getElementById(
+            "repModalTitle"
+        )
+        .textContent =
+        "👤 نماینده جدید";
 
-    document.getElementById("passwordLabel")
-        .textContent="رمز عبور";
 
-    document.getElementById("repModal")
+    document
+        .getElementById("repName")
+        .value = "";
+
+
+    document
+        .getElementById("repEmail")
+        .value = "";
+
+
+    document
+        .getElementById("repPhone")
+        .value = "";
+
+
+    document
+        .getElementById("repPassword")
+        .value = "";
+
+
+    document
+        .getElementById("passwordLabel")
+        .textContent =
+        "رمز عبور";
+
+
+    document
+        .getElementById("repModal")
         .classList.add("show");
+
 }
 
+
+/* =====================================================
+   EDIT REPRESENTATIVE
+===================================================== */
 
 function editRepresentative(id){
 
-    const rep=
-        profiles.find(p=>p.id===id);
+    const rep =
+        profiles.find(
+            p => p.id === id
+        );
 
-    if(!rep) return;
 
-    editingRepresentativeId=id;
+    if(!rep)
+        return;
 
-    document.getElementById("repModalTitle")
-        .textContent="✏️ ویرایش نماینده";
 
-    document.getElementById("repName").value=
-        rep.name||"";
+    editingRepresentativeId =
+        id;
 
-    document.getElementById("repEmail").value=
-        rep.email||"";
 
-    document.getElementById("repPhone").value=
-        rep.phone||"";
+    document
+        .getElementById(
+            "repModalTitle"
+        )
+        .textContent =
+        "✏️ ویرایش نماینده";
 
-    document.getElementById("repPassword").value="";
 
-    document.getElementById("passwordLabel")
-        .textContent=
+    document
+        .getElementById("repName")
+        .value =
+        rep.name || "";
+
+
+    document
+        .getElementById("repEmail")
+        .value =
+        rep.email || "";
+
+
+    document
+        .getElementById("repPhone")
+        .value =
+        rep.phone || "";
+
+
+    document
+        .getElementById("repPassword")
+        .value = "";
+
+
+    document
+        .getElementById("passwordLabel")
+        .textContent =
         "رمز جدید — در صورت نیاز وارد کنید";
 
-    document.getElementById("repModal")
+
+    document
+        .getElementById("repModal")
         .classList.add("show");
+
 }
 
 
+/* =====================================================
+   SAVE REPRESENTATIVE
+===================================================== */
+
 async function saveRepresentative(){
 
-    const name=
-        document.getElementById("repName").value.trim();
+    const name =
+        document
+        .getElementById("repName")
+        .value
+        .trim();
 
-    const email=
-        document.getElementById("repEmail").value.trim();
 
-    const phone=
-        document.getElementById("repPhone").value.trim();
+    const email =
+        document
+        .getElementById("repEmail")
+        .value
+        .trim();
 
-    const password=
-        document.getElementById("repPassword").value;
+
+    const phone =
+        document
+        .getElementById("repPhone")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("repPassword")
+        .value;
+
+
+    if(!name){
+
+        showToast(
+            "نام نماینده را وارد کنید"
+        );
+
+        return;
+    }
+
+
+    if(!email){
+
+        showToast(
+            "ایمیل نماینده را وارد کنید"
+        );
+
+        return;
+    }
+
 
     try{
 
@@ -1703,76 +2942,146 @@ async function saveRepresentative(){
             await edgeAction(
                 "update_representative",
                 {
-                    id:editingRepresentativeId,
+                    id:
+                        editingRepresentativeId,
+
                     name,
+
                     email,
+
                     phone,
+
                     password
                 }
             );
 
-            showToast("نماینده ویرایش شد ✓");
+
+            showToast(
+                "نماینده ویرایش شد ✓"
+            );
 
         }else{
+
+            if(!password){
+
+                showToast(
+                    "رمز عبور نماینده را وارد کنید"
+                );
+
+                return;
+            }
+
 
             await edgeAction(
                 "create_representative",
                 {
                     name,
+
                     email,
+
                     phone,
+
                     password
                 }
             );
 
-            showToast("نماینده ساخته شد ✓");
+
+            showToast(
+                "نماینده ساخته شد ✓"
+            );
+
         }
 
-        closeModal("repModal");
+
+        closeModal(
+            "repModal"
+        );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        console.error(
+            error
+        );
+
+
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
 
+/* =====================================================
+   DELETE REPRESENTATIVE
+===================================================== */
+
 async function deleteRepresentative(id){
 
-    const rep=
-        profiles.find(p=>p.id===id);
+    const rep =
+        profiles.find(
+            p => p.id === id
+        );
 
-    if(!rep) return;
 
-    const name=
-        rep.name||rep.email||"این نماینده";
+    if(!rep)
+        return;
+
+
+    const name =
+        rep.name ||
+        rep.email ||
+        "این نماینده";
+
 
     if(!confirm(
         `نماینده «${name}» حذف شود؟\n\nاین عملیات قابل بازگشت نیست.`
     ))
         return;
 
+
     try{
 
         await edgeAction(
             "delete_representative",
-            {id}
+            {
+                id
+            }
         );
 
-        showToast("نماینده حذف شد");
+
+        showToast(
+            "نماینده حذف شد"
+        );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
 
-async function toggleRepresentative(id,current){
+/* =====================================================
+   TOGGLE REPRESENTATIVE
+===================================================== */
+
+async function toggleRepresentative(
+    id,
+    current
+){
 
     try{
 
@@ -1780,82 +3089,186 @@ async function toggleRepresentative(id,current){
             "toggle_representative",
             {
                 id,
-                is_active:!current
+
+                is_active:
+                    !current
             }
         );
 
+
         showToast(
             current
-            ?"نماینده غیرفعال شد"
-            :"نماینده فعال شد"
+            ? "نماینده غیرفعال شد"
+            : "نماینده فعال شد"
         );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
+
+/* =====================================================
+   PRODUCT MODAL
+===================================================== */
 
 function openProductModal(){
 
-    editingProductId=null;
+    editingProductId =
+        null;
 
-    document.getElementById("productModalTitle")
-        .textContent="📦 محصول جدید";
 
-    document.getElementById("productName").value="";
-    document.getElementById("productDescription").value="";
-    document.getElementById("productPrice").value="";
+    document
+        .getElementById(
+            "productModalTitle"
+        )
+        .textContent =
+        "📦 محصول جدید";
 
-    document.getElementById("productModal")
+
+    document
+        .getElementById("productName")
+        .value = "";
+
+
+    document
+        .getElementById(
+            "productDescription"
+        )
+        .value = "";
+
+
+    document
+        .getElementById("productPrice")
+        .value = "";
+
+
+    document
+        .getElementById(
+            "productModal"
+        )
         .classList.add("show");
+
 }
 
+
+/* =====================================================
+   EDIT PRODUCT
+===================================================== */
 
 function editProduct(id){
 
-    const product=
-        products.find(p=>p.id===id);
+    const product =
+        products.find(
+            p => p.id === id
+        );
 
-    if(!product) return;
 
-    editingProductId=id;
+    if(!product)
+        return;
 
-    document.getElementById("productModalTitle")
-        .textContent="✏️ ویرایش محصول";
 
-    document.getElementById("productName").value=
-        product.name||"";
+    editingProductId =
+        id;
 
-    document.getElementById("productDescription").value=
-        product.description||"";
 
-    document.getElementById("productPrice").value=
-        product.price||0;
+    document
+        .getElementById(
+            "productModalTitle"
+        )
+        .textContent =
+        "✏️ ویرایش محصول";
 
-    document.getElementById("productModal")
+
+    document
+        .getElementById("productName")
+        .value =
+        product.name || "";
+
+
+    document
+        .getElementById(
+            "productDescription"
+        )
+        .value =
+        product.description || "";
+
+
+    document
+        .getElementById("productPrice")
+        .value =
+        product.price || 0;
+
+
+    document
+        .getElementById(
+            "productModal"
+        )
         .classList.add("show");
+
 }
 
 
+/* =====================================================
+   SAVE PRODUCT
+===================================================== */
+
 async function saveProduct(){
 
-    const name=
-        document.getElementById("productName")
-        .value.trim();
+    const name =
+        document
+        .getElementById("productName")
+        .value
+        .trim();
 
-    const description=
-        document.getElementById("productDescription")
-        .value.trim();
 
-    const price=
+    const description =
+        document
+        .getElementById(
+            "productDescription"
+        )
+        .value
+        .trim();
+
+
+    const price =
         Number(
-            document.getElementById("productPrice")
+            document
+            .getElementById(
+                "productPrice"
+            )
             .value
         );
+
+
+    if(!name){
+
+        showToast(
+            "نام محصول را وارد کنید"
+        );
+
+        return;
+    }
+
+
+    if(!price || price <= 0){
+
+        showToast(
+            "قیمت محصول را وارد کنید"
+        );
+
+        return;
+    }
+
 
     try{
 
@@ -1864,14 +3277,21 @@ async function saveProduct(){
             await edgeAction(
                 "update_product",
                 {
-                    id:editingProductId,
+                    id:
+                        editingProductId,
+
                     name,
+
                     description,
+
                     price
                 }
             );
 
-            showToast("محصول ویرایش شد ✓");
+
+            showToast(
+                "محصول ویرایش شد ✓"
+            );
 
         }else{
 
@@ -1879,56 +3299,99 @@ async function saveProduct(){
                 "create_product",
                 {
                     name,
+
                     description,
+
                     price
                 }
             );
 
-            showToast("محصول اضافه شد ✓");
+
+            showToast(
+                "محصول اضافه شد ✓"
+            );
+
         }
 
-        closeModal("productModal");
+
+        closeModal(
+            "productModal"
+        );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
 
+/* =====================================================
+   DELETE PRODUCT
+===================================================== */
+
 async function deleteProduct(id){
 
-    const product=
-        products.find(p=>p.id===id);
+    const product =
+        products.find(
+            p => p.id === id
+        );
 
-    if(!product) return;
+
+    if(!product)
+        return;
+
 
     if(!confirm(
         `محصول «${product.name}» حذف شود؟`
     ))
         return;
 
+
     try{
 
         await edgeAction(
             "delete_product",
-            {id}
+            {
+                id
+            }
         );
 
-        showToast("محصول حذف شد");
+
+        showToast(
+            "محصول حذف شد"
+        );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
 
-async function toggleProduct(id,current){
+/* =====================================================
+   TOGGLE PRODUCT
+===================================================== */
+
+async function toggleProduct(
+    id,
+    current
+){
 
     try{
 
@@ -1936,188 +3399,370 @@ async function toggleProduct(id,current){
             "toggle_product",
             {
                 id,
-                is_active:!current
+
+                is_active:
+                    !current
             }
         );
 
+
         showToast(
             current
-            ?"محصول غیرفعال شد"
-            :"محصول فعال شد"
+            ? "محصول غیرفعال شد"
+            : "محصول فعال شد"
         );
+
 
         await loadAll();
 
+
     }catch(error){
 
-        showToast(error.message);
+        showToast(
+            error.message
+        );
+
     }
+
 }
 
 
+/* =====================================================
+   PAYMENT
+===================================================== */
+
 function openPayment(id){
 
-    selectedRepresentative=
-        profiles.find(p=>p.id===id);
+    selectedRepresentative =
+        profiles.find(
+            p => p.id === id
+        );
+
 
     if(!selectedRepresentative)
         return;
 
-    const data=
-        getRepData(selectedRepresentative);
 
-    document.getElementById("selectedRep")
-        .innerHTML=`
+    const data =
+        getRepData(
+            selectedRepresentative
+        );
+
+
+    document
+        .getElementById(
+            "selectedRep"
+        )
+        .innerHTML = `
+
         <strong>
-        ${escapeHtml(
-            selectedRepresentative.name||
-            selectedRepresentative.email||
-            "نماینده"
-        )}
+
+            ${escapeHtml(
+                selectedRepresentative.name ||
+                selectedRepresentative.email ||
+                "نماینده"
+            )}
+
         </strong>
 
-        <div style="color:#ff6478;margin-top:8px">
-        بدهی: ${money(data.debt)}
+        <div
+            style="
+            color:#ff6478;
+            margin-top:8px
+            "
+        >
+
+            بدهی:
+            ${money(data.debt)}
+
         </div>
+
         `;
 
-    document.getElementById("paymentAmount")
-        .value="";
 
-    document.getElementById("paymentAmount")
-        .max=data.debt;
+    document
+        .getElementById(
+            "paymentAmount"
+        )
+        .value = "";
 
-    document.getElementById("paymentDescription")
-        .value="";
 
-    document.getElementById("paymentModal")
+    document
+        .getElementById(
+            "paymentAmount"
+        )
+        .max =
+        data.debt;
+
+
+    document
+        .getElementById(
+            "paymentDescription"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "paymentModal"
+        )
         .classList.add("show");
+
 }
 
+
+/* =====================================================
+   SUBMIT PAYMENT
+===================================================== */
 
 async function submitPayment(){
 
     if(!selectedRepresentative)
         return;
 
-    const amount=
+
+    const amount =
         Number(
-            document.getElementById("paymentAmount")
+            document
+            .getElementById(
+                "paymentAmount"
+            )
             .value
         );
 
-    const description=
-        document.getElementById("paymentDescription")
-        .value.trim();
 
-    const data=
-        getRepData(selectedRepresentative);
+    const description =
+        document
+        .getElementById(
+            "paymentDescription"
+        )
+        .value
+        .trim();
 
-    if(!amount || amount<=0){
-        showToast("مبلغ را وارد کنید");
+
+    const data =
+        getRepData(
+            selectedRepresentative
+        );
+
+
+    if(!amount || amount <= 0){
+
+        showToast(
+            "مبلغ را وارد کنید"
+        );
+
         return;
     }
 
-    if(amount>data.debt){
-        showToast("مبلغ بیشتر از بدهی است");
+
+    if(amount > data.debt){
+
+        showToast(
+            "مبلغ بیشتر از بدهی است"
+        );
+
         return;
     }
 
-    const {error}=
-        await supabaseClient
+
+    const {
+        error
+    } =
+    await supabaseClient
         .from("payments")
         .insert({
+
             representative_id:
                 selectedRepresentative.id,
+
             amount,
+
             description:
-                description||"تسویه حساب"
+                description ||
+                "تسویه حساب"
+
         });
 
+
     if(error){
-        showToast(error.message);
+
+        console.error(
+            error
+        );
+
+        showToast(
+            error.message
+        );
+
         return;
     }
 
-    closeModal("paymentModal");
 
-    showToast("تسویه ثبت شد ✓");
+    closeModal(
+        "paymentModal"
+    );
+
+
+    showToast(
+        "تسویه ثبت شد ✓"
+    );
+
 
     await loadAll();
+
 }
 
 
+/* =====================================================
+   APPROVE ORDER
+===================================================== */
+
 async function approveOrder(id){
 
-    if(!confirm("این سفارش تأیید شود؟"))
+    if(!confirm(
+        "این سفارش تأیید شود؟"
+    ))
         return;
 
-    const {error}=
-        await supabaseClient
+
+    const {
+        error
+    } =
+    await supabaseClient
         .from("orders")
         .update({
             status:"approved"
         })
-        .eq("id",id);
+        .eq(
+            "id",
+            id
+        );
+
 
     if(error){
-        showToast(error.message);
+
+        showToast(
+            error.message
+        );
+
         return;
     }
 
-    showToast("سفارش تأیید شد ✓");
+
+    showToast(
+        "سفارش تأیید شد ✓"
+    );
+
 
     await loadAll();
+
 }
 
 
+/* =====================================================
+   CANCEL ORDER
+===================================================== */
+
 async function cancelOrder(id){
 
-    if(!confirm("این سفارش لغو شود؟"))
+    if(!confirm(
+        "این سفارش لغو شود؟"
+    ))
         return;
 
-    const {error}=
-        await supabaseClient
+
+    const {
+        error
+    } =
+    await supabaseClient
         .from("orders")
         .update({
             status:"cancelled"
         })
-        .eq("id",id);
+        .eq(
+            "id",
+            id
+        );
+
 
     if(error){
-        showToast(error.message);
+
+        showToast(
+            error.message
+        );
+
         return;
     }
 
-    showToast("سفارش لغو شد");
+
+    showToast(
+        "سفارش لغو شد"
+    );
+
 
     await loadAll();
+
 }
 
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
 
 function closeModal(id){
 
-    document.getElementById(id)
-        .classList.remove("show");
+    const modal =
+        document.getElementById(id);
+
+
+    if(modal){
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
 }
 
 
-document.querySelectorAll(".modal")
-.forEach(modal=>{
+/* =====================================================
+   MODAL CLICK
+===================================================== */
 
-    modal.addEventListener("click",e=>{
+document
+.querySelectorAll(".modal")
+.forEach(modal => {
 
-        if(e.target===modal)
-            modal.classList.remove("show");
+    modal.addEventListener(
+        "click",
+        e => {
 
-    });
+            if(e.target === modal){
+
+                modal.classList.remove(
+                    "show"
+                );
+
+            }
+
+        }
+    );
 
 });
 
 
-const realtimeChannel=
+/* =====================================================
+   REALTIME
+===================================================== */
+
+const realtimeChannel =
     supabaseClient
-    .channel("v2guard-admin-live")
+    .channel(
+        "v2guard-admin-live"
+    )
+
 
     .on(
         "postgres_changes",
@@ -2126,12 +3771,17 @@ const realtimeChannel=
             schema:"public",
             table:"orders"
         },
-        async()=>{
+        async () => {
+
             await loadOrders();
+
             renderOrders();
+
             updateStats();
+
         }
     )
+
 
     .on(
         "postgres_changes",
@@ -2140,11 +3790,15 @@ const realtimeChannel=
             schema:"public",
             table:"products"
         },
-        async()=>{
+        async () => {
+
             await loadProducts();
+
             renderProducts();
+
         }
     )
+
 
     .on(
         "postgres_changes",
@@ -2153,27 +3807,74 @@ const realtimeChannel=
             schema:"public",
             table:"payments"
         },
-        async()=>{
+        async () => {
+
             await loadPayments();
+
             renderPayments();
+
             renderRepresentatives();
+
             updateStats();
+
         }
     )
+
 
     .subscribe();
 
 
-supabaseClient.auth.onAuthStateChange(
-    async(event,session)=>{
+/* =====================================================
+   AUTH STATE
+===================================================== */
 
-        if(event==="SIGNED_OUT"){
+supabaseClient
+.auth
+.onAuthStateChange(
+    async (
+        event,
+        session
+    ) => {
 
-            document.getElementById("app")
-                .style.display="none";
+        console.log(
+            "AUTH EVENT:",
+            event,
+            session
+        );
 
-            document.getElementById("loginScreen")
-                .classList.remove("hidden");
+
+        if(
+            event ===
+            "SIGNED_OUT"
+        ){
+
+            document
+                .getElementById(
+                    "app"
+                )
+                .style.display =
+                "none";
+
+
+            document
+                .getElementById(
+                    "loginScreen"
+                )
+                .classList.remove(
+                    "hidden"
+                );
+
+        }
+
+
+        if(
+            event ===
+            "TOKEN_REFRESHED"
+        ){
+
+            console.log(
+                "TOKEN REFRESHED"
+            );
 
         }
 
@@ -2181,9 +3882,14 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 
+/* =====================================================
+   START
+===================================================== */
+
 startApp();
 
 </script>
 
 </body>
 </html>
+```
