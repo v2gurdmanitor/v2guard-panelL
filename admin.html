@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>V2GUARD | مدیریت</title>
+<title>V2GUARD | مدیریت مالی</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -18,17 +19,21 @@
 body{
     font-family:Tahoma,Arial,sans-serif;
     background:
-    radial-gradient(circle at 10% 0%,rgba(37,211,102,.12),transparent 30%),
-    radial-gradient(circle at 90% 20%,rgba(0,150,255,.09),transparent 30%),
+    radial-gradient(circle at 10% 0%,rgba(37,211,102,.13),transparent 30%),
+    radial-gradient(circle at 90% 10%,rgba(0,150,255,.10),transparent 30%),
     #071019;
     color:#fff;
     min-height:100vh;
 }
 
+button{
+    font-family:inherit;
+}
+
 header{
     position:sticky;
     top:0;
-    z-index:20;
+    z-index:30;
     background:rgba(7,16,25,.84);
     backdrop-filter:blur(20px);
     border-bottom:1px solid rgba(255,255,255,.07);
@@ -79,7 +84,7 @@ header{
 main{
     max-width:1250px;
     margin:auto;
-    padding:35px 20px 80px;
+    padding:35px 20px 90px;
 }
 
 .title{
@@ -108,6 +113,7 @@ main{
 .title p{
     color:#7e8998;
     font-size:10px;
+    line-height:2;
     margin-top:8px;
 }
 
@@ -138,7 +144,7 @@ main{
 }
 
 .stat-value{
-    font-size:21px;
+    font-size:20px;
     font-weight:900;
 }
 
@@ -154,14 +160,19 @@ main{
     color:#ff6478;
 }
 
+.blue{
+    color:#55aaff;
+}
+
 .section{
-    margin-top:22px;
+    margin-top:25px;
 }
 
 .section-title{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:15px;
     margin-bottom:15px;
 }
 
@@ -174,17 +185,21 @@ main{
     font-size:9px;
 }
 
-.table-box{
-    overflow:auto;
-    border-radius:20px;
+.card{
+    border-radius:22px;
+    background:rgba(16,27,40,.75);
     border:1px solid rgba(255,255,255,.07);
-    background:rgba(16,27,40,.72);
+    overflow:hidden;
+}
+
+.table-scroll{
+    overflow:auto;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:750px;
+    min-width:900px;
 }
 
 th{
@@ -193,12 +208,14 @@ th{
     text-align:right;
     padding:16px;
     background:rgba(255,255,255,.025);
+    white-space:nowrap;
 }
 
 td{
     padding:16px;
     border-top:1px solid rgba(255,255,255,.05);
     font-size:10px;
+    white-space:nowrap;
 }
 
 tr{
@@ -207,6 +224,66 @@ tr{
 
 tr:hover{
     background:rgba(37,211,102,.025);
+}
+
+.rep-name{
+    font-weight:bold;
+}
+
+.rep-email{
+    color:#667282;
+    font-size:8px;
+    margin-top:5px;
+}
+
+.amount-debt{
+    color:#ff6478;
+    font-weight:900;
+}
+
+.amount-paid{
+    color:#25d366;
+    font-weight:900;
+}
+
+.amount-total{
+    font-weight:900;
+}
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-size:8px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:#25d366;
+    color:#041008;
+}
+
+.btn-dark{
+    color:#fff;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.btn-red{
+    color:#ff7180;
+    background:rgba(255,80,100,.07);
+    border:1px solid rgba(255,80,100,.12);
+}
+
+.actions{
+    display:flex;
+    gap:7px;
 }
 
 .status{
@@ -231,32 +308,16 @@ tr:hover{
     background:rgba(255,80,100,.08);
 }
 
-.action{
-    border:0;
-    padding:8px 11px;
-    border-radius:9px;
-    cursor:pointer;
-    background:#25d366;
-    color:#041008;
-    font-weight:bold;
-    font-size:8px;
-}
-
-.action:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
 .empty{
     padding:45px 20px;
     text-align:center;
     color:#7e8998;
     font-size:10px;
+    line-height:2;
 }
 
 .error{
     color:#ff7180;
-    line-height:2;
 }
 
 .refresh{
@@ -268,11 +329,196 @@ tr:hover{
     cursor:pointer;
 }
 
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(12px);
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:430px;
+    padding:25px;
+    border-radius:25px;
+    background:#101c2a;
+    border:1px solid rgba(255,255,255,.08);
+    animation:modalIn .3s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.93);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-head h3{
+    font-size:17px;
+}
+
+.close{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.04);
+    color:#fff;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.rep-info{
+    padding:15px;
+    border-radius:15px;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    margin-bottom:15px;
+}
+
+.rep-info strong{
+    display:block;
+    font-size:12px;
+}
+
+.rep-info small{
+    display:block;
+    color:#7e8998;
+    font-size:8px;
+    margin-top:5px;
+}
+
+.field{
+    margin-bottom:14px;
+}
+
+.field label{
+    display:block;
+    color:#7e8998;
+    font-size:9px;
+    margin-bottom:7px;
+}
+
+.field input{
+    width:100%;
+    height:45px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.08);
+    outline:0;
+    background:rgba(255,255,255,.04);
+    color:#fff;
+    padding:0 13px;
+    font-family:inherit;
+}
+
+.field input:focus{
+    border-color:rgba(37,211,102,.4);
+}
+
+.pay-preview{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px;
+    border-radius:13px;
+    background:rgba(37,211,102,.05);
+    margin-bottom:15px;
+}
+
+.pay-preview span{
+    color:#7e8998;
+    font-size:9px;
+}
+
+.pay-preview strong{
+    color:#25d366;
+}
+
+.submit-pay{
+    width:100%;
+    height:48px;
+    border:0;
+    border-radius:13px;
+    background:#25d366;
+    color:#041008;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.submit-pay:disabled{
+    opacity:.5;
+}
+
+.history{
+    margin-top:35px;
+}
+
+.payment-item{
+    padding:16px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.payment-item:last-child{
+    border-bottom:0;
+}
+
+.payment-left strong{
+    display:block;
+    color:#25d366;
+    font-size:12px;
+}
+
+.payment-left small{
+    display:block;
+    color:#7e8998;
+    font-size:8px;
+    margin-top:5px;
+}
+
+.payment-right{
+    text-align:left;
+}
+
+.payment-right strong{
+    display:block;
+    font-size:11px;
+}
+
+.payment-right small{
+    color:#667282;
+    font-size:8px;
+}
+
 .toast{
     position:fixed;
     left:20px;
     bottom:20px;
-    z-index:100;
+    z-index:200;
+    max-width:calc(100% - 40px);
     padding:14px 17px;
     border-radius:14px;
     background:#101c2a;
@@ -289,61 +535,80 @@ tr:hover{
 }
 
 @media(max-width:900px){
+
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:600px){
+
     main{
-        padding:25px 15px 60px;
+        padding:25px 15px 70px;
     }
 
     .stats{
         grid-template-columns:1fr;
     }
+
 }
+
 </style>
 </head>
 
+
 <body>
 
+
 <header>
+
 <div class="header">
 
 <div class="logo-area">
 
-<div class="logo">V2</div>
+<div class="logo">
+V2
+</div>
 
 <div>
-<div class="logo-text">V2GUARD</div>
-<div class="logo-sub">پنل مدیریت</div>
+
+<div class="logo-text">
+V2GUARD
+</div>
+
+<div class="logo-sub">
+پنل مدیریت مالی
+</div>
+
 </div>
 
 </div>
 
 <div class="admin">
-● مدیریت سیستم
+● سیستم مالی
 </div>
 
 </div>
+
 </header>
 
 
 <main>
 
+
 <section class="title">
 
 <div class="badge">
-ADMIN PANEL • LIVE
+V2GUARD • FINANCE
 </div>
 
 <h1>
-مرکز <span>مدیریت</span> V2GUARD
+مدیریت <span>مالی</span>
 </h1>
 
 <p>
-مدیریت نمایندگان و سفارش‌های واقعی سیستم
+سفارش‌ها، بدهی نمایندگان و تسویه حساب‌ها در یک پنل
 </p>
 
 </section>
@@ -352,23 +617,66 @@ ADMIN PANEL • LIVE
 <section class="stats">
 
 <div class="stat">
-<div class="stat-label">کل نمایندگان</div>
-<div class="stat-value green" id="users">۰</div>
+
+<div class="stat-label">
+کل نمایندگان
 </div>
 
-<div class="stat">
-<div class="stat-label">کل سفارش‌ها</div>
-<div class="stat-value yellow" id="orders">۰</div>
+<div
+class="stat-value green"
+id="users"
+>
+۰
 </div>
 
-<div class="stat">
-<div class="stat-label">مجموع فروش</div>
-<div class="stat-value" id="sales">۰ تومان</div>
 </div>
 
+
 <div class="stat">
-<div class="stat-label">کل بدهی</div>
-<div class="stat-value red" id="debt">۰ تومان</div>
+
+<div class="stat-label">
+کل سفارش‌ها
+</div>
+
+<div
+class="stat-value yellow"
+id="orders"
+>
+۰
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+کل خرید
+</div>
+
+<div
+class="stat-value"
+id="sales"
+>
+۰ تومان
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+کل بدهی
+</div>
+
+<div
+class="stat-value red"
+id="debt"
+>
+۰ تومان
+</div>
+
 </div>
 
 </section>
@@ -376,41 +684,67 @@ ADMIN PANEL • LIVE
 
 <section class="section">
 
+
 <div class="section-title">
 
 <h2>
-👥 نمایندگان
+👥 حساب نمایندگان
 </h2>
 
-<span id="usersCount">
-۰ نماینده
+<span>
+خرید − تسویه = بدهی
 </span>
 
 </div>
 
-<div class="table-box">
+
+<div class="card">
+
+<div class="table-scroll">
 
 <table>
 
 <thead>
 
 <tr>
-<th>نام</th>
-<th>ایمیل</th>
-<th>شماره</th>
-<th>تاریخ عضویت</th>
+
+<th>
+نماینده
+</th>
+
+<th>
+مجموع خرید
+</th>
+
+<th>
+مجموع تسویه
+</th>
+
+<th>
+بدهی
+</th>
+
+<th>
+عملیات
+</th>
+
 </tr>
 
 </thead>
 
-<tbody id="usersTable">
+
+<tbody id="representatives">
 
 <tr>
-<td colspan="4">
+
+<td colspan="5">
+
 <div class="empty">
 در حال دریافت اطلاعات...
 </div>
+
 </td>
+
 </tr>
 
 </tbody>
@@ -419,15 +753,18 @@ ADMIN PANEL • LIVE
 
 </div>
 
+</div>
+
 </section>
 
 
 <section class="section">
 
+
 <div class="section-title">
 
 <h2>
-📦 سفارش‌ها
+📦 سفارش‌های اخیر
 </h2>
 
 <div>
@@ -438,7 +775,7 @@ ADMIN PANEL • LIVE
 
 <button
 class="refresh"
-onclick="loadData()"
+onclick="loadAll()"
 >
 ↻ بروزرسانی
 </button>
@@ -448,31 +785,57 @@ onclick="loadData()"
 </div>
 
 
-<div class="table-box">
+<div class="card">
+
+<div class="table-scroll">
 
 <table>
 
 <thead>
 
 <tr>
-<th>نماینده</th>
-<th>محصول</th>
-<th>تعداد</th>
-<th>مبلغ</th>
-<th>وضعیت</th>
-<th>عملیات</th>
+
+<th>
+نماینده
+</th>
+
+<th>
+محصول
+</th>
+
+<th>
+تعداد
+</th>
+
+<th>
+مبلغ
+</th>
+
+<th>
+وضعیت
+</th>
+
+<th>
+عملیات
+</th>
+
 </tr>
 
 </thead>
 
+
 <tbody id="ordersTable">
 
 <tr>
+
 <td colspan="6">
+
 <div class="empty">
 در حال دریافت سفارش‌ها...
 </div>
+
 </td>
+
 </tr>
 
 </tbody>
@@ -481,9 +844,134 @@ onclick="loadData()"
 
 </div>
 
+</div>
+
 </section>
 
+
+<section class="section history">
+
+
+<div class="section-title">
+
+<h2>
+💳 آخرین تسویه‌ها
+</h2>
+
+<span>
+تاریخچه پرداخت نمایندگان
+</span>
+
+</div>
+
+
+<div class="card">
+
+<div id="paymentsList">
+
+<div class="empty">
+در حال دریافت تسویه‌ها...
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
 </main>
+
+
+<!-- PAYMENT MODAL -->
+
+<div
+class="modal"
+id="paymentModal"
+>
+
+<div class="modal-box">
+
+
+<div class="modal-head">
+
+<h3>
+💳 ثبت تسویه
+</h3>
+
+<button
+class="close"
+onclick="closePayment()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="rep-info"
+id="selectedRep"
+>
+</div>
+
+
+<div class="field">
+
+<label>
+مبلغ تسویه
+</label>
+
+<input
+type="number"
+id="paymentAmount"
+placeholder="مثلاً 1000000"
+min="1"
+/>
+
+</div>
+
+
+<div class="field">
+
+<label>
+توضیحات
+</label>
+
+<input
+type="text"
+id="paymentDescription"
+placeholder="مثلاً تسویه حساب مرداد"
+/>
+
+</div>
+
+
+<div class="pay-preview">
+
+<span>
+بدهی بعد از تسویه
+</span>
+
+<strong id="afterPayment">
+۰ تومان
+</strong>
+
+</div>
+
+
+<button
+class="submit-pay"
+id="submitPayment"
+onclick="submitPayment()"
+>
+ثبت تسویه
+</button>
+
+
+</div>
+
+</div>
 
 
 <div
@@ -494,11 +982,14 @@ id="toast"
 
 <script>
 
+
 const SUPABASE_URL =
 "https://fmrocoflspugyaprvrve.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_LW7Kr8R_N9WmHMQkWo8S0A_i02mBfT8";
+
 
 const supabaseClient =
 supabase.createClient(
@@ -509,16 +1000,27 @@ supabase.createClient(
 
 let profiles=[];
 let orders=[];
+let payments=[];
 
+let selectedRepresentative=null;
+
+
+/* ========================= */
 
 function money(number){
 
     return new Intl.NumberFormat("fa-IR")
-    .format(Number(number||0))
+    .format(
+        Math.round(
+            Number(number||0)
+        )
+    )
     +" تومان";
 
 }
 
+
+/* ========================= */
 
 function dateFa(date){
 
@@ -526,10 +1028,12 @@ function dateFa(date){
         return "—";
 
     return new Date(date)
-    .toLocaleDateString("fa-IR");
+    .toLocaleString("fa-IR");
 
 }
 
+
+/* ========================= */
 
 function escapeHtml(value){
 
@@ -543,7 +1047,9 @@ function escapeHtml(value){
 }
 
 
-function toast(message){
+/* ========================= */
+
+function showToast(message){
 
     const el =
     document.getElementById("toast");
@@ -553,26 +1059,29 @@ function toast(message){
     el.classList.add("show");
 
     setTimeout(()=>{
+
         el.classList.remove("show");
-    },3000);
+
+    },3500);
 
 }
 
 
-/*
-================================
-دریافت اطلاعات
-================================
-*/
+/* =========================
+   LOAD ALL
+========================= */
 
-async function loadData(){
+async function loadAll(){
 
     try{
 
-        await Promise.all([
-            loadProfiles(),
-            loadOrders()
-        ]);
+        await loadProfiles();
+
+        await loadOrders();
+
+        await loadPayments();
+
+        renderRepresentatives();
 
         updateStats();
 
@@ -580,7 +1089,7 @@ async function loadData(){
 
         console.error(error);
 
-        toast(
+        showToast(
             "خطا در دریافت اطلاعات"
         );
 
@@ -589,11 +1098,9 @@ async function loadData(){
 }
 
 
-/*
-================================
-نمایندگان
-================================
-*/
+/* =========================
+   PROFILES
+========================= */
 
 async function loadProfiles(){
 
@@ -614,36 +1121,10 @@ async function loadProfiles(){
 
     if(error){
 
-        console.error(
-            "PROFILES ERROR:",
-            error
-        );
-
-        document
-        .getElementById("usersTable")
-        .innerHTML=`
-
-        <tr>
-
-        <td colspan="4">
-
-        <div class="empty error">
-
-        خطا در دریافت نمایندگان
-
-        <br>
-
-        ${escapeHtml(error.message)}
-
-        </div>
-
-        </td>
-
-        </tr>
-
-        `;
+        console.error(error);
 
         throw error;
+
     }
 
 
@@ -656,93 +1137,12 @@ async function loadProfiles(){
     profiles.length
     .toLocaleString("fa-IR");
 
-
-    document
-    .getElementById("usersCount")
-    .textContent=
-    profiles.length
-    .toLocaleString("fa-IR")
-    +" نماینده";
-
-
-    renderProfiles();
-
 }
 
 
-function renderProfiles(){
-
-    const table =
-    document.getElementById(
-        "usersTable"
-    );
-
-
-    if(!profiles.length){
-
-        table.innerHTML=`
-
-        <tr>
-        <td colspan="4">
-
-        <div class="empty">
-        هنوز نماینده‌ای ثبت نشده است.
-        </div>
-
-        </td>
-        </tr>
-
-        `;
-
-        return;
-    }
-
-
-    table.innerHTML =
-    profiles.map(profile=>`
-
-        <tr>
-
-        <td>
-        ${escapeHtml(
-            profile.full_name ||
-            profile.name ||
-            "بدون نام"
-        )}
-        </td>
-
-        <td>
-        ${escapeHtml(
-            profile.email ||
-            "—"
-        )}
-        </td>
-
-        <td>
-        ${escapeHtml(
-            profile.phone ||
-            "—"
-        )}
-        </td>
-
-        <td>
-        ${dateFa(
-            profile.created_at
-        )}
-        </td>
-
-        </tr>
-
-    `).join("");
-
-}
-
-
-/*
-================================
-سفارش‌ها
-================================
-*/
+/* =========================
+   ORDERS
+========================= */
 
 async function loadOrders(){
 
@@ -763,38 +1163,10 @@ async function loadOrders(){
 
     if(error){
 
-        console.error(
-            "ORDERS ERROR:",
-            error
-        );
-
-        document
-        .getElementById("ordersTable")
-        .innerHTML=`
-
-        <tr>
-
-        <td colspan="6">
-
-        <div class="empty error">
-
-        خطا در دریافت سفارش‌ها
-
-        <br>
-
-        ${escapeHtml(
-            error.message
-        )}
-
-        </div>
-
-        </td>
-
-        </tr>
-
-        `;
+        console.error(error);
 
         throw error;
+
     }
 
 
@@ -821,6 +1193,47 @@ async function loadOrders(){
 }
 
 
+/* =========================
+   PAYMENTS
+========================= */
+
+async function loadPayments(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("payments")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(error);
+
+        throw error;
+
+    }
+
+
+    payments=data||[];
+
+    renderPayments();
+
+}
+
+
+/* =========================
+   GET PROFILE
+========================= */
+
 function getProfile(id){
 
     return profiles.find(
@@ -829,6 +1242,234 @@ function getProfile(id){
 
 }
 
+
+/* =========================
+   REPRESENTATIVES
+========================= */
+
+function getRepresentativeData(profile){
+
+    const repOrders =
+    orders.filter(
+        order=>
+        order.representative_id===
+        profile.id
+    );
+
+
+    const repPayments =
+    payments.filter(
+        payment=>
+        payment.representative_id===
+        profile.id
+    );
+
+
+    let purchases=0;
+    let paid=0;
+
+
+    repOrders.forEach(order=>{
+
+        if(
+            order.status==="cancelled"
+        )
+            return;
+
+
+        purchases +=
+        Number(
+            order.total_price ||
+            (
+                Number(order.quantity||0) *
+                Number(order.unit_price||0)
+            )
+        );
+
+    });
+
+
+    repPayments.forEach(payment=>{
+
+        paid +=
+        Number(
+            payment.amount||0
+        );
+
+    });
+
+
+    const debt =
+    Math.max(
+        0,
+        purchases-paid
+    );
+
+
+    return {
+        purchases,
+        paid,
+        debt,
+        orders:repOrders
+    };
+
+}
+
+
+/* =========================
+   RENDER REPRESENTATIVES
+========================= */
+
+function renderRepresentatives(){
+
+    const table =
+    document.getElementById(
+        "representatives"
+    );
+
+
+    if(!profiles.length){
+
+        table.innerHTML=`
+
+        <tr>
+
+        <td colspan="5">
+
+        <div class="empty">
+        هنوز نماینده‌ای وجود ندارد.
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+    profiles.map(profile=>{
+
+        const data =
+        getRepresentativeData(
+            profile
+        );
+
+
+        const name =
+        profile.full_name ||
+        profile.name ||
+        "بدون نام";
+
+
+        return `
+
+        <tr>
+
+        <td>
+
+            <div class="rep-name">
+
+            ${escapeHtml(name)}
+
+            </div>
+
+            <div class="rep-email">
+
+            ${escapeHtml(
+                profile.email||""
+            )}
+
+            </div>
+
+        </td>
+
+
+        <td>
+
+            <span class="amount-total">
+
+            ${money(
+                data.purchases
+            )}
+
+            </span>
+
+        </td>
+
+
+        <td>
+
+            <span class="amount-paid">
+
+            ${money(
+                data.paid
+            )}
+
+            </span>
+
+        </td>
+
+
+        <td>
+
+            <span class="amount-debt">
+
+            ${money(
+                data.debt
+            )}
+
+            </span>
+
+        </td>
+
+
+        <td>
+
+            <div class="actions">
+
+            <button
+                class="btn btn-green"
+                onclick="openPayment('${profile.id}')"
+                ${
+                    data.debt<=0
+                    ?
+                    "disabled"
+                    :
+                    ""
+                }
+            >
+                ثبت تسویه
+            </button>
+
+
+            <button
+                class="btn btn-dark"
+                onclick="showHistory('${profile.id}')"
+            >
+                تاریخچه
+            </button>
+
+            </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
 
 function statusHtml(status){
 
@@ -863,6 +1504,8 @@ function statusHtml(status){
 }
 
 
+/* ========================= */
+
 function renderOrders(){
 
     const table =
@@ -876,6 +1519,7 @@ function renderOrders(){
         table.innerHTML=`
 
         <tr>
+
         <td colspan="6">
 
         <div class="empty">
@@ -883,16 +1527,19 @@ function renderOrders(){
         </div>
 
         </td>
+
         </tr>
 
         `;
 
         return;
+
     }
 
 
     table.innerHTML =
-    orders.map(order=>{
+    orders.slice(0,100)
+    .map(order=>{
 
         const profile =
         getProfile(
@@ -932,8 +1579,7 @@ function renderOrders(){
 
         <td>
         ${escapeHtml(
-            order.product_name ||
-            "—"
+            order.product_name||"—"
         )}
         </td>
 
@@ -961,12 +1607,23 @@ function renderOrders(){
             pending
             ?
             `
+            <div class="actions">
+
             <button
-            class="action"
+            class="btn btn-green"
             onclick="approveOrder('${order.id}')"
             >
-            تأیید سفارش
+            تأیید
             </button>
+
+            <button
+            class="btn btn-red"
+            onclick="cancelOrder('${order.id}')"
+            >
+            لغو
+            </button>
+
+            </div>
             `
             :
             "—"
@@ -983,11 +1640,107 @@ function renderOrders(){
 }
 
 
-/*
-================================
-آمار
-================================
-*/
+/* =========================
+   PAYMENTS HISTORY
+========================= */
+
+function renderPayments(){
+
+    const box =
+    document.getElementById(
+        "paymentsList"
+    );
+
+
+    if(!payments.length){
+
+        box.innerHTML=`
+
+        <div class="empty">
+        هنوز تسویه‌ای ثبت نشده است.
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+    payments.slice(0,30)
+    .map(payment=>{
+
+        const profile =
+        getProfile(
+            payment.representative_id
+        );
+
+
+        const name =
+        profile?.full_name ||
+        profile?.name ||
+        profile?.email ||
+        "نماینده";
+
+
+        return `
+
+        <div class="payment-item">
+
+        <div class="payment-left">
+
+            <strong>
+            + ${money(
+                payment.amount
+            )}
+            </strong>
+
+            <small>
+
+            ${escapeHtml(name)}
+
+            ${payment.description
+                ?
+                " • "+
+                escapeHtml(
+                    payment.description
+                )
+                :
+                ""
+            }
+
+            </small>
+
+        </div>
+
+
+        <div class="payment-right">
+
+            <strong>
+            تسویه ثبت شد
+            </strong>
+
+            <small>
+            ${dateFa(
+                payment.created_at
+            )}
+            </small>
+
+        </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   STATS
+========================= */
 
 function updateStats(){
 
@@ -996,6 +1749,12 @@ function updateStats(){
 
 
     orders.forEach(order=>{
+
+        if(
+            order.status==="cancelled"
+        )
+            return;
+
 
         const total =
         Number(
@@ -1007,29 +1766,26 @@ function updateStats(){
         );
 
 
-        if(
-            order.status!=="cancelled"
-        ){
-
-            sales+=total;
-
-        }
-
-
-        /*
-        فعلاً هر سفارش غیرلغوشده
-        جزو بدهی محسوب می‌شود.
-        */
-
-        if(
-            order.status!=="cancelled"
-        ){
-
-            debt+=total;
-
-        }
+        sales+=total;
 
     });
+
+
+    payments.forEach(payment=>{
+
+        debt-=
+        Number(
+            payment.amount||0
+        );
+
+    });
+
+
+    debt+=sales;
+
+
+    if(debt<0)
+        debt=0;
 
 
     document
@@ -1046,17 +1802,340 @@ function updateStats(){
 }
 
 
-/*
-================================
-تأیید سفارش
-================================
-*/
+/* =========================
+   OPEN PAYMENT
+========================= */
+
+function openPayment(id){
+
+    selectedRepresentative =
+    profiles.find(
+        p=>p.id===id
+    );
+
+
+    if(!selectedRepresentative)
+        return;
+
+
+    const data =
+    getRepresentativeData(
+        selectedRepresentative
+    );
+
+
+    document
+    .getElementById("selectedRep")
+    .innerHTML=`
+
+        <strong>
+
+        ${escapeHtml(
+            selectedRepresentative.full_name ||
+            selectedRepresentative.name ||
+            "نماینده"
+        )}
+
+        </strong>
+
+        <small>
+
+        بدهی فعلی:
+        ${money(data.debt)}
+
+        </small>
+
+    `;
+
+
+    document
+    .getElementById("paymentAmount")
+    .value="";
+
+
+    document
+    .getElementById("paymentAmount")
+    .max=
+    data.debt;
+
+
+    document
+    .getElementById("paymentDescription")
+    .value="";
+
+
+    document
+    .getElementById("afterPayment")
+    .textContent=
+    money(data.debt);
+
+
+    document
+    .getElementById("paymentModal")
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   PAYMENT PREVIEW
+========================= */
+
+document
+.getElementById("paymentAmount")
+.addEventListener(
+    "input",
+    function(){
+
+        if(
+            !selectedRepresentative
+        )
+            return;
+
+
+        const data =
+        getRepresentativeData(
+            selectedRepresentative
+        );
+
+
+        let amount =
+        Number(
+            this.value||0
+        );
+
+
+        if(amount>data.debt){
+
+            amount=data.debt;
+
+            this.value=
+            data.debt;
+
+        }
+
+
+        const remaining =
+        data.debt-amount;
+
+
+        document
+        .getElementById(
+            "afterPayment"
+        )
+        .textContent=
+        money(remaining);
+
+    }
+);
+
+
+/* =========================
+   SUBMIT PAYMENT
+========================= */
+
+async function submitPayment(){
+
+    if(
+        !selectedRepresentative
+    )
+        return;
+
+
+    const amount =
+    Number(
+        document
+        .getElementById(
+            "paymentAmount"
+        )
+        .value
+    );
+
+
+    const description =
+    document
+    .getElementById(
+        "paymentDescription"
+    )
+    .value
+    .trim();
+
+
+    const data =
+    getRepresentativeData(
+        selectedRepresentative
+    );
+
+
+    if(!amount || amount<=0){
+
+        showToast(
+            "مبلغ تسویه را وارد کنید"
+        );
+
+        return;
+
+    }
+
+
+    if(amount>data.debt){
+
+        showToast(
+            "مبلغ بیشتر از بدهی است"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+    document.getElementById(
+        "submitPayment"
+    );
+
+
+    button.disabled=true;
+
+    button.textContent=
+    "در حال ثبت...";
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+    .from("payments")
+    .insert({
+
+        representative_id:
+        selectedRepresentative.id,
+
+        amount:
+        amount,
+
+        description:
+        description ||
+        "تسویه حساب"
+
+    });
+
+
+    if(error){
+
+        console.error(error);
+
+        showToast(
+            "ثبت تسویه انجام نشد: "+
+            error.message
+        );
+
+        button.disabled=false;
+
+        button.textContent=
+        "ثبت تسویه";
+
+        return;
+
+    }
+
+
+    closePayment();
+
+
+    showToast(
+        "تسویه با موفقیت ثبت شد ✓"
+    );
+
+
+    await loadAll();
+
+
+    button.disabled=false;
+
+    button.textContent=
+    "ثبت تسویه";
+
+}
+
+
+/* =========================
+   CLOSE PAYMENT
+========================= */
+
+function closePayment(){
+
+    document
+    .getElementById(
+        "paymentModal"
+    )
+    .classList.remove("show");
+
+    selectedRepresentative=null;
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function showHistory(id){
+
+    const rep =
+    profiles.find(
+        p=>p.id===id
+    );
+
+
+    if(!rep)
+        return;
+
+
+    const repPayments =
+    payments.filter(
+        p=>
+        p.representative_id===id
+    );
+
+
+    if(!repPayments.length){
+
+        showToast(
+            "برای این نماینده هنوز تسویه‌ای ثبت نشده"
+        );
+
+        return;
+
+    }
+
+
+    let text =
+    (
+        rep.full_name ||
+        rep.name ||
+        rep.email ||
+        "نماینده"
+    )
+    +" — "
+    +"تعداد تسویه: "
+    +repPayments.length;
+
+
+    alert(text);
+
+}
+
+
+/* =========================
+   APPROVE ORDER
+========================= */
 
 async function approveOrder(id){
 
     if(
         !confirm(
-            "آیا از تأیید این سفارش مطمئن هستید؟"
+            "این سفارش تأیید شود؟"
         )
     )
         return;
@@ -1080,31 +2159,101 @@ async function approveOrder(id){
 
         console.error(error);
 
-        toast(
-            "تأیید سفارش انجام نشد"
+        showToast(
+            "تأیید سفارش ناموفق بود"
         );
 
         return;
+
     }
 
 
-    toast(
-        "سفارش با موفقیت تأیید شد ✓"
+    showToast(
+        "سفارش تأیید شد ✓"
     );
 
 
-    await loadData();
+    await loadAll();
 
 }
 
 
-/*
-================================
-شروع
-================================
-*/
+/* =========================
+   CANCEL ORDER
+========================= */
 
-loadData();
+async function cancelOrder(id){
+
+    if(
+        !confirm(
+            "این سفارش لغو شود؟"
+        )
+    )
+        return;
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+    .from("orders")
+    .update({
+        status:"cancelled"
+    })
+    .eq(
+        "id",
+        id
+    );
+
+
+    if(error){
+
+        console.error(error);
+
+        showToast(
+            "لغو سفارش ناموفق بود"
+        );
+
+        return;
+
+    }
+
+
+    showToast(
+        "سفارش لغو شد"
+    );
+
+
+    await loadAll();
+
+}
+
+
+/* =========================
+   MODAL CLICK
+========================= */
+
+document
+.getElementById("paymentModal")
+.addEventListener(
+    "click",
+    function(e){
+
+        if(e.target===this){
+
+            closePayment();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   START
+========================= */
+
+loadAll();
 
 </script>
 
