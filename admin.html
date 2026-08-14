@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>V2GUARD | مدیریت مالی</title>
+<title>V2GUARD | Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -16,33 +16,47 @@
     padding:0;
 }
 
+:root{
+    --green:#25d366;
+    --green2:#0da94c;
+    --bg:#071019;
+    --card:#101b28;
+    --text:#fff;
+    --muted:#7e8998;
+    --red:#ff6478;
+    --yellow:#ffc83d;
+    --blue:#55aaff;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Tahoma,Arial,sans-serif;
     background:
-    radial-gradient(circle at 10% 0%,rgba(37,211,102,.13),transparent 30%),
-    radial-gradient(circle at 90% 10%,rgba(0,150,255,.10),transparent 30%),
-    #071019;
-    color:#fff;
+        radial-gradient(circle at 10% 0%,rgba(37,211,102,.13),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(0,150,255,.10),transparent 30%),
+        var(--bg);
+    color:var(--text);
     min-height:100vh;
 }
 
-button{
-    font-family:inherit;
-}
+/* HEADER */
 
 header{
     position:sticky;
     top:0;
-    z-index:30;
-    background:rgba(7,16,25,.84);
-    backdrop-filter:blur(20px);
+    z-index:50;
+    background:rgba(7,16,25,.82);
+    backdrop-filter:blur(22px);
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
 .header{
     max-width:1250px;
     margin:auto;
-    padding:15px 20px;
+    padding:14px 20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -57,10 +71,10 @@ header{
 .logo{
     width:46px;
     height:46px;
-    border-radius:14px;
+    border-radius:15px;
     display:grid;
     place-items:center;
-    background:linear-gradient(135deg,#25d366,#0da94c);
+    background:linear-gradient(135deg,var(--green),var(--green2));
     color:#041008;
     font-weight:900;
     box-shadow:0 0 30px rgba(37,211,102,.25);
@@ -71,20 +85,45 @@ header{
 }
 
 .logo-sub{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
     margin-top:4px;
 }
 
-.admin{
-    color:#25d366;
-    font-size:10px;
+.live{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:var(--green);
+    font-size:9px;
 }
+
+.live-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+    50%{
+        transform:scale(.6);
+        opacity:.45;
+    }
+}
+
+/* MAIN */
 
 main{
     max-width:1250px;
     margin:auto;
-    padding:35px 20px 90px;
+    padding:35px 20px 100px;
 }
 
 .title{
@@ -95,7 +134,7 @@ main{
     display:inline-block;
     padding:7px 12px;
     border-radius:30px;
-    color:#25d366;
+    color:var(--green);
     background:rgba(37,211,102,.07);
     border:1px solid rgba(37,211,102,.15);
     font-size:9px;
@@ -103,19 +142,21 @@ main{
 }
 
 .title h1{
-    font-size:clamp(25px,5vw,40px);
+    font-size:clamp(27px,5vw,42px);
 }
 
 .title h1 span{
-    color:#25d366;
+    color:var(--green);
 }
 
 .title p{
-    color:#7e8998;
+    color:var(--muted);
     font-size:10px;
     line-height:2;
     margin-top:8px;
 }
+
+/* STATS */
 
 .stats{
     display:grid;
@@ -126,19 +167,19 @@ main{
 
 .stat{
     padding:22px;
-    border-radius:20px;
-    background:rgba(16,27,40,.72);
+    border-radius:21px;
+    background:rgba(16,27,40,.75);
     border:1px solid rgba(255,255,255,.07);
     transition:.3s;
 }
 
 .stat:hover{
     transform:translateY(-4px);
-    border-color:rgba(37,211,102,.2);
+    border-color:rgba(37,211,102,.22);
 }
 
 .stat-label{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
     margin-bottom:10px;
 }
@@ -149,20 +190,22 @@ main{
 }
 
 .green{
-    color:#25d366;
+    color:var(--green);
 }
 
 .yellow{
-    color:#ffc83d;
+    color:var(--yellow);
 }
 
 .red{
-    color:#ff6478;
+    color:var(--red);
 }
 
 .blue{
-    color:#55aaff;
+    color:var(--blue);
 }
+
+/* SECTION */
 
 .section{
     margin-top:25px;
@@ -181,13 +224,13 @@ main{
 }
 
 .section-title span{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
 }
 
 .card{
     border-radius:22px;
-    background:rgba(16,27,40,.75);
+    background:rgba(16,27,40,.76);
     border:1px solid rgba(255,255,255,.07);
     overflow:hidden;
 }
@@ -203,7 +246,7 @@ table{
 }
 
 th{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
     text-align:right;
     padding:16px;
@@ -226,6 +269,29 @@ tr:hover{
     background:rgba(37,211,102,.025);
 }
 
+/* NEW ORDER */
+
+.new-order-row{
+    animation:newOrder .8s ease;
+    background:rgba(37,211,102,.06)!important;
+}
+
+@keyframes newOrder{
+
+    0%{
+        background:rgba(37,211,102,.30);
+        transform:translateX(18px);
+    }
+
+    100%{
+        background:rgba(37,211,102,.06);
+        transform:translateX(0);
+    }
+
+}
+
+/* REPRESENTATIVE */
+
 .rep-name{
     font-weight:bold;
 }
@@ -237,18 +303,20 @@ tr:hover{
 }
 
 .amount-debt{
-    color:#ff6478;
+    color:var(--red);
     font-weight:900;
 }
 
 .amount-paid{
-    color:#25d366;
+    color:var(--green);
     font-weight:900;
 }
 
 .amount-total{
     font-weight:900;
 }
+
+/* BUTTONS */
 
 .btn{
     border:0;
@@ -265,7 +333,7 @@ tr:hover{
 }
 
 .btn-green{
-    background:#25d366;
+    background:var(--green);
     color:#041008;
 }
 
@@ -281,10 +349,18 @@ tr:hover{
     border:1px solid rgba(255,80,100,.12);
 }
 
+.btn:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+    transform:none;
+}
+
 .actions{
     display:flex;
     gap:7px;
 }
+
+/* STATUS */
 
 .status{
     display:inline-block;
@@ -294,24 +370,26 @@ tr:hover{
 }
 
 .pending{
-    color:#ffc83d;
+    color:var(--yellow);
     background:rgba(255,200,61,.08);
 }
 
 .approved{
-    color:#25d366;
+    color:var(--green);
     background:rgba(37,211,102,.08);
 }
 
 .cancelled{
-    color:#ff6478;
+    color:var(--red);
     background:rgba(255,80,100,.08);
 }
+
+/* EMPTY */
 
 .empty{
     padding:45px 20px;
     text-align:center;
-    color:#7e8998;
+    color:var(--muted);
     font-size:10px;
     line-height:2;
 }
@@ -320,14 +398,60 @@ tr:hover{
     color:#ff7180;
 }
 
+/* REFRESH */
+
 .refresh{
     border:1px solid rgba(37,211,102,.18);
     background:rgba(37,211,102,.06);
-    color:#25d366;
+    color:var(--green);
     padding:9px 13px;
     border-radius:10px;
     cursor:pointer;
 }
+
+/* PAYMENTS */
+
+.payment-item{
+    padding:16px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.payment-item:last-child{
+    border-bottom:0;
+}
+
+.payment-left strong{
+    display:block;
+    color:var(--green);
+    font-size:12px;
+}
+
+.payment-left small{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    margin-top:5px;
+}
+
+.payment-right{
+    text-align:left;
+}
+
+.payment-right strong{
+    display:block;
+    font-size:11px;
+}
+
+.payment-right small{
+    color:#667282;
+    font-size:8px;
+}
+
+/* MODAL */
 
 .modal{
     position:fixed;
@@ -356,14 +480,17 @@ tr:hover{
 }
 
 @keyframes modalIn{
+
     from{
         opacity:0;
         transform:scale(.93);
     }
+
     to{
         opacity:1;
         transform:scale(1);
     }
+
 }
 
 .modal-head{
@@ -403,7 +530,7 @@ tr:hover{
 
 .rep-info small{
     display:block;
-    color:#7e8998;
+    color:var(--muted);
     font-size:8px;
     margin-top:5px;
 }
@@ -414,7 +541,7 @@ tr:hover{
 
 .field label{
     display:block;
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
     margin-bottom:7px;
 }
@@ -446,12 +573,12 @@ tr:hover{
 }
 
 .pay-preview span{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
 }
 
 .pay-preview strong{
-    color:#25d366;
+    color:var(--green);
 }
 
 .submit-pay{
@@ -459,7 +586,7 @@ tr:hover{
     height:48px;
     border:0;
     border-radius:13px;
-    background:#25d366;
+    background:var(--green);
     color:#041008;
     font-weight:bold;
     cursor:pointer;
@@ -469,55 +596,135 @@ tr:hover{
     opacity:.5;
 }
 
-.history{
-    margin-top:35px;
+/* LIVE NOTIFICATION */
+
+.notification{
+    position:fixed;
+    top:85px;
+    left:20px;
+    width:min(380px,calc(100% - 40px));
+    z-index:200;
+    padding:17px;
+    border-radius:20px;
+    background:rgba(16,28,42,.96);
+    border:1px solid rgba(37,211,102,.30);
+    box-shadow:0 20px 70px rgba(0,0,0,.45);
+    backdrop-filter:blur(20px);
+    transform:translateX(-130%);
+    opacity:0;
+    transition:.45s cubic-bezier(.2,.8,.2,1);
 }
 
-.payment-item{
-    padding:16px;
-    border-bottom:1px solid rgba(255,255,255,.05);
+.notification.show{
+    transform:translateX(0);
+    opacity:1;
+}
+
+.notification-top{
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:15px;
+    justify-content:space-between;
+    margin-bottom:12px;
 }
 
-.payment-item:last-child{
-    border-bottom:0;
-}
-
-.payment-left strong{
-    display:block;
-    color:#25d366;
-    font-size:12px;
-}
-
-.payment-left small{
-    display:block;
-    color:#7e8998;
-    font-size:8px;
-    margin-top:5px;
-}
-
-.payment-right{
-    text-align:left;
-}
-
-.payment-right strong{
-    display:block;
+.notification-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:var(--green);
     font-size:11px;
+    font-weight:bold;
 }
 
-.payment-right small{
-    color:#667282;
-    font-size:8px;
+.notification-icon{
+    width:32px;
+    height:32px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:rgba(37,211,102,.10);
 }
+
+.notification-close{
+    border:0;
+    background:none;
+    color:#778392;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.notification-body{
+    color:#fff;
+    font-size:10px;
+    line-height:2;
+}
+
+.notification-body b{
+    color:var(--green);
+}
+
+.notification-actions{
+    display:flex;
+    gap:8px;
+    margin-top:13px;
+}
+
+.notification-actions button{
+    flex:1;
+    height:38px;
+    border:0;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:8px;
+    font-weight:bold;
+}
+
+.notification-view{
+    background:var(--green);
+    color:#041008;
+}
+
+.notification-dismiss{
+    background:rgba(255,255,255,.06);
+    color:#fff;
+}
+
+/* NEW COUNT */
+
+.new-count{
+    display:none;
+    color:#041008!important;
+    background:var(--green);
+    padding:5px 8px;
+    border-radius:20px;
+    font-weight:bold;
+    animation:countPulse 1.2s infinite;
+}
+
+.new-count.show{
+    display:inline-block;
+}
+
+@keyframes countPulse{
+
+    0%,100%{
+        box-shadow:0 0 0 0 rgba(37,211,102,.25);
+    }
+
+    50%{
+        box-shadow:0 0 0 7px rgba(37,211,102,0);
+    }
+
+}
+
+/* TOAST */
 
 .toast{
     position:fixed;
     left:20px;
     bottom:20px;
-    z-index:200;
+    z-index:300;
     max-width:calc(100% - 40px);
     padding:14px 17px;
     border-radius:14px;
@@ -533,6 +740,8 @@ tr:hover{
     opacity:1;
     transform:translateY(0);
 }
+
+/* RESPONSIVE */
 
 @media(max-width:900px){
 
@@ -552,11 +761,20 @@ tr:hover{
         grid-template-columns:1fr;
     }
 
+    .header{
+        padding:12px 15px;
+    }
+
+    .notification{
+        top:75px;
+        left:15px;
+        width:calc(100% - 30px);
+    }
+
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -585,13 +803,74 @@ V2GUARD
 
 </div>
 
-<div class="admin">
-● سیستم مالی
+<div class="live">
+
+<div class="live-dot"></div>
+
+LIVE
+
 </div>
 
 </div>
 
 </header>
+
+
+<!-- LIVE NOTIFICATION -->
+
+<div
+class="notification"
+id="notification"
+>
+
+<div class="notification-top">
+
+<div class="notification-title">
+
+<div class="notification-icon">
+🔔
+</div>
+
+سفارش جدید
+
+</div>
+
+<button
+class="notification-close"
+onclick="hideNotification()"
+>
+×
+</button>
+
+</div>
+
+
+<div
+class="notification-body"
+id="notificationBody"
+>
+</div>
+
+
+<div class="notification-actions">
+
+<button
+class="notification-view"
+onclick="viewNewOrder()"
+>
+مشاهده سفارش
+</button>
+
+<button
+class="notification-dismiss"
+onclick="hideNotification()"
+>
+بستن
+</button>
+
+</div>
+
+</div>
 
 
 <main>
@@ -600,15 +879,15 @@ V2GUARD
 <section class="title">
 
 <div class="badge">
-V2GUARD • FINANCE
+V2GUARD • ADMIN • REALTIME
 </div>
 
 <h1>
-مدیریت <span>مالی</span>
+مدیریت <span>V2GUARD</span>
 </h1>
 
 <p>
-سفارش‌ها، بدهی نمایندگان و تسویه حساب‌ها در یک پنل
+سفارش‌ها، نمایندگان، بدهی‌ها و تسویه حساب‌ها
 </p>
 
 </section>
@@ -682,8 +961,9 @@ id="debt"
 </section>
 
 
-<section class="section">
+<!-- REPRESENTATIVES -->
 
+<section class="section">
 
 <div class="section-title">
 
@@ -758,16 +1038,27 @@ id="debt"
 </section>
 
 
-<section class="section">
+<!-- ORDERS -->
 
+<section
+class="section"
+id="ordersSection"
+>
 
 <div class="section-title">
 
 <h2>
-📦 سفارش‌های اخیر
+📦 سفارش‌ها
 </h2>
 
 <div>
+
+<span
+id="newCount"
+class="new-count"
+>
+۰ جدید
+</span>
 
 <span id="ordersCount">
 ۰ سفارش
@@ -849,8 +1140,9 @@ onclick="loadAll()"
 </section>
 
 
-<section class="section history">
+<!-- PAYMENTS -->
 
+<section class="section">
 
 <div class="section-title">
 
@@ -859,7 +1151,7 @@ onclick="loadAll()"
 </h2>
 
 <span>
-تاریخچه پرداخت نمایندگان
+تاریخچه پرداخت
 </span>
 
 </div>
@@ -891,7 +1183,6 @@ id="paymentModal"
 >
 
 <div class="modal-box">
-
 
 <div class="modal-head">
 
@@ -968,7 +1259,6 @@ onclick="submitPayment()"
 ثبت تسویه
 </button>
 
-
 </div>
 
 </div>
@@ -982,14 +1272,15 @@ id="toast"
 
 <script>
 
+/* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
 "https://fmrocoflspugyaprvrve.supabase.co";
 
-
 const SUPABASE_KEY =
 "sb_publishable_LW7Kr8R_N9WmHMQkWo8S0A_i02mBfT8";
-
 
 const supabaseClient =
 supabase.createClient(
@@ -998,14 +1289,24 @@ supabase.createClient(
 );
 
 
+/* =========================================
+   STATE
+========================================= */
+
 let profiles=[];
 let orders=[];
 let payments=[];
 
 let selectedRepresentative=null;
 
+let newOrdersCount=0;
 
-/* ========================= */
+let latestNewOrder=null;
+
+
+/* =========================================
+   HELPERS
+========================================= */
 
 function money(number){
 
@@ -1020,8 +1321,6 @@ function money(number){
 }
 
 
-/* ========================= */
-
 function dateFa(date){
 
     if(!date)
@@ -1033,11 +1332,9 @@ function dateFa(date){
 }
 
 
-/* ========================= */
-
 function escapeHtml(value){
 
-    return String(value||"")
+    return String(value??"")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
@@ -1047,7 +1344,9 @@ function escapeHtml(value){
 }
 
 
-/* ========================= */
+/* =========================================
+   TOAST
+========================================= */
 
 function showToast(message){
 
@@ -1067,9 +1366,9 @@ function showToast(message){
 }
 
 
-/* =========================
+/* =========================================
    LOAD ALL
-========================= */
+========================================= */
 
 async function loadAll(){
 
@@ -1087,7 +1386,10 @@ async function loadAll(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "LOAD ERROR:",
+            error
+        );
 
         showToast(
             "خطا در دریافت اطلاعات"
@@ -1098,9 +1400,9 @@ async function loadAll(){
 }
 
 
-/* =========================
+/* =========================================
    PROFILES
-========================= */
+========================================= */
 
 async function loadProfiles(){
 
@@ -1121,7 +1423,10 @@ async function loadProfiles(){
 
     if(error){
 
-        console.error(error);
+        console.error(
+            "PROFILES ERROR:",
+            error
+        );
 
         throw error;
 
@@ -1140,9 +1445,9 @@ async function loadProfiles(){
 }
 
 
-/* =========================
+/* =========================================
    ORDERS
-========================= */
+========================================= */
 
 async function loadOrders(){
 
@@ -1163,7 +1468,10 @@ async function loadOrders(){
 
     if(error){
 
-        console.error(error);
+        console.error(
+            "ORDERS ERROR:",
+            error
+        );
 
         throw error;
 
@@ -1193,9 +1501,9 @@ async function loadOrders(){
 }
 
 
-/* =========================
+/* =========================================
    PAYMENTS
-========================= */
+========================================= */
 
 async function loadPayments(){
 
@@ -1216,7 +1524,10 @@ async function loadPayments(){
 
     if(error){
 
-        console.error(error);
+        console.error(
+            "PAYMENTS ERROR:",
+            error
+        );
 
         throw error;
 
@@ -1230,9 +1541,9 @@ async function loadPayments(){
 }
 
 
-/* =========================
-   GET PROFILE
-========================= */
+/* =========================================
+   PROFILE
+========================================= */
 
 function getProfile(id){
 
@@ -1243,9 +1554,9 @@ function getProfile(id){
 }
 
 
-/* =========================
-   REPRESENTATIVES
-========================= */
+/* =========================================
+   REPRESENTATIVE DATA
+========================================= */
 
 function getRepresentativeData(profile){
 
@@ -1266,6 +1577,7 @@ function getRepresentativeData(profile){
 
 
     let purchases=0;
+
     let paid=0;
 
 
@@ -1316,9 +1628,9 @@ function getRepresentativeData(profile){
 }
 
 
-/* =========================
-   RENDER REPRESENTATIVES
-========================= */
+/* =========================================
+   REPRESENTATIVES
+========================================= */
 
 function renderRepresentatives(){
 
@@ -1373,17 +1685,13 @@ function renderRepresentatives(){
         <td>
 
             <div class="rep-name">
-
             ${escapeHtml(name)}
-
             </div>
 
             <div class="rep-email">
-
             ${escapeHtml(
                 profile.email||""
             )}
-
             </div>
 
         </td>
@@ -1391,70 +1699,51 @@ function renderRepresentatives(){
 
         <td>
 
-            <span class="amount-total">
-
-            ${money(
-                data.purchases
-            )}
-
-            </span>
+        <span class="amount-total">
+        ${money(data.purchases)}
+        </span>
 
         </td>
 
 
         <td>
 
-            <span class="amount-paid">
-
-            ${money(
-                data.paid
-            )}
-
-            </span>
+        <span class="amount-paid">
+        ${money(data.paid)}
+        </span>
 
         </td>
 
 
         <td>
 
-            <span class="amount-debt">
-
-            ${money(
-                data.debt
-            )}
-
-            </span>
+        <span class="amount-debt">
+        ${money(data.debt)}
+        </span>
 
         </td>
 
 
         <td>
 
-            <div class="actions">
+        <div class="actions">
 
-            <button
-                class="btn btn-green"
-                onclick="openPayment('${profile.id}')"
-                ${
-                    data.debt<=0
-                    ?
-                    "disabled"
-                    :
-                    ""
-                }
-            >
-                ثبت تسویه
-            </button>
+        <button
+        class="btn btn-green"
+        onclick="openPayment('${profile.id}')"
+        ${data.debt<=0?"disabled":""}
+        >
+        ثبت تسویه
+        </button>
 
+        <button
+        class="btn btn-dark"
+        onclick="showHistory('${profile.id}')"
+        >
+        تاریخچه
+        </button>
 
-            <button
-                class="btn btn-dark"
-                onclick="showHistory('${profile.id}')"
-            >
-                تاریخچه
-            </button>
-
-            </div>
+        </div>
 
         </td>
 
@@ -1467,9 +1756,9 @@ function renderRepresentatives(){
 }
 
 
-/* =========================
-   ORDERS
-========================= */
+/* =========================================
+   STATUS
+========================================= */
 
 function statusHtml(status){
 
@@ -1504,7 +1793,9 @@ function statusHtml(status){
 }
 
 
-/* ========================= */
+/* =========================================
+   ORDERS
+========================================= */
 
 function renderOrders(){
 
@@ -1569,9 +1860,17 @@ function renderOrders(){
         order.status==="pending";
 
 
+        const isNew =
+        latestNewOrder &&
+        latestNewOrder.id===
+        order.id;
+
+
         return `
 
-        <tr>
+        <tr
+        class="${isNew?"new-order-row":""}"
+        >
 
         <td>
         ${escapeHtml(name)}
@@ -1590,15 +1889,15 @@ function renderOrders(){
         </td>
 
         <td>
+
         <strong>
         ${money(total)}
         </strong>
+
         </td>
 
         <td>
-        ${statusHtml(
-            order.status
-        )}
+        ${statusHtml(order.status)}
         </td>
 
         <td>
@@ -1640,9 +1939,9 @@ function renderOrders(){
 }
 
 
-/* =========================
-   PAYMENTS HISTORY
-========================= */
+/* =========================================
+   PAYMENTS
+========================================= */
 
 function renderPayments(){
 
@@ -1690,42 +1989,39 @@ function renderPayments(){
 
         <div class="payment-left">
 
-            <strong>
-            + ${money(
-                payment.amount
-            )}
-            </strong>
+        <strong>
+        + ${money(payment.amount)}
+        </strong>
 
-            <small>
+        <small>
 
-            ${escapeHtml(name)}
+        ${escapeHtml(name)}
 
-            ${payment.description
-                ?
-                " • "+
-                escapeHtml(
-                    payment.description
-                )
-                :
-                ""
-            }
+        ${
+            payment.description
+            ?
+            " • "+
+            escapeHtml(
+                payment.description
+            )
+            :
+            ""
+        }
 
-            </small>
+        </small>
 
         </div>
 
 
         <div class="payment-right">
 
-            <strong>
-            تسویه ثبت شد
-            </strong>
+        <strong>
+        تسویه ثبت شد
+        </strong>
 
-            <small>
-            ${dateFa(
-                payment.created_at
-            )}
-            </small>
+        <small>
+        ${dateFa(payment.created_at)}
+        </small>
 
         </div>
 
@@ -1738,13 +2034,14 @@ function renderPayments(){
 }
 
 
-/* =========================
+/* =========================================
    STATS
-========================= */
+========================================= */
 
 function updateStats(){
 
     let sales=0;
+
     let debt=0;
 
 
@@ -1756,7 +2053,7 @@ function updateStats(){
             return;
 
 
-        const total =
+        sales +=
         Number(
             order.total_price ||
             (
@@ -1765,15 +2062,12 @@ function updateStats(){
             )
         );
 
-
-        sales+=total;
-
     });
 
 
     payments.forEach(payment=>{
 
-        debt-=
+        debt -=
         Number(
             payment.amount||0
         );
@@ -1781,7 +2075,7 @@ function updateStats(){
     });
 
 
-    debt+=sales;
+    debt += sales;
 
 
     if(debt<0)
@@ -1802,9 +2096,9 @@ function updateStats(){
 }
 
 
-/* =========================
-   OPEN PAYMENT
-========================= */
+/* =========================================
+   PAYMENT MODAL
+========================================= */
 
 function openPayment(id){
 
@@ -1828,22 +2122,18 @@ function openPayment(id){
     .getElementById("selectedRep")
     .innerHTML=`
 
-        <strong>
+    <strong>
+    ${escapeHtml(
+        selectedRepresentative.full_name ||
+        selectedRepresentative.name ||
+        "نماینده"
+    )}
+    </strong>
 
-        ${escapeHtml(
-            selectedRepresentative.full_name ||
-            selectedRepresentative.name ||
-            "نماینده"
-        )}
-
-        </strong>
-
-        <small>
-
-        بدهی فعلی:
-        ${money(data.debt)}
-
-        </small>
+    <small>
+    بدهی فعلی:
+    ${money(data.debt)}
+    </small>
 
     `;
 
@@ -1877,9 +2167,9 @@ function openPayment(id){
 }
 
 
-/* =========================
+/* =========================================
    PAYMENT PREVIEW
-========================= */
+========================================= */
 
 document
 .getElementById("paymentAmount")
@@ -1887,9 +2177,7 @@ document
     "input",
     function(){
 
-        if(
-            !selectedRepresentative
-        )
+        if(!selectedRepresentative)
             return;
 
 
@@ -1915,48 +2203,38 @@ document
         }
 
 
-        const remaining =
-        data.debt-amount;
-
-
         document
-        .getElementById(
-            "afterPayment"
-        )
+        .getElementById("afterPayment")
         .textContent=
-        money(remaining);
+        money(
+            data.debt-amount
+        );
 
     }
 );
 
 
-/* =========================
+/* =========================================
    SUBMIT PAYMENT
-========================= */
+========================================= */
 
 async function submitPayment(){
 
-    if(
-        !selectedRepresentative
-    )
+    if(!selectedRepresentative)
         return;
 
 
     const amount =
     Number(
         document
-        .getElementById(
-            "paymentAmount"
-        )
+        .getElementById("paymentAmount")
         .value
     );
 
 
     const description =
     document
-    .getElementById(
-        "paymentDescription"
-    )
+    .getElementById("paymentDescription")
     .value
     .trim();
 
@@ -2011,8 +2289,7 @@ async function submitPayment(){
         representative_id:
         selectedRepresentative.id,
 
-        amount:
-        amount,
+        amount:amount,
 
         description:
         description ||
@@ -2042,11 +2319,9 @@ async function submitPayment(){
 
     closePayment();
 
-
     showToast(
         "تسویه با موفقیت ثبت شد ✓"
     );
-
 
     await loadAll();
 
@@ -2059,16 +2334,14 @@ async function submitPayment(){
 }
 
 
-/* =========================
+/* =========================================
    CLOSE PAYMENT
-========================= */
+========================================= */
 
 function closePayment(){
 
     document
-    .getElementById(
-        "paymentModal"
-    )
+    .getElementById("paymentModal")
     .classList.remove("show");
 
     selectedRepresentative=null;
@@ -2076,9 +2349,9 @@ function closePayment(){
 }
 
 
-/* =========================
+/* =========================================
    HISTORY
-========================= */
+========================================= */
 
 function showHistory(id){
 
@@ -2110,26 +2383,35 @@ function showHistory(id){
     }
 
 
-    let text =
-    (
-        rep.full_name ||
-        rep.name ||
-        rep.email ||
-        "نماینده"
-    )
-    +" — "
-    +"تعداد تسویه: "
-    +repPayments.length;
+    let total=0;
+
+    repPayments.forEach(p=>{
+        total+=Number(p.amount||0);
+    });
 
 
-    alert(text);
+    alert(
+        "نماینده: "+
+        (
+            rep.full_name ||
+            rep.name ||
+            rep.email ||
+            "نماینده"
+        )+
+        "\n\n"+
+        "تعداد تسویه‌ها: "+
+        repPayments.length+
+        "\n"+
+        "مجموع تسویه: "+
+        money(total)
+    );
 
 }
 
 
-/* =========================
-   APPROVE ORDER
-========================= */
+/* =========================================
+   APPROVE
+========================================= */
 
 async function approveOrder(id){
 
@@ -2178,9 +2460,9 @@ async function approveOrder(id){
 }
 
 
-/* =========================
-   CANCEL ORDER
-========================= */
+/* =========================================
+   CANCEL
+========================================= */
 
 async function cancelOrder(id){
 
@@ -2229,9 +2511,407 @@ async function cancelOrder(id){
 }
 
 
-/* =========================
-   MODAL CLICK
-========================= */
+/* =========================================
+   LIVE NOTIFICATION
+========================================= */
+
+function showNewOrderNotification(order){
+
+    latestNewOrder=order;
+
+
+    const profile =
+    getProfile(
+        order.representative_id
+    );
+
+
+    const name =
+    profile?.full_name ||
+    profile?.name ||
+    profile?.email ||
+    "نماینده";
+
+
+    const total =
+    Number(
+        order.total_price ||
+        (
+            Number(order.quantity||0) *
+            Number(order.unit_price||0)
+        )
+    );
+
+
+    document
+    .getElementById("notificationBody")
+    .innerHTML=`
+
+    نماینده
+    <b>${escapeHtml(name)}</b>
+    یک سفارش جدید ثبت کرده است.
+
+    <br>
+
+    محصول:
+    <b>${escapeHtml(
+        order.product_name||"—"
+    )}</b>
+
+    <br>
+
+    تعداد:
+    <b>${Number(
+        order.quantity||0
+    ).toLocaleString("fa-IR")}</b>
+
+    <br>
+
+    مبلغ:
+    <b>${money(total)}</b>
+
+    `;
+
+
+    const notification =
+    document.getElementById(
+        "notification"
+    );
+
+
+    notification.classList.add("show");
+
+
+    newOrdersCount++;
+
+
+    const counter =
+    document.getElementById(
+        "newCount"
+    );
+
+
+    counter.textContent =
+    newOrdersCount
+    .toLocaleString("fa-IR")
+    +" جدید";
+
+
+    counter.classList.add("show");
+
+
+    playNotificationSound();
+
+
+    setTimeout(()=>{
+
+        notification.classList.remove(
+            "show"
+        );
+
+    },10000);
+
+}
+
+
+/* =========================================
+   HIDE NOTIFICATION
+========================================= */
+
+function hideNotification(){
+
+    document
+    .getElementById("notification")
+    .classList.remove("show");
+
+}
+
+
+/* =========================================
+   VIEW NEW ORDER
+========================================= */
+
+function viewNewOrder(){
+
+    hideNotification();
+
+    document
+    .getElementById("ordersSection")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+
+    newOrdersCount=0;
+
+
+    const counter =
+    document.getElementById(
+        "newCount"
+    );
+
+
+    counter.classList.remove(
+        "show"
+    );
+
+
+    setTimeout(()=>{
+
+        latestNewOrder=null;
+
+        renderOrders();
+
+    },1200);
+
+}
+
+
+/* =========================================
+   NOTIFICATION SOUND
+========================================= */
+
+function playNotificationSound(){
+
+    try{
+
+        const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+        if(!AudioContext)
+            return;
+
+
+        const ctx =
+        new AudioContext();
+
+
+        const oscillator =
+        ctx.createOscillator();
+
+
+        const gain =
+        ctx.createGain();
+
+
+        oscillator.type="sine";
+
+        oscillator.frequency.setValueAtTime(
+            740,
+            ctx.currentTime
+        );
+
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+            1050,
+            ctx.currentTime+.13
+        );
+
+
+        gain.gain.setValueAtTime(
+            .0001,
+            ctx.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .18,
+            ctx.currentTime+.02
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+            .0001,
+            ctx.currentTime+.5
+        );
+
+
+        oscillator.connect(gain);
+
+        gain.connect(ctx.destination);
+
+
+        oscillator.start();
+
+        oscillator.stop(
+            ctx.currentTime+.5
+        );
+
+
+    }catch(e){
+
+        console.log(
+            "Sound unavailable"
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   REALTIME ORDERS
+========================================= */
+
+const realtimeChannel =
+supabaseClient
+.channel(
+    "v2guard-orders-live"
+)
+
+
+.on(
+    "postgres_changes",
+    {
+        event:"INSERT",
+        schema:"public",
+        table:"orders"
+    },
+    async(payload)=>{
+
+        console.log(
+            "NEW ORDER:",
+            payload
+        );
+
+
+        const newOrder =
+        payload.new;
+
+
+        /* اضافه کردن سریع به لیست */
+
+        orders=[
+            newOrder,
+            ...orders.filter(
+                o=>o.id!==newOrder.id
+            )
+        ];
+
+
+        renderOrders();
+
+        renderRepresentatives();
+
+        updateStats();
+
+
+        showNewOrderNotification(
+            newOrder
+        );
+
+
+        showToast(
+            "🔔 سفارش جدید دریافت شد"
+        );
+
+    }
+)
+
+
+.on(
+    "postgres_changes",
+    {
+        event:"UPDATE",
+        schema:"public",
+        table:"orders"
+    },
+    async(payload)=>{
+
+        console.log(
+            "ORDER UPDATED:",
+            payload
+        );
+
+
+        const index =
+        orders.findIndex(
+            o=>o.id===payload.new.id
+        );
+
+
+        if(index!==-1){
+
+            orders[index]=
+            payload.new;
+
+        }else{
+
+            orders=[
+                payload.new,
+                ...orders
+            ];
+
+        }
+
+
+        renderOrders();
+
+        renderRepresentatives();
+
+        updateStats();
+
+
+        showToast(
+            "📦 سفارش بروزرسانی شد"
+        );
+
+    }
+)
+
+
+.on(
+    "postgres_changes",
+    {
+        event:"DELETE",
+        schema:"public",
+        table:"orders"
+    },
+    async(payload)=>{
+
+        console.log(
+            "ORDER DELETED:",
+            payload
+        );
+
+
+        orders=
+        orders.filter(
+            o=>o.id!==payload.old.id
+        );
+
+
+        renderOrders();
+
+        renderRepresentatives();
+
+        updateStats();
+
+
+        showToast(
+            "🗑 سفارش حذف شد"
+        );
+
+    }
+)
+
+
+.subscribe(
+    (status)=>{
+
+        console.log(
+            "Realtime:",
+            status
+        );
+
+    }
+);
+
+
+/* =========================================
+   MODAL OUTSIDE CLICK
+========================================= */
 
 document
 .getElementById("paymentModal")
@@ -2249,9 +2929,9 @@ document
 );
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 loadAll();
 
