@@ -6,8 +6,9 @@
 
 <title>V2GUARD | مدیریت</title>
 
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<style>
 *{
     box-sizing:border-box;
     margin:0;
@@ -28,7 +29,7 @@ header{
     position:sticky;
     top:0;
     z-index:20;
-    background:rgba(7,16,25,.82);
+    background:rgba(7,16,25,.84);
     backdrop-filter:blur(20px);
     border-bottom:1px solid rgba(255,255,255,.07);
 }
@@ -37,10 +38,9 @@ header{
     max-width:1250px;
     margin:auto;
     padding:15px 20px;
-
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
 }
 
 .logo-area{
@@ -53,21 +53,12 @@ header{
     width:46px;
     height:46px;
     border-radius:14px;
-
     display:grid;
     place-items:center;
-
-    background:linear-gradient(
-        135deg,
-        #25d366,
-        #0da94c
-    );
-
+    background:linear-gradient(135deg,#25d366,#0da94c);
     color:#041008;
     font-weight:900;
-
-    box-shadow:
-    0 0 30px rgba(37,211,102,.25);
+    box-shadow:0 0 30px rgba(37,211,102,.25);
 }
 
 .logo-text{
@@ -97,21 +88,12 @@ main{
 
 .badge{
     display:inline-block;
-
     padding:7px 12px;
-
     border-radius:30px;
-
     color:#25d366;
-
-    background:
-    rgba(37,211,102,.07);
-
-    border:
-    1px solid rgba(37,211,102,.15);
-
+    background:rgba(37,211,102,.07);
+    border:1px solid rgba(37,211,102,.15);
     font-size:9px;
-
     margin-bottom:12px;
 }
 
@@ -129,39 +111,24 @@ main{
     margin-top:8px;
 }
 
-
-/* STATS */
-
 .stats{
     display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
+    grid-template-columns:repeat(4,1fr);
     gap:15px;
-
     margin-bottom:35px;
 }
 
 .stat{
     padding:22px;
-
     border-radius:20px;
-
-    background:
-    rgba(16,27,40,.72);
-
-    border:
-    1px solid rgba(255,255,255,.07);
-
+    background:rgba(16,27,40,.72);
+    border:1px solid rgba(255,255,255,.07);
     transition:.3s;
 }
 
 .stat:hover{
     transform:translateY(-4px);
-
-    border-color:
-    rgba(37,211,102,.2);
+    border-color:rgba(37,211,102,.2);
 }
 
 .stat-label{
@@ -187,203 +154,170 @@ main{
     color:#ff6478;
 }
 
-
-/* CARDS */
-
-.grid{
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,1fr);
-
-    gap:18px;
+.section{
+    margin-top:22px;
 }
 
-.card{
-    padding:23px;
-
-    border-radius:22px;
-
-    background:
-    rgba(16,27,40,.75);
-
-    border:
-    1px solid rgba(255,255,255,.07);
-
-    transition:.3s;
-}
-
-.card:hover{
-    border-color:
-    rgba(37,211,102,.18);
-}
-
-.card-head{
+.section-title{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:20px;
+    margin-bottom:15px;
 }
 
-.card-head h2{
-    font-size:16px;
+.section-title h2{
+    font-size:17px;
 }
 
-.card-head span{
+.section-title span{
     color:#7e8998;
     font-size:9px;
 }
 
-.menu{
-    display:grid;
-    gap:11px;
+.table-box{
+    overflow:auto;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.07);
+    background:rgba(16,27,40,.72);
 }
 
-.menu-item{
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:750px;
+}
+
+th{
+    color:#7e8998;
+    font-size:9px;
+    text-align:right;
     padding:16px;
-
-    border-radius:15px;
-
-    background:
-    rgba(255,255,255,.025);
-
-    border:
-    1px solid rgba(255,255,255,.05);
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    cursor:pointer;
-
-    transition:.25s;
+    background:rgba(255,255,255,.025);
 }
 
-.menu-item:hover{
-    transform:translateX(-4px);
-
-    background:
-    rgba(37,211,102,.06);
-
-    border-color:
-    rgba(37,211,102,.15);
+td{
+    padding:16px;
+    border-top:1px solid rgba(255,255,255,.05);
+    font-size:10px;
 }
 
-.menu-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
+tr{
+    transition:.2s;
 }
 
-.menu-icon{
-    width:38px;
-    height:38px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:12px;
-
-    background:
-    rgba(37,211,102,.07);
-
-    font-size:18px;
+tr:hover{
+    background:rgba(37,211,102,.025);
 }
 
-.menu-title{
-    font-size:11px;
-    font-weight:bold;
-}
-
-.menu-desc{
-    color:#697586;
+.status{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
     font-size:8px;
-    margin-top:4px;
 }
 
-.arrow{
+.pending{
+    color:#ffc83d;
+    background:rgba(255,200,61,.08);
+}
+
+.approved{
     color:#25d366;
-    font-size:18px;
+    background:rgba(37,211,102,.08);
 }
 
+.cancelled{
+    color:#ff6478;
+    background:rgba(255,80,100,.08);
+}
 
-/* RECENT */
+.action{
+    border:0;
+    padding:8px 11px;
+    border-radius:9px;
+    cursor:pointer;
+    background:#25d366;
+    color:#041008;
+    font-weight:bold;
+    font-size:8px;
+}
 
-.recent{
-    margin-top:20px;
+.action:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
 .empty{
     padding:45px 20px;
-
     text-align:center;
-
-    border:
-    1px dashed rgba(255,255,255,.08);
-
-    border-radius:17px;
-
     color:#7e8998;
-
     font-size:10px;
 }
 
+.error{
+    color:#ff7180;
+    line-height:2;
+}
+
+.refresh{
+    border:1px solid rgba(37,211,102,.18);
+    background:rgba(37,211,102,.06);
+    color:#25d366;
+    padding:9px 13px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.toast{
+    position:fixed;
+    left:20px;
+    bottom:20px;
+    z-index:100;
+    padding:14px 17px;
+    border-radius:14px;
+    background:#101c2a;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:10px;
+    opacity:0;
+    transform:translateY(60px);
+    transition:.3s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
 @media(max-width:900px){
-
     .stats{
-        grid-template-columns:
-        repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-
 }
 
 @media(max-width:600px){
-
     main{
-        padding:
-        25px 15px 60px;
+        padding:25px 15px 60px;
     }
 
     .stats{
         grid-template-columns:1fr;
     }
-
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-
 <div class="header">
 
 <div class="logo-area">
 
-<div class="logo">
-V2
-</div>
+<div class="logo">V2</div>
 
 <div>
-
-<div class="logo-text">
-V2GUARD
-</div>
-
-<div class="logo-sub">
-پنل مدیریت
-</div>
-
+<div class="logo-text">V2GUARD</div>
+<div class="logo-sub">پنل مدیریت</div>
 </div>
 
 </div>
@@ -393,17 +327,15 @@ V2GUARD
 </div>
 
 </div>
-
 </header>
 
 
 <main>
 
-
 <section class="title">
 
 <div class="badge">
-ADMIN PANEL
+ADMIN PANEL • LIVE
 </div>
 
 <h1>
@@ -411,7 +343,7 @@ ADMIN PANEL
 </h1>
 
 <p>
-مدیریت نمایندگان، سفارش‌ها، محصولات و حساب‌های مالی
+مدیریت نمایندگان و سفارش‌های واقعی سیستم
 </p>
 
 </section>
@@ -419,469 +351,762 @@ ADMIN PANEL
 
 <section class="stats">
 
+<div class="stat">
+<div class="stat-label">کل نمایندگان</div>
+<div class="stat-value green" id="users">۰</div>
+</div>
 
 <div class="stat">
-
-<div class="stat-label">
-کل نمایندگان
+<div class="stat-label">کل سفارش‌ها</div>
+<div class="stat-value yellow" id="orders">۰</div>
 </div>
-
-<div
-class="stat-value green"
-id="users"
->
-۰
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div class="stat-label">
-سفارش‌های امروز
+<div class="stat-label">مجموع فروش</div>
+<div class="stat-value" id="sales">۰ تومان</div>
 </div>
-
-<div
-class="stat-value yellow"
-id="orders"
->
-۰
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div class="stat-label">
-مجموع فروش
+<div class="stat-label">کل بدهی</div>
+<div class="stat-value red" id="debt">۰ تومان</div>
 </div>
-
-<div
-class="stat-value"
-id="sales"
->
-۰ تومان
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-label">
-کل بدهی نمایندگان
-</div>
-
-<div
-class="stat-value red"
-id="debt"
->
-۰ تومان
-</div>
-
-</div>
-
 
 </section>
 
 
-<section class="grid">
+<section class="section">
 
-
-<div class="card">
-
-<div class="card-head">
+<div class="section-title">
 
 <h2>
 👥 نمایندگان
 </h2>
 
-<span>
-مدیریت کاربران
+<span id="usersCount">
+۰ نماینده
 </span>
 
 </div>
 
+<div class="table-box">
 
-<div class="menu">
+<table>
 
+<thead>
 
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
+<tr>
+<th>نام</th>
+<th>ایمیل</th>
+<th>شماره</th>
+<th>تاریخ عضویت</th>
+</tr>
 
-<div class="menu-left">
+</thead>
 
-<div class="menu-icon">
-👥
+<tbody id="usersTable">
+
+<tr>
+<td colspan="4">
+<div class="empty">
+در حال دریافت اطلاعات...
 </div>
+</td>
+</tr>
 
-<div>
+</tbody>
 
-<div class="menu-title">
-لیست نمایندگان
-</div>
-
-<div class="menu-desc">
-مشاهده تمام نمایندگان
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
+</table>
 
 </div>
 
+</section>
 
 
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
+<section class="section">
 
-<div class="menu-left">
-
-<div class="menu-icon">
-➕
-</div>
-
-<div>
-
-<div class="menu-title">
-افزودن نماینده
-</div>
-
-<div class="menu-desc">
-ساخت حساب نمایندگی جدید
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="card-head">
+<div class="section-title">
 
 <h2>
 📦 سفارش‌ها
 </h2>
 
-<span>
-مدیریت خرید
+<div>
+
+<span id="ordersCount">
+۰ سفارش
 </span>
 
-</div>
-
-
-<div class="menu">
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
+<button
+class="refresh"
+onclick="loadData()"
 >
-
-<div class="menu-left">
-
-<div class="menu-icon">
-📦
-</div>
-
-<div>
-
-<div class="menu-title">
-تمام سفارش‌ها
-</div>
-
-<div class="menu-desc">
-مشاهده سفارش‌های نمایندگان
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
-
-<div class="menu-left">
-
-<div class="menu-icon">
-⏳
-</div>
-
-<div>
-
-<div class="menu-title">
-سفارش‌های در انتظار
-</div>
-
-<div class="menu-desc">
-بررسی و تأیید سفارش‌ها
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
+↻ بروزرسانی
+</button>
 
 </div>
 
 </div>
 
 
+<div class="table-box">
 
-<div class="card">
+<table>
 
-<div class="card-head">
+<thead>
 
-<h2>
-💰 حسابداری
-</h2>
+<tr>
+<th>نماینده</th>
+<th>محصول</th>
+<th>تعداد</th>
+<th>مبلغ</th>
+<th>وضعیت</th>
+<th>عملیات</th>
+</tr>
 
-<span>
-تسویه حساب
-</span>
+</thead>
 
-</div>
+<tbody id="ordersTable">
 
-
-<div class="menu">
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
-
-<div class="menu-left">
-
-<div class="menu-icon">
-💳
-</div>
-
-<div>
-
-<div class="menu-title">
-بدهی نمایندگان
-</div>
-
-<div class="menu-desc">
-مشاهده بدهی هر نماینده
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
-
-<div class="menu-left">
-
-<div class="menu-icon">
-✅
-</div>
-
-<div>
-
-<div class="menu-title">
-ثبت تسویه حساب
-</div>
-
-<div class="menu-desc">
-کم کردن مبلغ پرداختی از بدهی
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="card-head">
-
-<h2>
-🛒 محصولات
-</h2>
-
-<span>
-قیمت‌ها
-</span>
-
-</div>
-
-
-<div class="menu">
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
-
-<div class="menu-left">
-
-<div class="menu-icon">
-🛒
-</div>
-
-<div>
-
-<div class="menu-title">
-مدیریت محصولات
-</div>
-
-<div class="menu-desc">
-افزودن، حذف و ویرایش محصولات
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-
-<div
-class="menu-item"
-onclick="alert('مرحله بعد ساخته می‌شود')"
->
-
-<div class="menu-left">
-
-<div class="menu-icon">
-💵
-</div>
-
-<div>
-
-<div class="menu-title">
-مدیریت قیمت‌ها
-</div>
-
-<div class="menu-desc">
-تغییر قیمت بدون تغییر کد سایت
-</div>
-
-</div>
-
-</div>
-
-<div class="arrow">
-‹
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-</section>
-
-
-<section class="recent">
-
-<div class="card">
-
-<div class="card-head">
-
-<h2>
-🔔 آخرین فعالیت‌ها
-</h2>
-
-<span>
-LIVE
-</span>
-
-</div>
-
-
+<tr>
+<td colspan="6">
 <div class="empty">
-
-هنوز فعالیتی ثبت نشده است
-
-<br><br>
-
-بعد از ثبت سفارش‌ها،
-فعالیت‌ها اینجا نمایش داده می‌شوند.
-
+در حال دریافت سفارش‌ها...
 </div>
+</td>
+</tr>
+
+</tbody>
+
+</table>
 
 </div>
 
 </section>
-
 
 </main>
+
+
+<div
+class="toast"
+id="toast"
+></div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://fmrocoflspugyaprvrve.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_LW7Kr8R_N9WmHMQkWo8S0A_i02mBfT8";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+let profiles=[];
+let orders=[];
+
+
+function money(number){
+
+    return new Intl.NumberFormat("fa-IR")
+    .format(Number(number||0))
+    +" تومان";
+
+}
+
+
+function dateFa(date){
+
+    if(!date)
+        return "—";
+
+    return new Date(date)
+    .toLocaleDateString("fa-IR");
+
+}
+
+
+function escapeHtml(value){
+
+    return String(value||"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function toast(message){
+
+    const el =
+    document.getElementById("toast");
+
+    el.textContent=message;
+
+    el.classList.add("show");
+
+    setTimeout(()=>{
+        el.classList.remove("show");
+    },3000);
+
+}
+
+
+/*
+================================
+دریافت اطلاعات
+================================
+*/
+
+async function loadData(){
+
+    try{
+
+        await Promise.all([
+            loadProfiles(),
+            loadOrders()
+        ]);
+
+        updateStats();
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            "خطا در دریافت اطلاعات"
+        );
+
+    }
+
+}
+
+
+/*
+================================
+نمایندگان
+================================
+*/
+
+async function loadProfiles(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("profiles")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(
+            "PROFILES ERROR:",
+            error
+        );
+
+        document
+        .getElementById("usersTable")
+        .innerHTML=`
+
+        <tr>
+
+        <td colspan="4">
+
+        <div class="empty error">
+
+        خطا در دریافت نمایندگان
+
+        <br>
+
+        ${escapeHtml(error.message)}
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+        throw error;
+    }
+
+
+    profiles=data||[];
+
+
+    document
+    .getElementById("users")
+    .textContent=
+    profiles.length
+    .toLocaleString("fa-IR");
+
+
+    document
+    .getElementById("usersCount")
+    .textContent=
+    profiles.length
+    .toLocaleString("fa-IR")
+    +" نماینده";
+
+
+    renderProfiles();
+
+}
+
+
+function renderProfiles(){
+
+    const table =
+    document.getElementById(
+        "usersTable"
+    );
+
+
+    if(!profiles.length){
+
+        table.innerHTML=`
+
+        <tr>
+        <td colspan="4">
+
+        <div class="empty">
+        هنوز نماینده‌ای ثبت نشده است.
+        </div>
+
+        </td>
+        </tr>
+
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML =
+    profiles.map(profile=>`
+
+        <tr>
+
+        <td>
+        ${escapeHtml(
+            profile.full_name ||
+            profile.name ||
+            "بدون نام"
+        )}
+        </td>
+
+        <td>
+        ${escapeHtml(
+            profile.email ||
+            "—"
+        )}
+        </td>
+
+        <td>
+        ${escapeHtml(
+            profile.phone ||
+            "—"
+        )}
+        </td>
+
+        <td>
+        ${dateFa(
+            profile.created_at
+        )}
+        </td>
+
+        </tr>
+
+    `).join("");
+
+}
+
+
+/*
+================================
+سفارش‌ها
+================================
+*/
+
+async function loadOrders(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+    .from("orders")
+    .select("*")
+    .order(
+        "created_at",
+        {
+            ascending:false
+        }
+    );
+
+
+    if(error){
+
+        console.error(
+            "ORDERS ERROR:",
+            error
+        );
+
+        document
+        .getElementById("ordersTable")
+        .innerHTML=`
+
+        <tr>
+
+        <td colspan="6">
+
+        <div class="empty error">
+
+        خطا در دریافت سفارش‌ها
+
+        <br>
+
+        ${escapeHtml(
+            error.message
+        )}
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+        throw error;
+    }
+
+
+    orders=data||[];
+
+
+    document
+    .getElementById("orders")
+    .textContent=
+    orders.length
+    .toLocaleString("fa-IR");
+
+
+    document
+    .getElementById("ordersCount")
+    .textContent=
+    orders.length
+    .toLocaleString("fa-IR")
+    +" سفارش";
+
+
+    renderOrders();
+
+}
+
+
+function getProfile(id){
+
+    return profiles.find(
+        p=>p.id===id
+    );
+
+}
+
+
+function statusHtml(status){
+
+    if(status==="approved"){
+
+        return `
+        <span class="status approved">
+        تأیید شده
+        </span>
+        `;
+
+    }
+
+
+    if(status==="cancelled"){
+
+        return `
+        <span class="status cancelled">
+        لغو شده
+        </span>
+        `;
+
+    }
+
+
+    return `
+    <span class="status pending">
+    در انتظار
+    </span>
+    `;
+
+}
+
+
+function renderOrders(){
+
+    const table =
+    document.getElementById(
+        "ordersTable"
+    );
+
+
+    if(!orders.length){
+
+        table.innerHTML=`
+
+        <tr>
+        <td colspan="6">
+
+        <div class="empty">
+        هنوز سفارشی ثبت نشده است.
+        </div>
+
+        </td>
+        </tr>
+
+        `;
+
+        return;
+    }
+
+
+    table.innerHTML =
+    orders.map(order=>{
+
+        const profile =
+        getProfile(
+            order.representative_id
+        );
+
+
+        const name =
+        profile?.full_name ||
+        profile?.name ||
+        profile?.email ||
+        "نماینده";
+
+
+        const total =
+        Number(
+            order.total_price ||
+            (
+                Number(order.quantity||0) *
+                Number(order.unit_price||0)
+            )
+        );
+
+
+        const pending =
+        !order.status ||
+        order.status==="pending";
+
+
+        return `
+
+        <tr>
+
+        <td>
+        ${escapeHtml(name)}
+        </td>
+
+        <td>
+        ${escapeHtml(
+            order.product_name ||
+            "—"
+        )}
+        </td>
+
+        <td>
+        ${Number(
+            order.quantity||0
+        ).toLocaleString("fa-IR")}
+        </td>
+
+        <td>
+        <strong>
+        ${money(total)}
+        </strong>
+        </td>
+
+        <td>
+        ${statusHtml(
+            order.status
+        )}
+        </td>
+
+        <td>
+
+        ${
+            pending
+            ?
+            `
+            <button
+            class="action"
+            onclick="approveOrder('${order.id}')"
+            >
+            تأیید سفارش
+            </button>
+            `
+            :
+            "—"
+        }
+
+        </td>
+
+        </tr>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/*
+================================
+آمار
+================================
+*/
+
+function updateStats(){
+
+    let sales=0;
+    let debt=0;
+
+
+    orders.forEach(order=>{
+
+        const total =
+        Number(
+            order.total_price ||
+            (
+                Number(order.quantity||0) *
+                Number(order.unit_price||0)
+            )
+        );
+
+
+        if(
+            order.status!=="cancelled"
+        ){
+
+            sales+=total;
+
+        }
+
+
+        /*
+        فعلاً هر سفارش غیرلغوشده
+        جزو بدهی محسوب می‌شود.
+        */
+
+        if(
+            order.status!=="cancelled"
+        ){
+
+            debt+=total;
+
+        }
+
+    });
+
+
+    document
+    .getElementById("sales")
+    .textContent=
+    money(sales);
+
+
+    document
+    .getElementById("debt")
+    .textContent=
+    money(debt);
+
+}
+
+
+/*
+================================
+تأیید سفارش
+================================
+*/
+
+async function approveOrder(id){
+
+    if(
+        !confirm(
+            "آیا از تأیید این سفارش مطمئن هستید؟"
+        )
+    )
+        return;
+
+
+    const {
+        error
+    } =
+    await supabaseClient
+    .from("orders")
+    .update({
+        status:"approved"
+    })
+    .eq(
+        "id",
+        id
+    );
+
+
+    if(error){
+
+        console.error(error);
+
+        toast(
+            "تأیید سفارش انجام نشد"
+        );
+
+        return;
+    }
+
+
+    toast(
+        "سفارش با موفقیت تأیید شد ✓"
+    );
+
+
+    await loadData();
+
+}
+
+
+/*
+================================
+شروع
+================================
+*/
+
+loadData();
+
+</script>
 
 </body>
 </html>
