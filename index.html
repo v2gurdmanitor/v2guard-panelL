@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>V2GURD | پنل نماینده</title>
+<title>V2GUARD | پنل نماینده</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -155,6 +153,12 @@ main{
     border:1px solid rgba(255,255,255,.07);
     background:rgba(16,27,40,.72);
     border-radius:20px;
+    transition:.3s;
+}
+
+.stat:hover{
+    transform:translateY(-4px);
+    border-color:rgba(37,211,102,.2);
 }
 
 .stat-title{
@@ -206,15 +210,28 @@ main{
     border:1px solid rgba(255,255,255,.07);
     background:
     linear-gradient(145deg,rgba(20,34,50,.9),rgba(8,15,24,.85));
-    transition:.3s;
+    transition:.35s;
+}
+
+.product::before{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    background:rgba(37,211,102,.08);
+    filter:blur(45px);
+    top:-60px;
+    right:-40px;
 }
 
 .product:hover{
-    transform:translateY(-6px);
+    transform:translateY(-7px);
     border-color:rgba(37,211,102,.25);
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
 }
 
 .product-top{
+    position:relative;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -222,7 +239,7 @@ main{
 }
 
 .icon{
-    font-size:30px;
+    font-size:31px;
 }
 
 .active{
@@ -234,18 +251,21 @@ main{
 }
 
 .product h3{
+    position:relative;
     font-size:16px;
     margin-bottom:8px;
 }
 
 .description{
+    position:relative;
     color:#7e8998;
     font-size:9px;
     line-height:1.8;
-    min-height:35px;
+    min-height:34px;
 }
 
 .product-bottom{
+    position:relative;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -265,6 +285,11 @@ main{
     border-radius:12px;
     font-weight:bold;
     cursor:pointer;
+    transition:.25s;
+}
+
+.buy:hover{
+    transform:scale(1.05);
 }
 
 .orders{
@@ -281,6 +306,18 @@ main{
     border-radius:20px;
     background:rgba(16,27,40,.75);
     border:1px solid rgba(255,255,255,.07);
+    animation:orderIn .4s ease;
+}
+
+@keyframes orderIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .order-head{
@@ -358,6 +395,26 @@ main{
     font-size:10px;
 }
 
+.loading{
+    padding:50px 20px;
+    text-align:center;
+    border-radius:20px;
+    background:rgba(16,27,40,.6);
+    color:#7e8998;
+    font-size:10px;
+}
+
+.error-box{
+    padding:30px 20px;
+    text-align:center;
+    border-radius:20px;
+    background:rgba(255,80,100,.06);
+    border:1px solid rgba(255,80,100,.12);
+    color:#ff8090;
+    font-size:10px;
+    line-height:2;
+}
+
 .modal{
     position:fixed;
     inset:0;
@@ -381,6 +438,18 @@ main{
     border-radius:25px;
     background:#101c2a;
     border:1px solid rgba(255,255,255,.08);
+    animation:modalIn .3s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.93);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
 }
 
 .modal-head{
@@ -388,6 +457,10 @@ main{
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
+}
+
+.modal-head h3{
+    font-size:17px;
 }
 
 .close{
@@ -514,11 +587,9 @@ main{
 }
 
 @media(max-width:900px){
-
     .products{
         grid-template-columns:repeat(2,1fr);
     }
-
 }
 
 @media(max-width:650px){
@@ -542,11 +613,8 @@ main{
     .online{
         display:none;
     }
-
 }
-
 </style>
-
 </head>
 
 <body>
@@ -584,7 +652,8 @@ V2GUARD
 
 <button
 class="logout"
-onclick="logout()">
+onclick="logout()"
+>
 خروج
 </button>
 
@@ -610,9 +679,9 @@ onclick="logout()">
 </h1>
 
 <p>
-محصولات فعال را انتخاب کنید، تعداد را وارد کنید و سفارش خود را ثبت کنید.
+محصولات را انتخاب کنید، تعداد را وارد کنید و سفارش خود را ثبت کنید.
 <br>
-قیمت محصولات مستقیماً از سیستم دریافت می‌شود.
+تمام سفارش‌ها و بدهی شما در همین پنل ثبت و محاسبه می‌شود.
 </p>
 
 </section>
@@ -628,7 +697,8 @@ onclick="logout()">
 
 <div
 class="stat-value debt"
-id="debt">
+id="debt"
+>
 ۰ تومان
 </div>
 
@@ -643,7 +713,8 @@ id="debt">
 
 <div
 class="stat-value"
-id="totalPurchases">
+id="totalPurchases"
+>
 ۰ تومان
 </div>
 
@@ -658,7 +729,8 @@ id="totalPurchases">
 
 <div
 class="stat-value green"
-id="orderCount">
+id="orderCount"
+>
 ۰
 </div>
 
@@ -674,7 +746,7 @@ id="orderCount">
 </h2>
 
 <span>
-قیمت فعلی
+قیمت‌های فعلی
 </span>
 
 </div>
@@ -682,9 +754,10 @@ id="orderCount">
 
 <section
 class="products"
-id="products">
+id="products"
+>
 
-<div class="empty">
+<div class="loading">
 در حال دریافت محصولات...
 </div>
 
@@ -707,8 +780,11 @@ id="products">
 
 <div
 class="orders-list"
-id="ordersList">
-
+id="ordersList"
+>
+<div class="loading">
+در حال دریافت سفارش‌ها...
+</div>
 </div>
 
 </section>
@@ -718,7 +794,8 @@ id="ordersList">
 
 <div
 class="modal"
-id="modal">
+id="modal"
+>
 
 <div class="modal-box">
 
@@ -730,7 +807,8 @@ id="modal">
 
 <button
 class="close"
-onclick="closeModal()">
+onclick="closeModal()"
+>
 ×
 </button>
 
@@ -739,7 +817,8 @@ onclick="closeModal()">
 
 <div
 class="selected"
-id="selected">
+id="selected"
+>
 </div>
 
 
@@ -776,7 +855,8 @@ id="selected">
 
 <span
 class="total-value"
-id="total">
+id="total"
+>
 ۰ تومان
 </span>
 
@@ -786,10 +866,9 @@ id="total">
 <button
 class="confirm"
 id="confirm"
-onclick="submitOrder()">
-
+onclick="submitOrder()"
+>
 تأیید و ثبت سفارش
-
 </button>
 
 </div>
@@ -799,15 +878,11 @@ onclick="submitOrder()">
 
 <div
 class="toast"
-id="toast">
-</div>
+id="toast"
+></div>
 
 
 <script>
-
-/* ================================
-   SUPABASE
-================================ */
 
 const SUPABASE_URL =
 "https://fmrocoflspugyaprvrve.supabase.co";
@@ -822,10 +897,6 @@ supabase.createClient(
 );
 
 
-/* ================================
-   VARIABLES
-================================ */
-
 let currentUser = null;
 
 let products = [];
@@ -835,9 +906,9 @@ let selectedProduct = null;
 let quantity = 1;
 
 
-/* ================================
-   MONEY
-================================ */
+/* =========================
+   ابزارها
+========================= */
 
 function money(number){
 
@@ -847,10 +918,6 @@ function money(number){
 
 }
 
-
-/* ================================
-   ESCAPE
-================================ */
 
 function escapeHtml(value){
 
@@ -863,10 +930,6 @@ function escapeHtml(value){
 
 }
 
-
-/* ================================
-   TOAST
-================================ */
 
 function showToast(message){
 
@@ -886,119 +949,52 @@ function showToast(message){
 }
 
 
-/* ================================
-   GET PRODUCT ICON
-================================ */
-
-function getProductIcon(description){
-
-    const text =
-        String(description || "")
-        .toLowerCase();
-
-    if(
-        text.includes("گیم") ||
-        text.includes("gaming")
-    ){
-        return "🎮";
-    }
-
-    if(
-        text.includes("پنل") ||
-        text.includes("panel") ||
-        text.includes("ترا")
-    ){
-        return "🖥️";
-    }
-
-    if(
-        text.includes("نامحدود")
-    ){
-        return "♾️";
-    }
-
-    if(
-        text.includes("500") ||
-        text.includes("۵۰۰")
-    ){
-        return "🔥";
-    }
-
-    return "🟢";
-
-}
-
-
-/* ================================
-   LOAD PRODUCTS
-================================ */
+/* =========================
+   محصولات از دیتابیس
+========================= */
 
 async function loadProducts(){
 
     const box =
         document.getElementById("products");
 
-
     box.innerHTML = `
-
-        <div class="empty">
+        <div class="loading">
             در حال دریافت محصولات...
         </div>
-
     `;
 
 
     const {
         data,
         error
-    } =
-    await supabaseClient
+    } = await supabaseClient
         .from("products")
-        .select(
-            "id,description,price,is_active,created_at,updated_at"
-        )
-        .eq(
-            "is_active",
-            true
-        )
-        .order(
-            "created_at",
-            {
-                ascending:true
-            }
-        );
+        .select("*")
+        .eq("is_active",true)
+        .order("created_at",{
+            ascending:true
+        });
 
 
     if(error){
 
         console.error(
-            "PRODUCT ERROR:",
+            "PRODUCTS ERROR:",
             error
         );
 
-
         box.innerHTML = `
-
-            <div class="empty">
-
+            <div class="error-box">
                 ⚠️ دریافت محصولات با خطا مواجه شد.
-
-                <br><br>
-
-                <span style="font-size:8px">
-
-                    ${escapeHtml(
-                        error.message
-                    )}
-
-                </span>
-
+                <br>
+                <small>
+                    ${escapeHtml(error.message)}
+                </small>
             </div>
-
         `;
 
-        return;
-
+        return false;
     }
 
 
@@ -1008,46 +1004,22 @@ async function loadProducts(){
     if(!products.length){
 
         box.innerHTML = `
-
             <div class="empty">
-
-                📦
-
+                🛒
                 <br><br>
-
                 در حال حاضر محصول فعالی وجود ندارد.
-
             </div>
-
         `;
 
-        return;
-
+        return true;
     }
 
 
-    renderProducts();
-
-}
-
-
-/* ================================
-   RENDER PRODUCTS
-================================ */
-
-function renderProducts(){
-
-    const box =
-        document.getElementById("products");
-
-
     box.innerHTML =
-        products.map(product => {
+        products.map((product,index) => {
 
             const icon =
-                getProductIcon(
-                    product.description
-                );
+                getProductIcon(product.name,index);
 
 
             return `
@@ -1068,37 +1040,29 @@ function renderProducts(){
 
 
                 <h3>
-                    ${escapeHtml(
-                        product.description ||
-                        "محصول V2GURD"
-                    )}
+                    ${escapeHtml(product.name)}
                 </h3>
 
 
                 <div class="description">
-
-                    محصول فعال V2GURD
-
+                    ${escapeHtml(
+                        product.description ||
+                        "محصول V2GUARD"
+                    )}
                 </div>
 
 
                 <div class="product-bottom">
 
                     <div class="price">
-
-                        ${money(
-                            product.price
-                        )}
-
+                        ${money(product.price)}
                     </div>
-
 
                     <button
                         class="buy"
-                        onclick="openOrder('${product.id}')">
-
+                        onclick="openOrder('${product.id}')"
+                    >
                         خرید
-
                     </button>
 
                 </div>
@@ -1109,12 +1073,71 @@ function renderProducts(){
 
         }).join("");
 
+
+
+    return true;
 }
 
 
-/* ================================
-   INIT
-================================ */
+/* =========================
+   آیکن محصولات
+========================= */
+
+function getProductIcon(name,index){
+
+    const text =
+        String(name || "").toLowerCase();
+
+
+    if(
+        text.includes("گیم") ||
+        text.includes("gaming") ||
+        text.includes("کال")
+    ){
+        return "🎮";
+    }
+
+
+    if(
+        text.includes("پنل") ||
+        text.includes("ترا")
+    ){
+        return "🖥️";
+    }
+
+
+    if(
+        text.includes("نامحدود")
+    ){
+        return "♾️";
+    }
+
+
+    if(
+        text.includes("۵۰۰") ||
+        text.includes("500")
+    ){
+        return "🔥";
+    }
+
+
+    if(
+        text.includes("سرور")
+    ){
+        return "🌐";
+    }
+
+
+    return index % 2 === 0
+        ? "🟢"
+        : "⚡";
+
+}
+
+
+/* =========================
+   شروع پنل
+========================= */
 
 async function init(){
 
@@ -1129,13 +1152,15 @@ async function init(){
 
     if(error){
 
-        console.error(error);
+        console.error(
+            "AUTH ERROR:",
+            error
+        );
 
         location.href =
             "login.html";
 
         return;
-
     }
 
 
@@ -1145,7 +1170,6 @@ async function init(){
             "login.html";
 
         return;
-
     }
 
 
@@ -1164,9 +1188,9 @@ async function init(){
 }
 
 
-/* ================================
-   PROFILE
-================================ */
+/* =========================
+   پروفایل
+========================= */
 
 async function loadProfile(){
 
@@ -1191,42 +1215,45 @@ async function loadProfile(){
             error
         );
 
+        return;
     }
 
 
-    document
-        .getElementById("userName")
-        .textContent =
-        data?.full_name ||
-        data?.name ||
-        currentUser.email?.split("@")[0] ||
-        "نماینده";
+    if(data){
+
+        document
+            .getElementById("userName")
+            .textContent =
+                data.full_name ||
+                data.name ||
+                currentUser.email?.split("@")[0] ||
+                "نماینده";
+
+    }
 
 }
 
 
-/* ================================
-   OPEN ORDER
-================================ */
+/* =========================
+   باز کردن سفارش
+========================= */
 
 function openOrder(productId){
 
     selectedProduct =
         products.find(
             product =>
-                String(product.id) ===
-                String(productId)
+                product.id === productId
         );
 
 
     if(!selectedProduct){
 
         showToast(
-            "محصول پیدا نشد."
+            "محصول مورد نظر پیدا نشد."
         );
 
         return;
-
     }
 
 
@@ -1238,46 +1265,33 @@ function openOrder(productId){
         .textContent = "۱";
 
 
-    const icon =
-        getProductIcon(
-            selectedProduct.description
-        );
-
-
     document
         .getElementById("selected")
         .innerHTML = `
 
-            <div class="selected-icon">
+        <div class="selected-icon">
+            ${getProductIcon(
+                selectedProduct.name,
+                0
+            )}
+        </div>
 
-                ${icon}
+        <div>
 
+            <div class="selected-name">
+                ${escapeHtml(
+                    selectedProduct.name
+                )}
             </div>
 
-
-            <div>
-
-                <div class="selected-name">
-
-                    ${escapeHtml(
-                        selectedProduct.description ||
-                        "محصول V2GURD"
-                    )}
-
-                </div>
-
-
-                <div class="selected-price">
-
-                    ${money(
-                        selectedProduct.price
-                    )}
-
-                    برای هر عدد
-
-                </div>
-
+            <div class="selected-price">
+                ${money(
+                    selectedProduct.price
+                )}
+                برای هر عدد
             </div>
+
+        </div>
 
         `;
 
@@ -1292,9 +1306,9 @@ function openOrder(productId){
 }
 
 
-/* ================================
-   CLOSE
-================================ */
+/* =========================
+   بستن مودال
+========================= */
 
 function closeModal(){
 
@@ -1307,9 +1321,9 @@ function closeModal(){
 }
 
 
-/* ================================
-   QUANTITY
-================================ */
+/* =========================
+   تعداد
+========================= */
 
 function changeQuantity(value){
 
@@ -1327,7 +1341,7 @@ function changeQuantity(value){
     document
         .getElementById("quantity")
         .textContent =
-        quantity.toLocaleString("fa-IR");
+            quantity.toLocaleString("fa-IR");
 
 
     updateTotal();
@@ -1335,9 +1349,9 @@ function changeQuantity(value){
 }
 
 
-/* ================================
-   TOTAL
-================================ */
+/* =========================
+   محاسبه مبلغ
+========================= */
 
 function updateTotal(){
 
@@ -1347,42 +1361,30 @@ function updateTotal(){
 
     const total =
         Number(selectedProduct.price) *
-        Number(quantity);
+        quantity;
 
 
     document
         .getElementById("total")
         .textContent =
-        money(total);
+            money(total);
 
 }
 
 
-/* ================================
-   SUBMIT ORDER
-================================ */
+/* =========================
+   ثبت سفارش
+========================= */
 
 async function submitOrder(){
 
     if(!selectedProduct){
 
         showToast(
-            "محصولی انتخاب نشده است."
+            "لطفاً ابتدا محصول را انتخاب کنید."
         );
 
         return;
-
-    }
-
-
-    if(!currentUser){
-
-        showToast(
-            "لطفاً دوباره وارد حساب شوید."
-        );
-
-        return;
-
     }
 
 
@@ -1398,13 +1400,15 @@ async function submitOrder(){
 
     const total =
         Number(selectedProduct.price) *
-        Number(quantity);
+        quantity;
 
 
     /*
-      اینجا ID واقعی UUID محصول
-      از جدول products ارسال می‌شود.
+       بسیار مهم:
+       product_id در اینجا UUID واقعی
+       جدول products است.
     */
+
 
     const orderData = {
 
@@ -1415,16 +1419,16 @@ async function submitOrder(){
             selectedProduct.id,
 
         product_name:
-            selectedProduct.description,
+            selectedProduct.name,
 
         quantity:
-            Number(quantity),
+            quantity,
 
         unit_price:
             Number(selectedProduct.price),
 
         total_price:
-            Number(total),
+            total,
 
         status:
             "pending"
@@ -1438,86 +1442,70 @@ async function submitOrder(){
     );
 
 
-    try{
+    const {
+        data,
+        error
+    } =
+    await supabaseClient
+        .from("orders")
+        .insert(orderData)
+        .select()
+        .single();
 
-        const {
-            data,
+
+    if(error){
+
+        console.error(
+            "ORDER ERROR:",
             error
-        } =
-        await supabaseClient
-            .from("orders")
-            .insert(orderData)
-            .select()
-            .single();
-
-
-        if(error){
-
-            console.error(
-                "ORDER ERROR:",
-                error
-            );
-
-
-            showToast(
-                "خطا در ثبت سفارش: " +
-                error.message
-            );
-
-
-            return;
-
-        }
-
-
-        console.log(
-            "ORDER CREATED:",
-            data
         );
-
-
-        closeModal();
-
-
-        showToast(
-            "✅ سفارش با موفقیت ثبت شد"
-        );
-
-
-        await loadOrders();
-
-        await loadStats();
-
-
-    }catch(error){
-
-        console.error(error);
 
 
         showToast(
             "خطا در ثبت سفارش: " +
-            (
-                error.message ||
-                "خطای ناشناخته"
-            )
+            error.message
         );
 
-
-    }finally{
 
         button.disabled = false;
 
         button.textContent =
             "تأیید و ثبت سفارش";
 
+        return;
     }
+
+
+    console.log(
+        "ORDER CREATED:",
+        data
+    );
+
+
+    closeModal();
+
+
+    showToast(
+        "سفارش با موفقیت ثبت شد ✓"
+    );
+
+
+    await loadOrders();
+
+    await loadStats();
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "تأیید و ثبت سفارش";
 
 }
 
 
-/* ================================
-   ORDERS
-================================ */
+/* =========================
+   دریافت سفارش‌ها
+========================= */
 
 async function loadOrders(){
 
@@ -1525,6 +1513,13 @@ async function loadOrders(){
         document.getElementById(
             "ordersList"
         );
+
+
+    box.innerHTML = `
+        <div class="loading">
+            در حال دریافت سفارش‌ها...
+        </div>
+    `;
 
 
     const {
@@ -1556,26 +1551,23 @@ async function loadOrders(){
 
         box.innerHTML = `
 
-            <div class="empty">
+            <div class="error-box">
 
                 ⚠️ دریافت سفارش‌ها با خطا مواجه شد.
 
                 <br><br>
 
-                <span style="font-size:8px">
-
+                <small>
                     ${escapeHtml(
                         error.message
                     )}
-
-                </span>
+                </small>
 
             </div>
 
         `;
 
         return;
-
     }
 
 
@@ -1586,9 +1578,9 @@ async function loadOrders(){
     document
         .getElementById("ordersCount")
         .textContent =
-        orders.length
-            .toLocaleString("fa-IR")
-        + " سفارش";
+            orders.length
+                .toLocaleString("fa-IR")
+            + " سفارش";
 
 
     if(!orders.length){
@@ -1608,7 +1600,6 @@ async function loadOrders(){
         `;
 
         return;
-
     }
 
 
@@ -1622,7 +1613,10 @@ async function loadOrders(){
                 "pending";
 
 
-            if(order.status === "approved"){
+            if(
+                order.status ===
+                "approved"
+            ){
 
                 status =
                     "تأیید شده";
@@ -1633,7 +1627,10 @@ async function loadOrders(){
             }
 
 
-            if(order.status === "cancelled"){
+            if(
+                order.status ===
+                "cancelled"
+            ){
 
                 status =
                     "لغو شده";
@@ -1644,13 +1641,13 @@ async function loadOrders(){
             }
 
 
-            const q =
+            const qty =
                 Number(
                     order.quantity || 0
                 );
 
 
-            const unit =
+            const unitPrice =
                 Number(
                     order.unit_price || 0
                 );
@@ -1659,7 +1656,7 @@ async function loadOrders(){
             const total =
                 Number(
                     order.total_price ||
-                    q * unit
+                    qty * unitPrice
                 );
 
 
@@ -1668,7 +1665,9 @@ async function loadOrders(){
                 ?
                 new Date(
                     order.created_at
-                ).toLocaleString("fa-IR")
+                ).toLocaleString(
+                    "fa-IR"
+                )
                 :
                 "—";
 
@@ -1690,16 +1689,16 @@ async function loadOrders(){
 
 
                     <div
-                        class="order-status ${statusClass}">
-
+                        class="order-status ${statusClass}"
+                    >
                         ${status}
-
                     </div>
 
                 </div>
 
 
                 <div class="order-grid">
+
 
                     <div class="order-box">
 
@@ -1708,9 +1707,9 @@ async function loadOrders(){
                         </small>
 
                         <strong>
-
-                            ${q.toLocaleString("fa-IR")}
-
+                            ${qty.toLocaleString(
+                                "fa-IR"
+                            )}
                         </strong>
 
                     </div>
@@ -1723,9 +1722,9 @@ async function loadOrders(){
                         </small>
 
                         <strong>
-
-                            ${money(unit)}
-
+                            ${money(
+                                unitPrice
+                            )}
                         </strong>
 
                     </div>
@@ -1738,12 +1737,13 @@ async function loadOrders(){
                         </small>
 
                         <strong class="total-green">
-
-                            ${money(total)}
-
+                            ${money(
+                                total
+                            )}
                         </strong>
 
                     </div>
+
 
                 </div>
 
@@ -1754,6 +1754,7 @@ async function loadOrders(){
 
                 </div>
 
+
             </article>
 
             `;
@@ -1763,9 +1764,9 @@ async function loadOrders(){
 }
 
 
-/* ================================
-   STATS
-================================ */
+/* =========================
+   آمار
+========================= */
 
 async function loadStats(){
 
@@ -1792,29 +1793,47 @@ async function loadStats(){
         );
 
         return;
-
     }
 
 
     let debt = 0;
 
+    let purchases = 0;
+
 
     (data || []).forEach(order => {
 
         if(
-            order.status === "cancelled"
-        )
+            order.status ===
+            "cancelled"
+        ){
             return;
+        }
 
 
-        debt +=
+        const amount =
             Number(
                 order.total_price ||
                 (
-                    Number(order.quantity || 0) *
-                    Number(order.unit_price || 0)
+                    Number(
+                        order.quantity || 0
+                    ) *
+                    Number(
+                        order.unit_price || 0
+                    )
                 )
             );
+
+
+        purchases += amount;
+
+
+        /*
+           فعلاً تمام سفارش‌های
+           غیرلغوشده بدهی محسوب می‌شوند.
+        */
+
+        debt += amount;
 
     });
 
@@ -1822,28 +1841,28 @@ async function loadStats(){
     document
         .getElementById("debt")
         .textContent =
-        money(debt);
+            money(debt);
 
 
     document
         .getElementById("totalPurchases")
         .textContent =
-        money(debt);
+            money(purchases);
 
 
     document
         .getElementById("orderCount")
         .textContent =
-        Number(
-            (data || []).length
-        ).toLocaleString("fa-IR");
+            Number(
+                (data || []).length
+            ).toLocaleString("fa-IR");
 
 }
 
 
-/* ================================
-   LOGOUT
-================================ */
+/* =========================
+   خروج
+========================= */
 
 async function logout(){
 
@@ -1851,15 +1870,16 @@ async function logout(){
         .auth
         .signOut();
 
+
     location.href =
         "login.html";
 
 }
 
 
-/* ================================
-   MODAL CLICK
-================================ */
+/* =========================
+   بستن مودال با کلیک بیرون
+========================= */
 
 document
     .getElementById("modal")
@@ -1867,19 +1887,19 @@ document
         "click",
         function(e){
 
-            if(e.target === this){
-
+            if(
+                e.target === this
+            ){
                 closeModal();
-
             }
 
         }
     );
 
 
-/* ================================
-   START
-================================ */
+/* =========================
+   اجرا
+========================= */
 
 init();
 
