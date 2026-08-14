@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>V2GUARD | پنل نماینده</title>
+<title>V2GUARD | Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -15,33 +15,41 @@
     padding:0;
 }
 
+:root{
+    --green:#25d366;
+    --green2:#0da94c;
+    --bg:#071019;
+    --card:#101b28;
+    --text:#fff;
+    --muted:#7e8998;
+    --red:#ff6478;
+    --yellow:#ffc83d;
+    --blue:#55aaff;
+}
+
 body{
     font-family:Tahoma,Arial,sans-serif;
     background:
-    radial-gradient(circle at 10% 0%,rgba(37,211,102,.13),transparent 30%),
-    radial-gradient(circle at 90% 10%,rgba(0,150,255,.10),transparent 30%),
-    #071019;
+        radial-gradient(circle at 10% 0%,rgba(37,211,102,.13),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(0,150,255,.10),transparent 30%),
+        var(--bg);
     color:#fff;
     min-height:100vh;
-}
-
-button{
-    font-family:inherit;
 }
 
 header{
     position:sticky;
     top:0;
-    z-index:20;
-    background:rgba(7,16,25,.82);
-    backdrop-filter:blur(20px);
+    z-index:50;
+    background:rgba(7,16,25,.86);
+    backdrop-filter:blur(22px);
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
 .header{
-    max-width:1200px;
+    max-width:1250px;
     margin:auto;
-    padding:15px 20px;
+    padding:14px 20px;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -56,13 +64,12 @@ header{
 .logo{
     width:46px;
     height:46px;
-    border-radius:14px;
+    border-radius:15px;
     display:grid;
     place-items:center;
-    background:linear-gradient(135deg,#25d366,#0da94c);
+    background:linear-gradient(135deg,var(--green),var(--green2));
     color:#041008;
     font-weight:900;
-    box-shadow:0 0 30px rgba(37,211,102,.25);
 }
 
 .logo-text{
@@ -70,48 +77,34 @@ header{
 }
 
 .logo-sub{
-    color:#7e8998;
+    color:var(--muted);
     font-size:9px;
     margin-top:4px;
 }
 
-.header-right{
+.live{
     display:flex;
     align-items:center;
-    gap:12px;
-}
-
-.online{
+    gap:7px;
+    color:var(--green);
     font-size:9px;
-    color:#7e8998;
 }
 
-.online-dot{
-    display:inline-block;
+.live-dot{
     width:8px;
     height:8px;
     border-radius:50%;
-    background:#25d366;
-    box-shadow:0 0 10px #25d366;
-    margin-left:5px;
-}
-
-.logout{
-    border:1px solid rgba(255,80,100,.2);
-    background:rgba(255,80,100,.06);
-    color:#ff8090;
-    padding:9px 13px;
-    border-radius:11px;
-    cursor:pointer;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
 }
 
 main{
-    max-width:1200px;
+    max-width:1250px;
     margin:auto;
-    padding:35px 20px 80px;
+    padding:35px 20px 100px;
 }
 
-.welcome{
+.title{
     margin-bottom:30px;
 }
 
@@ -119,300 +112,244 @@ main{
     display:inline-block;
     padding:7px 12px;
     border-radius:30px;
-    color:#25d366;
+    color:var(--green);
     background:rgba(37,211,102,.07);
     border:1px solid rgba(37,211,102,.15);
     font-size:9px;
     margin-bottom:12px;
 }
 
-.welcome h1{
-    font-size:clamp(25px,5vw,40px);
+.title h1{
+    font-size:clamp(27px,5vw,42px);
 }
 
-.welcome h1 span{
-    color:#25d366;
+.title h1 span{
+    color:var(--green);
 }
 
-.welcome p{
-    color:#7e8998;
-    font-size:11px;
+.title p{
+    color:var(--muted);
+    font-size:10px;
     line-height:2;
     margin-top:8px;
 }
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(4,1fr);
     gap:15px;
-    margin-bottom:38px;
+    margin-bottom:35px;
 }
 
 .stat{
     padding:22px;
+    border-radius:21px;
+    background:rgba(16,27,40,.75);
     border:1px solid rgba(255,255,255,.07);
-    background:rgba(16,27,40,.72);
-    border-radius:20px;
-    transition:.3s;
 }
 
-.stat:hover{
-    transform:translateY(-4px);
-    border-color:rgba(37,211,102,.2);
-}
-
-.stat-title{
-    color:#7e8998;
+.stat-label{
+    color:var(--muted);
     font-size:9px;
     margin-bottom:10px;
 }
 
 .stat-value{
-    font-size:21px;
+    font-size:20px;
     font-weight:900;
 }
 
-.debt{
-    color:#ffc83d;
-}
+.green{color:var(--green)}
+.yellow{color:var(--yellow)}
+.red{color:var(--red)}
+.blue{color:var(--blue)}
 
-.green{
-    color:#25d366;
+.section{
+    margin-top:25px;
 }
 
 .section-title{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:17px;
-}
-
-.section-title h2{
-    font-size:19px;
-}
-
-.section-title span{
-    color:#7e8998;
-    font-size:9px;
-}
-
-.products{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
-}
-
-.product{
-    position:relative;
-    overflow:hidden;
-    padding:21px;
-    border-radius:22px;
-    border:1px solid rgba(255,255,255,.07);
-    background:
-    linear-gradient(145deg,rgba(20,34,50,.9),rgba(8,15,24,.85));
-    transition:.35s;
-}
-
-.product::before{
-    content:"";
-    position:absolute;
-    width:120px;
-    height:120px;
-    background:rgba(37,211,102,.08);
-    filter:blur(45px);
-    top:-60px;
-    right:-40px;
-}
-
-.product:hover{
-    transform:translateY(-7px);
-    border-color:rgba(37,211,102,.25);
-    box-shadow:0 20px 50px rgba(0,0,0,.25);
-}
-
-.product-top{
-    position:relative;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:17px;
-}
-
-.icon{
-    font-size:31px;
-}
-
-.active{
-    font-size:8px;
-    color:#25d366;
-    padding:6px 9px;
-    border-radius:30px;
-    background:rgba(37,211,102,.07);
-}
-
-.product h3{
-    position:relative;
-    font-size:16px;
-    margin-bottom:8px;
-}
-
-.description{
-    position:relative;
-    color:#7e8998;
-    font-size:9px;
-    line-height:1.8;
-    min-height:34px;
-}
-
-.product-bottom{
-    position:relative;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:20px;
-}
-
-.price{
-    font-size:14px;
-    font-weight:900;
-}
-
-.buy{
-    border:0;
-    background:#25d366;
-    color:#041008;
-    padding:10px 15px;
-    border-radius:12px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.buy:hover{
-    transform:scale(1.05);
-}
-
-.orders{
-    margin-top:45px;
-}
-
-.orders-list{
-    display:grid;
-    gap:14px;
-}
-
-.order{
-    padding:20px;
-    border-radius:20px;
-    background:rgba(16,27,40,.75);
-    border:1px solid rgba(255,255,255,.07);
-    animation:orderIn .4s ease;
-}
-
-@keyframes orderIn{
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.order-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    gap:15px;
     margin-bottom:15px;
 }
 
-.order-name{
-    font-weight:bold;
-    font-size:12px;
+.section-title h2{
+    font-size:17px;
 }
 
-.order-status{
-    padding:7px 10px;
-    border-radius:30px;
+.section-title span{
+    color:var(--muted);
+    font-size:9px;
+}
+
+.card{
+    border-radius:22px;
+    background:rgba(16,27,40,.76);
+    border:1px solid rgba(255,255,255,.07);
+    overflow:hidden;
+}
+
+.table-scroll{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+th{
+    color:var(--muted);
+    font-size:9px;
+    text-align:right;
+    padding:16px;
+    background:rgba(255,255,255,.025);
+    white-space:nowrap;
+}
+
+td{
+    padding:16px;
+    border-top:1px solid rgba(255,255,255,.05);
+    font-size:10px;
+    white-space:nowrap;
+}
+
+.actions{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-size:8px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:var(--green);
+    color:#041008;
+}
+
+.btn-dark{
+    color:#fff;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.btn-red{
+    color:#ff7180;
+    background:rgba(255,80,100,.07);
+    border:1px solid rgba(255,80,100,.12);
+}
+
+.btn-blue{
+    color:#55aaff;
+    background:rgba(85,170,255,.08);
+    border:1px solid rgba(85,170,255,.15);
+}
+
+.btn-yellow{
+    color:#ffc83d;
+    background:rgba(255,200,61,.08);
+    border:1px solid rgba(255,200,61,.15);
+}
+
+.status{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
     font-size:8px;
 }
 
+.active{
+    color:var(--green);
+    background:rgba(37,211,102,.08);
+}
+
+.inactive{
+    color:var(--red);
+    background:rgba(255,80,100,.08);
+}
+
 .pending{
-    color:#ffc83d;
+    color:var(--yellow);
     background:rgba(255,200,61,.08);
 }
 
 .approved{
-    color:#25d366;
+    color:var(--green);
     background:rgba(37,211,102,.08);
 }
 
 .cancelled{
-    color:#ff6175;
+    color:var(--red);
     background:rgba(255,80,100,.08);
 }
 
-.order-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.order-box{
-    padding:12px;
-    border-radius:13px;
-    background:rgba(255,255,255,.025);
-}
-
-.order-box small{
-    display:block;
-    color:#7e8998;
-    font-size:8px;
-    margin-bottom:6px;
-}
-
-.order-box strong{
-    font-size:11px;
-}
-
-.total-green{
-    color:#25d366;
-}
-
-.date{
-    color:#667282;
-    font-size:8px;
-    margin-top:12px;
-}
-
 .empty{
-    padding:50px 20px;
+    padding:45px 20px;
     text-align:center;
-    border:1px dashed rgba(255,255,255,.09);
-    border-radius:20px;
-    color:#7e8998;
-    font-size:10px;
-}
-
-.loading{
-    padding:50px 20px;
-    text-align:center;
-    border-radius:20px;
-    background:rgba(16,27,40,.6);
-    color:#7e8998;
-    font-size:10px;
-}
-
-.error-box{
-    padding:30px 20px;
-    text-align:center;
-    border-radius:20px;
-    background:rgba(255,80,100,.06);
-    border:1px solid rgba(255,80,100,.12);
-    color:#ff8090;
+    color:var(--muted);
     font-size:10px;
     line-height:2;
+}
+
+.refresh{
+    border:1px solid rgba(37,211,102,.18);
+    background:rgba(37,211,102,.06);
+    color:var(--green);
+    padding:9px 13px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.add{
+    border:0;
+    background:var(--green);
+    color:#041008;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:9px;
+}
+
+.payment-item{
+    padding:16px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.payment-left strong{
+    display:block;
+    color:var(--green);
+}
+
+.payment-left small,
+.payment-right small{
+    display:block;
+    color:var(--muted);
+    font-size:8px;
+    margin-top:5px;
+}
+
+.payment-right{
+    text-align:left;
 }
 
 .modal{
@@ -423,7 +360,7 @@ main{
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:rgba(0,0,0,.72);
+    background:rgba(0,0,0,.75);
     backdrop-filter:blur(12px);
 }
 
@@ -433,23 +370,13 @@ main{
 
 .modal-box{
     width:100%;
-    max-width:430px;
+    max-width:460px;
+    max-height:90vh;
+    overflow:auto;
     padding:25px;
     border-radius:25px;
     background:#101c2a;
     border:1px solid rgba(255,255,255,.08);
-    animation:modalIn .3s ease;
-}
-
-@keyframes modalIn{
-    from{
-        opacity:0;
-        transform:scale(.93);
-    }
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
 }
 
 .modal-head{
@@ -466,103 +393,56 @@ main{
 .close{
     width:34px;
     height:34px;
-    border:1px solid rgba(255,255,255,.08);
     border-radius:10px;
+    border:1px solid rgba(255,255,255,.08);
     background:rgba(255,255,255,.04);
     color:#fff;
     cursor:pointer;
+    font-size:20px;
 }
 
-.selected{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:15px;
-    border-radius:15px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.06);
-    margin-bottom:15px;
+.field{
+    margin-bottom:14px;
 }
 
-.selected-icon{
-    font-size:30px;
-}
-
-.selected-name{
-    font-size:13px;
-    font-weight:bold;
-}
-
-.selected-price{
-    color:#7e8998;
+.field label{
+    display:block;
+    color:var(--muted);
     font-size:9px;
-    margin-top:5px;
+    margin-bottom:7px;
 }
 
-.quantity{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:14px;
-    border-radius:15px;
-    background:rgba(255,255,255,.03);
-    margin-bottom:15px;
-}
-
-.quantity label{
-    color:#7e8998;
-    font-size:10px;
-}
-
-.q-controls{
-    display:flex;
-    align-items:center;
-    gap:13px;
-}
-
-.q-controls button{
-    width:32px;
-    height:32px;
-    border-radius:9px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.05);
-    color:#fff;
-    cursor:pointer;
-}
-
-.total-box{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-    border-radius:15px;
-    background:rgba(37,211,102,.06);
-    margin-bottom:16px;
-}
-
-.total-box span:first-child{
-    color:#7e8998;
-    font-size:10px;
-}
-
-.total-value{
-    color:#25d366;
-    font-weight:900;
-}
-
-.confirm{
+.field input,
+.field textarea{
     width:100%;
-    height:50px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.08);
+    outline:0;
+    background:rgba(255,255,255,.04);
+    color:#fff;
+    padding:12px 13px;
+    font-family:inherit;
+}
+
+.field textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus{
+    border-color:rgba(37,211,102,.4);
+}
+
+.submit{
+    width:100%;
+    height:48px;
     border:0;
-    border-radius:14px;
-    background:#25d366;
+    border-radius:13px;
+    background:var(--green);
     color:#041008;
     font-weight:bold;
     cursor:pointer;
-}
-
-.confirm:disabled{
-    opacity:.6;
 }
 
 .toast{
@@ -577,7 +457,7 @@ main{
     border:1px solid rgba(255,255,255,.08);
     font-size:10px;
     opacity:0;
-    transform:translateY(70px);
+    transform:translateY(60px);
     transition:.3s;
 }
 
@@ -586,32 +466,57 @@ main{
     transform:translateY(0);
 }
 
+.login{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#071019;
+}
+
+.login.hidden{
+    display:none;
+}
+
+.login-box{
+    width:100%;
+    max-width:400px;
+    padding:30px;
+    border-radius:25px;
+    background:#101b28;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.login-box h2{
+    margin-bottom:8px;
+}
+
+.login-box p{
+    color:var(--muted);
+    font-size:10px;
+    margin-bottom:25px;
+}
+
 @media(max-width:900px){
-    .products{
+    .stats{
         grid-template-columns:repeat(2,1fr);
     }
 }
 
-@media(max-width:650px){
-
+@media(max-width:600px){
     main{
-        padding:25px 15px 60px;
+        padding:25px 15px 70px;
     }
 
     .stats{
         grid-template-columns:1fr;
     }
 
-    .products{
-        grid-template-columns:1fr;
-    }
-
-    .order-grid{
-        grid-template-columns:1fr;
-    }
-
-    .online{
-        display:none;
+    .header{
+        padding:12px 15px;
     }
 }
 </style>
@@ -619,44 +524,54 @@ main{
 
 <body>
 
+<div class="login" id="loginScreen">
+
+<div class="login-box">
+
+<h2>🔐 V2GUARD</h2>
+
+<p>ورود به پنل مدیریت</p>
+
+<div class="field">
+<label>ایمیل مدیر</label>
+<input id="loginEmail" type="email" placeholder="admin@example.com">
+</div>
+
+<div class="field">
+<label>رمز عبور</label>
+<input id="loginPassword" type="password" placeholder="••••••••">
+</div>
+
+<button class="submit" onclick="login()">
+ورود به پنل
+</button>
+
+</div>
+
+</div>
+
+
 <header>
 
 <div class="header">
 
 <div class="logo-area">
 
-<div class="logo">
-V2
-</div>
+<div class="logo">V2</div>
 
 <div>
 
-<div class="logo-text">
-V2GUARD
-</div>
+<div class="logo-text">V2GUARD</div>
 
-<div class="logo-sub">
-پنل اختصاصی نمایندگان
-</div>
+<div class="logo-sub">پنل مدیریت مالی</div>
 
 </div>
 
 </div>
 
-<div class="header-right">
-
-<div class="online">
-<span class="online-dot"></span>
-آنلاین
-</div>
-
-<button
-class="logout"
-onclick="logout()"
->
-خروج
-</button>
-
+<div class="live">
+<div class="live-dot"></div>
+LIVE
 </div>
 
 </div>
@@ -664,24 +579,20 @@ onclick="logout()"
 </header>
 
 
-<main>
+<main id="app" style="display:none">
 
-<section class="welcome">
+<section class="title">
 
 <div class="badge">
-پنل نمایندگی V2GURD
+V2GUARD • ADMIN • REALTIME
 </div>
 
 <h1>
-سلام،
-<span id="userName">نماینده</span>
-👋
+مدیریت <span>V2GUARD</span>
 </h1>
 
 <p>
-محصولات را انتخاب کنید، تعداد را وارد کنید و سفارش خود را ثبت کنید.
-<br>
-تمام سفارش‌ها و بدهی شما در همین پنل ثبت و محاسبه می‌شود.
+مدیریت نمایندگان، محصولات، سفارش‌ها و تسویه حساب‌ها
 </p>
 
 </section>
@@ -690,48 +601,68 @@ onclick="logout()"
 <section class="stats">
 
 <div class="stat">
-
-<div class="stat-title">
-بدهی فعلی شما
+<div class="stat-label">کل نمایندگان</div>
+<div class="stat-value green" id="users">۰</div>
 </div>
-
-<div
-class="stat-value debt"
-id="debt"
->
-۰ تومان
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div class="stat-title">
-مجموع خرید
+<div class="stat-label">کل سفارش‌ها</div>
+<div class="stat-value yellow" id="orders">۰</div>
 </div>
-
-<div
-class="stat-value"
-id="totalPurchases"
->
-۰ تومان
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div class="stat-title">
-تعداد سفارش
+<div class="stat-label">کل خرید</div>
+<div class="stat-value" id="sales">۰ تومان</div>
 </div>
 
-<div
-class="stat-value green"
-id="orderCount"
->
-۰
+<div class="stat">
+<div class="stat-label">کل بدهی</div>
+<div class="stat-value red" id="debt">۰ تومان</div>
+</div>
+
+</section>
+
+
+<section class="section">
+
+<div class="section-title">
+
+<h2>👥 حساب نمایندگان</h2>
+
+<button class="add" onclick="openRepresentativeModal()">
++ نماینده جدید
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+<tr>
+<th>نماینده</th>
+<th>شماره</th>
+<th>مجموع خرید</th>
+<th>تسویه</th>
+<th>بدهی</th>
+<th>وضعیت</th>
+<th>عملیات</th>
+</tr>
+</thead>
+
+<tbody id="representatives">
+<tr>
+<td colspan="7">
+<div class="empty">در حال دریافت...</div>
+</td>
+</tr>
+</tbody>
+
+</table>
+
 </div>
 
 </div>
@@ -739,52 +670,111 @@ id="orderCount"
 </section>
 
 
+<section class="section">
+
 <div class="section-title">
 
-<h2>
-🛒 محصولات V2GURD
-</h2>
+<h2>📦 مدیریت محصولات</h2>
 
-<span>
-قیمت‌های فعلی
-</span>
+<button class="add" onclick="openProductModal()">
++ محصول جدید
+</button>
 
 </div>
 
+<div class="card">
 
-<section
-class="products"
-id="products"
->
+<div class="table-scroll">
 
-<div class="loading">
-در حال دریافت محصولات...
+<table>
+
+<thead>
+<tr>
+<th>محصول</th>
+<th>توضیحات</th>
+<th>قیمت</th>
+<th>وضعیت</th>
+<th>عملیات</th>
+</tr>
+</thead>
+
+<tbody id="productsTable">
+<tr>
+<td colspan="5">
+<div class="empty">در حال دریافت محصولات...</div>
+</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
 </div>
 
 </section>
 
 
-<section class="orders">
+<section class="section" id="ordersSection">
 
 <div class="section-title">
 
-<h2>
-📦 سفارش‌های من
-</h2>
+<h2>📋 سفارش‌ها</h2>
 
-<span id="ordersCount">
-۰ سفارش
-</span>
+<button class="refresh" onclick="loadAll()">
+↻ بروزرسانی
+</button>
 
 </div>
 
-<div
-class="orders-list"
-id="ordersList"
->
-<div class="loading">
-در حال دریافت سفارش‌ها...
+<div class="card">
+
+<div class="table-scroll">
+
+<table>
+
+<thead>
+<tr>
+<th>نماینده</th>
+<th>محصول</th>
+<th>تعداد</th>
+<th>مبلغ</th>
+<th>وضعیت</th>
+<th>عملیات</th>
+</tr>
+</thead>
+
+<tbody id="ordersTable">
+<tr>
+<td colspan="6">
+<div class="empty">در حال دریافت...</div>
+</td>
+</tr>
+</tbody>
+
+</table>
+
 </div>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<div class="section-title">
+
+<h2>💳 آخرین تسویه‌ها</h2>
+
+</div>
+
+<div class="card">
+
+<div id="paymentsList">
+<div class="empty">در حال دریافت...</div>
+</div>
+
 </div>
 
 </section>
@@ -792,54 +782,44 @@ id="ordersList"
 </main>
 
 
-<div
-class="modal"
-id="modal"
->
+<div class="modal" id="repModal">
 
 <div class="modal-box">
 
 <div class="modal-head">
 
-<h3>
-ثبت سفارش
+<h3 id="repModalTitle">
+👤 نماینده جدید
 </h3>
 
-<button
-class="close"
-onclick="closeModal()"
->
+<button class="close" onclick="closeModal('repModal')">
 ×
 </button>
 
 </div>
 
-
-<div
-class="selected"
-id="selected"
->
+<div class="field">
+<label>نام نماینده</label>
+<input id="repName" placeholder="مثلاً احسان">
 </div>
 
+<div class="field">
+<label>ایمیل</label>
+<input id="repEmail" type="email" placeholder="example@gmail.com">
+</div>
 
-<div class="quantity">
+<div class="field">
+<label>شماره تلفن</label>
+<input id="repPhone" placeholder="09xxxxxxxxx">
+</div>
 
-<label>
-تعداد
-</label>
+<div class="field">
+<label id="passwordLabel">رمز عبور</label>
+<input id="repPassword" type="password" placeholder="حداقل ۶ کاراکتر">
+</div>
 
-<div class="q-controls">
-
-<button onclick="changeQuantity(-1)">
-−
-</button>
-
-<strong id="quantity">
-۱
-</strong>
-
-<button onclick="changeQuantity(1)">
-+
+<button class="submit" onclick="saveRepresentative()">
+ذخیره نماینده
 </button>
 
 </div>
@@ -847,28 +827,39 @@ id="selected"
 </div>
 
 
-<div class="total-box">
+<div class="modal" id="productModal">
 
-<span>
-مبلغ سفارش
-</span>
+<div class="modal-box">
 
-<span
-class="total-value"
-id="total"
->
-۰ تومان
-</span>
+<div class="modal-head">
+
+<h3 id="productModalTitle">
+📦 محصول جدید
+</h3>
+
+<button class="close" onclick="closeModal('productModal')">
+×
+</button>
 
 </div>
 
+<div class="field">
+<label>نام محصول</label>
+<input id="productName" placeholder="مثلاً ۱۰ گیگ">
+</div>
 
-<button
-class="confirm"
-id="confirm"
-onclick="submitOrder()"
->
-تأیید و ثبت سفارش
+<div class="field">
+<label>توضیحات</label>
+<textarea id="productDescription" placeholder="توضیحات محصول"></textarea>
+</div>
+
+<div class="field">
+<label>قیمت تومان</label>
+<input id="productPrice" type="number" min="0" placeholder="20000">
+</div>
+
+<button class="submit" onclick="saveProduct()">
+ذخیره محصول
 </button>
 
 </div>
@@ -876,10 +867,42 @@ onclick="submitOrder()"
 </div>
 
 
-<div
-class="toast"
-id="toast"
-></div>
+<div class="modal" id="paymentModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h3>💳 ثبت تسویه</h3>
+
+<button class="close" onclick="closeModal('paymentModal')">
+×
+</button>
+
+</div>
+
+<div id="selectedRep" class="field"></div>
+
+<div class="field">
+<label>مبلغ</label>
+<input id="paymentAmount" type="number" min="1">
+</div>
+
+<div class="field">
+<label>توضیحات</label>
+<input id="paymentDescription" placeholder="تسویه حساب">
+</div>
+
+<button class="submit" onclick="submitPayment()">
+ثبت تسویه
+</button>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
 
 
 <script>
@@ -888,7 +911,11 @@ const SUPABASE_URL =
 "https://fmrocoflspugyaprvrve.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_LW7Kr8R_N9WmHMQkWo8S0A_i02mBfT8";
+"sb_publishable_LW7Kr8N9WmHMQkWo8S0A_i02mBfT8";
+
+const EDGE_FUNCTION_URL =
+SUPABASE_URL +
+"/functions/v1/admin-manager";
 
 const supabaseClient =
 supabase.createClient(
@@ -897,1011 +924,1264 @@ supabase.createClient(
 );
 
 
-let currentUser = null;
+let profiles=[];
+let orders=[];
+let payments=[];
+let products=[];
 
-let products = [];
+let editingRepresentativeId=null;
+let editingProductId=null;
+let selectedRepresentative=null;
 
-let selectedProduct = null;
-
-let quantity = 1;
-
-
-/* =========================
-   ابزارها
-========================= */
 
 function money(number){
-
     return new Intl.NumberFormat("fa-IR")
-        .format(Number(number || 0))
-        + " تومان";
+        .format(Math.round(Number(number||0)))+
+        " تومان";
+}
 
+
+function dateFa(date){
+    if(!date) return "—";
+
+    return new Date(date)
+        .toLocaleString("fa-IR");
 }
 
 
 function escapeHtml(value){
-
-    return String(value ?? "")
+    return String(value??"")
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
-
 }
 
 
 function showToast(message){
 
-    const toast =
-        document.getElementById("toast");
+    const el=document.getElementById("toast");
 
-    toast.textContent = message;
+    el.textContent=message;
 
-    toast.classList.add("show");
+    el.classList.add("show");
 
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
+    setTimeout(()=>{
+        el.classList.remove("show");
     },3500);
-
 }
 
 
-/* =========================
-   محصولات از دیتابیس
-========================= */
+async function login(){
 
-async function loadProducts(){
+    const email=
+        document.getElementById("loginEmail").value.trim();
 
-    const box =
-        document.getElementById("products");
+    const password=
+        document.getElementById("loginPassword").value;
 
-    box.innerHTML = `
-        <div class="loading">
-            در حال دریافت محصولات...
-        </div>
-    `;
+    if(!email || !password){
+        showToast("ایمیل و رمز عبور را وارد کنید");
+        return;
+    }
 
-
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from("products")
-        .select("*")
-        .eq("is_active",true)
-        .order("created_at",{
-            ascending:true
+    const {error}=
+        await supabaseClient.auth.signInWithPassword({
+            email,
+            password
         });
 
-
     if(error){
-
-        console.error(
-            "PRODUCTS ERROR:",
-            error
-        );
-
-        box.innerHTML = `
-            <div class="error-box">
-                ⚠️ دریافت محصولات با خطا مواجه شد.
-                <br>
-                <small>
-                    ${escapeHtml(error.message)}
-                </small>
-            </div>
-        `;
-
-        return false;
+        showToast("ورود ناموفق: "+error.message);
+        return;
     }
 
-
-    products = data || [];
-
-
-    if(!products.length){
-
-        box.innerHTML = `
-            <div class="empty">
-                🛒
-                <br><br>
-                در حال حاضر محصول فعالی وجود ندارد.
-            </div>
-        `;
-
-        return true;
-    }
-
-
-    box.innerHTML =
-        products.map((product,index) => {
-
-            const icon =
-                getProductIcon(product.name,index);
-
-
-            return `
-
-            <article class="product">
-
-                <div class="product-top">
-
-                    <div class="icon">
-                        ${icon}
-                    </div>
-
-                    <div class="active">
-                        ● فعال
-                    </div>
-
-                </div>
-
-
-                <h3>
-                    ${escapeHtml(product.name)}
-                </h3>
-
-
-                <div class="description">
-                    ${escapeHtml(
-                        product.description ||
-                        "محصول V2GUARD"
-                    )}
-                </div>
-
-
-                <div class="product-bottom">
-
-                    <div class="price">
-                        ${money(product.price)}
-                    </div>
-
-                    <button
-                        class="buy"
-                        onclick="openOrder('${product.id}')"
-                    >
-                        خرید
-                    </button>
-
-                </div>
-
-            </article>
-
-            `;
-
-        }).join("");
-
-
-
-    return true;
+    await startApp();
 }
 
 
-/* =========================
-   آیکن محصولات
-========================= */
-
-function getProductIcon(name,index){
-
-    const text =
-        String(name || "").toLowerCase();
-
-
-    if(
-        text.includes("گیم") ||
-        text.includes("gaming") ||
-        text.includes("کال")
-    ){
-        return "🎮";
-    }
-
-
-    if(
-        text.includes("پنل") ||
-        text.includes("ترا")
-    ){
-        return "🖥️";
-    }
-
-
-    if(
-        text.includes("نامحدود")
-    ){
-        return "♾️";
-    }
-
-
-    if(
-        text.includes("۵۰۰") ||
-        text.includes("500")
-    ){
-        return "🔥";
-    }
-
-
-    if(
-        text.includes("سرور")
-    ){
-        return "🌐";
-    }
-
-
-    return index % 2 === 0
-        ? "🟢"
-        : "⚡";
-
-}
-
-
-/* =========================
-   شروع پنل
-========================= */
-
-async function init(){
+async function startApp(){
 
     const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .auth
-        .getUser();
+        data:{
+            session
+        }
+    }=
+    await supabaseClient.auth.getSession();
 
-
-    if(error){
-
-        console.error(
-            "AUTH ERROR:",
-            error
-        );
-
-        location.href =
-            "login.html";
+    if(!session){
+        document.getElementById("loginScreen")
+            .classList.remove("hidden");
 
         return;
     }
 
+    document.getElementById("loginScreen")
+        .classList.add("hidden");
 
-    if(!data.user){
+    document.getElementById("app")
+        .style.display="block";
 
-        location.href =
-            "login.html";
-
-        return;
-    }
-
-
-    currentUser =
-        data.user;
-
-
-    await loadProfile();
-
-    await loadProducts();
-
-    await loadOrders();
-
-    await loadStats();
-
+    await loadAll();
 }
 
 
-/* =========================
-   پروفایل
-========================= */
+async function edgeAction(action,data={}){
 
-async function loadProfile(){
+    const {
+        data:{
+            session
+        }
+    }=
+    await supabaseClient.auth.getSession();
+
+    if(!session){
+        throw new Error("ابتدا وارد حساب مدیریت شوید");
+    }
+
+    const response=
+        await fetch(
+            EDGE_FUNCTION_URL,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":
+                        "Bearer "+session.access_token,
+                    "apikey":SUPABASE_KEY
+                },
+                body:JSON.stringify({
+                    action,
+                    ...data
+                })
+            }
+        );
+
+    const result=
+        await response.json();
+
+    if(!response.ok || result.success===false){
+        throw new Error(
+            result.error ||
+            "خطای سرور"
+        );
+    }
+
+    return result.data;
+}
+
+
+async function loadAll(){
+
+    try{
+
+        await Promise.all([
+            loadProfiles(),
+            loadOrders(),
+            loadPayments(),
+            loadProducts()
+        ]);
+
+        renderRepresentatives();
+        renderOrders();
+        renderPayments();
+        renderProducts();
+        updateStats();
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            "خطا: "+error.message
+        );
+    }
+}
+
+
+async function loadProfiles(){
 
     const {
         data,
         error
-    } =
+    }=
     await supabaseClient
         .from("profiles")
         .select("*")
-        .eq(
-            "id",
-            currentUser.id
-        )
-        .maybeSingle();
-
-
-    if(error){
-
-        console.error(
-            "PROFILE ERROR:",
-            error
+        .eq("role","representative")
+        .order(
+            "created_at",
+            {ascending:false}
         );
 
-        return;
-    }
+    if(error) throw error;
 
+    profiles=data||[];
 
-    if(data){
-
-        document
-            .getElementById("userName")
-            .textContent =
-                data.full_name ||
-                data.name ||
-                currentUser.email?.split("@")[0] ||
-                "نماینده";
-
-    }
-
+    document.getElementById("users")
+        .textContent=
+        profiles.length.toLocaleString("fa-IR");
 }
 
 
-/* =========================
-   باز کردن سفارش
-========================= */
-
-function openOrder(productId){
-
-    selectedProduct =
-        products.find(
-            product =>
-                product.id === productId
-        );
-
-
-    if(!selectedProduct){
-
-        showToast(
-            "محصول مورد نظر پیدا نشد."
-        );
-
-        return;
-    }
-
-
-    quantity = 1;
-
-
-    document
-        .getElementById("quantity")
-        .textContent = "۱";
-
-
-    document
-        .getElementById("selected")
-        .innerHTML = `
-
-        <div class="selected-icon">
-            ${getProductIcon(
-                selectedProduct.name,
-                0
-            )}
-        </div>
-
-        <div>
-
-            <div class="selected-name">
-                ${escapeHtml(
-                    selectedProduct.name
-                )}
-            </div>
-
-            <div class="selected-price">
-                ${money(
-                    selectedProduct.price
-                )}
-                برای هر عدد
-            </div>
-
-        </div>
-
-        `;
-
-
-    updateTotal();
-
-
-    document
-        .getElementById("modal")
-        .classList.add("show");
-
-}
-
-
-/* =========================
-   بستن مودال
-========================= */
-
-function closeModal(){
-
-    document
-        .getElementById("modal")
-        .classList.remove("show");
-
-    selectedProduct = null;
-
-}
-
-
-/* =========================
-   تعداد
-========================= */
-
-function changeQuantity(value){
-
-    quantity += value;
-
-
-    if(quantity < 1)
-        quantity = 1;
-
-
-    if(quantity > 100)
-        quantity = 100;
-
-
-    document
-        .getElementById("quantity")
-        .textContent =
-            quantity.toLocaleString("fa-IR");
-
-
-    updateTotal();
-
-}
-
-
-/* =========================
-   محاسبه مبلغ
-========================= */
-
-function updateTotal(){
-
-    if(!selectedProduct)
-        return;
-
-
-    const total =
-        Number(selectedProduct.price) *
-        quantity;
-
-
-    document
-        .getElementById("total")
-        .textContent =
-            money(total);
-
-}
-
-
-/* =========================
-   ثبت سفارش
-========================= */
-
-async function submitOrder(){
-
-    if(!selectedProduct){
-
-        showToast(
-            "لطفاً ابتدا محصول را انتخاب کنید."
-        );
-
-        return;
-    }
-
-
-    const button =
-        document.getElementById("confirm");
-
-
-    button.disabled = true;
-
-    button.textContent =
-        "در حال ثبت...";
-
-
-    const total =
-        Number(selectedProduct.price) *
-        quantity;
-
-
-    /*
-       بسیار مهم:
-       product_id در اینجا UUID واقعی
-       جدول products است.
-    */
-
-
-    const orderData = {
-
-        representative_id:
-            currentUser.id,
-
-        product_id:
-            selectedProduct.id,
-
-        product_name:
-            selectedProduct.name,
-
-        quantity:
-            quantity,
-
-        unit_price:
-            Number(selectedProduct.price),
-
-        total_price:
-            total,
-
-        status:
-            "pending"
-
-    };
-
-
-    console.log(
-        "ORDER DATA:",
-        orderData
-    );
-
+async function loadProducts(){
 
     const {
         data,
         error
-    } =
+    }=
     await supabaseClient
-        .from("orders")
-        .insert(orderData)
-        .select()
-        .single();
-
-
-    if(error){
-
-        console.error(
-            "ORDER ERROR:",
-            error
+        .from("products")
+        .select("*")
+        .order(
+            "created_at",
+            {ascending:false}
         );
 
+    if(error) throw error;
 
-        showToast(
-            "خطا در ثبت سفارش: " +
-            error.message
-        );
-
-
-        button.disabled = false;
-
-        button.textContent =
-            "تأیید و ثبت سفارش";
-
-        return;
-    }
-
-
-    console.log(
-        "ORDER CREATED:",
-        data
-    );
-
-
-    closeModal();
-
-
-    showToast(
-        "سفارش با موفقیت ثبت شد ✓"
-    );
-
-
-    await loadOrders();
-
-    await loadStats();
-
-
-    button.disabled = false;
-
-    button.textContent =
-        "تأیید و ثبت سفارش";
-
+    products=data||[];
 }
 
-
-/* =========================
-   دریافت سفارش‌ها
-========================= */
 
 async function loadOrders(){
 
-    const box =
-        document.getElementById(
-            "ordersList"
-        );
-
-
-    box.innerHTML = `
-        <div class="loading">
-            در حال دریافت سفارش‌ها...
-        </div>
-    `;
-
-
     const {
         data,
         error
-    } =
+    }=
     await supabaseClient
         .from("orders")
         .select("*")
-        .eq(
-            "representative_id",
-            currentUser.id
-        )
         .order(
             "created_at",
-            {
-                ascending:false
-            }
+            {ascending:false}
         );
 
+    if(error) throw error;
 
-    if(error){
+    orders=data||[];
 
-        console.error(
-            "ORDERS ERROR:",
-            error
-        );
-
-
-        box.innerHTML = `
-
-            <div class="error-box">
-
-                ⚠️ دریافت سفارش‌ها با خطا مواجه شد.
-
-                <br><br>
-
-                <small>
-                    ${escapeHtml(
-                        error.message
-                    )}
-                </small>
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    const orders =
-        data || [];
-
-
-    document
-        .getElementById("ordersCount")
-        .textContent =
-            orders.length
-                .toLocaleString("fa-IR")
-            + " سفارش";
-
-
-    if(!orders.length){
-
-        box.innerHTML = `
-
-            <div class="empty">
-
-                📦
-
-                <br><br>
-
-                هنوز سفارشی ثبت نکرده‌اید.
-
-            </div>
-
-        `;
-
-        return;
-    }
-
-
-    box.innerHTML =
-        orders.map(order => {
-
-            let status =
-                "در انتظار تأیید";
-
-            let statusClass =
-                "pending";
-
-
-            if(
-                order.status ===
-                "approved"
-            ){
-
-                status =
-                    "تأیید شده";
-
-                statusClass =
-                    "approved";
-
-            }
-
-
-            if(
-                order.status ===
-                "cancelled"
-            ){
-
-                status =
-                    "لغو شده";
-
-                statusClass =
-                    "cancelled";
-
-            }
-
-
-            const qty =
-                Number(
-                    order.quantity || 0
-                );
-
-
-            const unitPrice =
-                Number(
-                    order.unit_price || 0
-                );
-
-
-            const total =
-                Number(
-                    order.total_price ||
-                    qty * unitPrice
-                );
-
-
-            const date =
-                order.created_at
-                ?
-                new Date(
-                    order.created_at
-                ).toLocaleString(
-                    "fa-IR"
-                )
-                :
-                "—";
-
-
-            return `
-
-            <article class="order">
-
-                <div class="order-head">
-
-                    <div class="order-name">
-
-                        ${escapeHtml(
-                            order.product_name ||
-                            "محصول"
-                        )}
-
-                    </div>
-
-
-                    <div
-                        class="order-status ${statusClass}"
-                    >
-                        ${status}
-                    </div>
-
-                </div>
-
-
-                <div class="order-grid">
-
-
-                    <div class="order-box">
-
-                        <small>
-                            تعداد
-                        </small>
-
-                        <strong>
-                            ${qty.toLocaleString(
-                                "fa-IR"
-                            )}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="order-box">
-
-                        <small>
-                            قیمت واحد
-                        </small>
-
-                        <strong>
-                            ${money(
-                                unitPrice
-                            )}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="order-box">
-
-                        <small>
-                            مبلغ کل
-                        </small>
-
-                        <strong class="total-green">
-                            ${money(
-                                total
-                            )}
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="date">
-
-                    🕒 ${date}
-
-                </div>
-
-
-            </article>
-
-            `;
-
-        }).join("");
-
+    document.getElementById("orders")
+        .textContent=
+        orders.length.toLocaleString("fa-IR");
 }
 
 
-/* =========================
-   آمار
-========================= */
-
-async function loadStats(){
+async function loadPayments(){
 
     const {
         data,
         error
-    } =
+    }=
     await supabaseClient
-        .from("orders")
-        .select(
-            "quantity,unit_price,total_price,status"
-        )
-        .eq(
-            "representative_id",
-            currentUser.id
+        .from("payments")
+        .select("*")
+        .order(
+            "created_at",
+            {ascending:false}
         );
 
+    if(error) throw error;
 
-    if(error){
+    payments=data||[];
+}
 
-        console.error(
-            "STATS ERROR:",
-            error
+
+function getProfile(id){
+    return profiles.find(p=>p.id===id);
+}
+
+
+function getRepData(profile){
+
+    const repOrders=
+        orders.filter(
+            o=>o.representative_id===profile.id
         );
+
+    const repPayments=
+        payments.filter(
+            p=>p.representative_id===profile.id
+        );
+
+    let purchases=0;
+    let paid=0;
+
+    repOrders.forEach(order=>{
+
+        if(order.status==="cancelled")
+            return;
+
+        purchases+=Number(
+            order.total_price ||
+            Number(order.quantity||0)*
+            Number(order.unit_price||0)
+        );
+    });
+
+    repPayments.forEach(payment=>{
+        paid+=Number(payment.amount||0);
+    });
+
+    return {
+        purchases,
+        paid,
+        debt:Math.max(0,purchases-paid)
+    };
+}
+
+
+function renderRepresentatives(){
+
+    const table=
+        document.getElementById("representatives");
+
+    if(!profiles.length){
+
+        table.innerHTML=`
+        <tr>
+        <td colspan="7">
+        <div class="empty">
+        هنوز نماینده‌ای وجود ندارد.
+        </div>
+        </td>
+        </tr>`;
 
         return;
     }
 
+    table.innerHTML=
+        profiles.map(profile=>{
 
-    let debt = 0;
+            const data=
+                getRepData(profile);
 
-    let purchases = 0;
+            const name=
+                profile.name ||
+                profile.email ||
+                "بدون نام";
+
+            return `
+            <tr>
+
+            <td>
+            <strong>
+            ${escapeHtml(name)}
+            </strong>
+
+            <div style="color:#667282;font-size:8px;margin-top:5px">
+            ${escapeHtml(profile.email||"")}
+            </div>
+            </td>
+
+            <td>
+            ${escapeHtml(profile.phone||"—")}
+            </td>
+
+            <td>
+            ${money(data.purchases)}
+            </td>
+
+            <td class="green">
+            ${money(data.paid)}
+            </td>
+
+            <td class="red">
+            ${money(data.debt)}
+            </td>
+
+            <td>
+            ${
+                profile.is_active!==false
+                ?
+                `<span class="status active">فعال</span>`
+                :
+                `<span class="status inactive">غیرفعال</span>`
+            }
+            </td>
+
+            <td>
+
+            <div class="actions">
+
+            <button
+            class="btn btn-blue"
+            onclick="editRepresentative('${profile.id}')">
+            ویرایش
+            </button>
+
+            <button
+            class="btn btn-green"
+            onclick="openPayment('${profile.id}')"
+            ${data.debt<=0?"disabled":""}>
+            تسویه
+            </button>
+
+            <button
+            class="btn btn-yellow"
+            onclick="toggleRepresentative('${profile.id}',${profile.is_active!==false})">
+            ${profile.is_active!==false?"غیرفعال":"فعال"}
+            </button>
+
+            <button
+            class="btn btn-red"
+            onclick="deleteRepresentative('${profile.id}')">
+            حذف
+            </button>
+
+            </div>
+
+            </td>
+
+            </tr>
+            `;
+        }).join("");
+}
 
 
-    (data || []).forEach(order => {
+function renderProducts(){
 
-        if(
-            order.status ===
-            "cancelled"
-        ){
+    const table=
+        document.getElementById("productsTable");
+
+    if(!products.length){
+
+        table.innerHTML=`
+        <tr>
+        <td colspan="5">
+        <div class="empty">
+        هنوز محصولی وجود ندارد.
+        </div>
+        </td>
+        </tr>`;
+
+        return;
+    }
+
+    table.innerHTML=
+        products.map(product=>{
+
+            return `
+            <tr>
+
+            <td>
+            <strong>
+            ${escapeHtml(product.name)}
+            </strong>
+            </td>
+
+            <td>
+            ${escapeHtml(product.description||"—")}
+            </td>
+
+            <td>
+            <strong>
+            ${money(product.price)}
+            </strong>
+            </td>
+
+            <td>
+            ${
+                product.is_active
+                ?
+                `<span class="status active">فعال</span>`
+                :
+                `<span class="status inactive">غیرفعال</span>`
+            }
+            </td>
+
+            <td>
+
+            <div class="actions">
+
+            <button
+            class="btn btn-blue"
+            onclick="editProduct('${product.id}')">
+            ویرایش
+            </button>
+
+            <button
+            class="btn btn-yellow"
+            onclick="toggleProduct('${product.id}',${product.is_active})">
+            ${product.is_active?"غیرفعال":"فعال"}
+            </button>
+
+            <button
+            class="btn btn-red"
+            onclick="deleteProduct('${product.id}')">
+            حذف
+            </button>
+
+            </div>
+
+            </td>
+
+            </tr>
+            `;
+        }).join("");
+}
+
+
+function statusHtml(status){
+
+    if(status==="approved")
+        return `<span class="status approved">تأیید شده</span>`;
+
+    if(status==="cancelled")
+        return `<span class="status cancelled">لغو شده</span>`;
+
+    return `<span class="status pending">در انتظار</span>`;
+}
+
+
+function renderOrders(){
+
+    const table=
+        document.getElementById("ordersTable");
+
+    if(!orders.length){
+
+        table.innerHTML=`
+        <tr>
+        <td colspan="6">
+        <div class="empty">
+        هنوز سفارشی ثبت نشده است.
+        </div>
+        </td>
+        </tr>`;
+
+        return;
+    }
+
+    table.innerHTML=
+        orders.slice(0,100)
+        .map(order=>{
+
+            const profile=
+                getProfile(order.representative_id);
+
+            const name=
+                profile?.name ||
+                profile?.email ||
+                "نماینده";
+
+            const total=
+                Number(
+                    order.total_price ||
+                    Number(order.quantity||0)*
+                    Number(order.unit_price||0)
+                );
+
+            const pending=
+                !order.status ||
+                order.status==="pending";
+
+            return `
+            <tr>
+
+            <td>
+            ${escapeHtml(name)}
+            </td>
+
+            <td>
+            ${escapeHtml(order.product_name||"—")}
+            </td>
+
+            <td>
+            ${Number(order.quantity||0)
+                .toLocaleString("fa-IR")}
+            </td>
+
+            <td>
+            <strong>${money(total)}</strong>
+            </td>
+
+            <td>
+            ${statusHtml(order.status)}
+            </td>
+
+            <td>
+
+            ${
+                pending
+                ?
+                `
+                <div class="actions">
+
+                <button
+                class="btn btn-green"
+                onclick="approveOrder('${order.id}')">
+                تأیید
+                </button>
+
+                <button
+                class="btn btn-red"
+                onclick="cancelOrder('${order.id}')">
+                لغو
+                </button>
+
+                </div>
+                `
+                :
+                "—"
+            }
+
+            </td>
+
+            </tr>
+            `;
+        }).join("");
+}
+
+
+function renderPayments(){
+
+    const box=
+        document.getElementById("paymentsList");
+
+    if(!payments.length){
+
+        box.innerHTML=
+        `<div class="empty">
+        هنوز تسویه‌ای ثبت نشده است.
+        </div>`;
+
+        return;
+    }
+
+    box.innerHTML=
+        payments.slice(0,30)
+        .map(payment=>{
+
+            const profile=
+                getProfile(payment.representative_id);
+
+            const name=
+                profile?.name ||
+                profile?.email ||
+                "نماینده";
+
+            return `
+            <div class="payment-item">
+
+            <div class="payment-left">
+
+            <strong>
+            + ${money(payment.amount)}
+            </strong>
+
+            <small>
+            ${escapeHtml(name)}
+            ${payment.description?
+                " • "+escapeHtml(payment.description):
+                ""}
+            </small>
+
+            </div>
+
+            <div class="payment-right">
+
+            <strong>
+            تسویه ثبت شد
+            </strong>
+
+            <small>
+            ${dateFa(payment.created_at)}
+            </small>
+
+            </div>
+
+            </div>
+            `;
+        }).join("");
+}
+
+
+function updateStats(){
+
+    let sales=0;
+    let debt=0;
+
+    orders.forEach(order=>{
+
+        if(order.status==="cancelled")
             return;
-        }
+
+        sales+=Number(
+            order.total_price ||
+            Number(order.quantity||0)*
+            Number(order.unit_price||0)
+        );
+    });
+
+    payments.forEach(payment=>{
+        debt-=Number(payment.amount||0);
+    });
+
+    debt+=sales;
+
+    document.getElementById("sales")
+        .textContent=money(sales);
+
+    document.getElementById("debt")
+        .textContent=money(Math.max(0,debt));
+}
 
 
-        const amount =
-            Number(
-                order.total_price ||
-                (
-                    Number(
-                        order.quantity || 0
-                    ) *
-                    Number(
-                        order.unit_price || 0
-                    )
-                )
+function openRepresentativeModal(){
+
+    editingRepresentativeId=null;
+
+    document.getElementById("repModalTitle")
+        .textContent="👤 نماینده جدید";
+
+    document.getElementById("repName").value="";
+    document.getElementById("repEmail").value="";
+    document.getElementById("repPhone").value="";
+    document.getElementById("repPassword").value="";
+
+    document.getElementById("passwordLabel")
+        .textContent="رمز عبور";
+
+    document.getElementById("repModal")
+        .classList.add("show");
+}
+
+
+function editRepresentative(id){
+
+    const rep=
+        profiles.find(p=>p.id===id);
+
+    if(!rep) return;
+
+    editingRepresentativeId=id;
+
+    document.getElementById("repModalTitle")
+        .textContent="✏️ ویرایش نماینده";
+
+    document.getElementById("repName").value=
+        rep.name||"";
+
+    document.getElementById("repEmail").value=
+        rep.email||"";
+
+    document.getElementById("repPhone").value=
+        rep.phone||"";
+
+    document.getElementById("repPassword").value="";
+
+    document.getElementById("passwordLabel")
+        .textContent=
+        "رمز جدید — در صورت نیاز وارد کنید";
+
+    document.getElementById("repModal")
+        .classList.add("show");
+}
+
+
+async function saveRepresentative(){
+
+    const name=
+        document.getElementById("repName").value.trim();
+
+    const email=
+        document.getElementById("repEmail").value.trim();
+
+    const phone=
+        document.getElementById("repPhone").value.trim();
+
+    const password=
+        document.getElementById("repPassword").value;
+
+    try{
+
+        if(editingRepresentativeId){
+
+            await edgeAction(
+                "update_representative",
+                {
+                    id:editingRepresentativeId,
+                    name,
+                    email,
+                    phone,
+                    password
+                }
             );
 
+            showToast("نماینده ویرایش شد ✓");
 
-        purchases += amount;
+        }else{
+
+            await edgeAction(
+                "create_representative",
+                {
+                    name,
+                    email,
+                    phone,
+                    password
+                }
+            );
+
+            showToast("نماینده ساخته شد ✓");
+        }
+
+        closeModal("repModal");
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
 
 
-        /*
-           فعلاً تمام سفارش‌های
-           غیرلغوشده بدهی محسوب می‌شوند.
-        */
+async function deleteRepresentative(id){
 
-        debt += amount;
+    const rep=
+        profiles.find(p=>p.id===id);
+
+    if(!rep) return;
+
+    const name=
+        rep.name||rep.email||"این نماینده";
+
+    if(!confirm(
+        `نماینده «${name}» حذف شود؟\n\nاین عملیات قابل بازگشت نیست.`
+    ))
+        return;
+
+    try{
+
+        await edgeAction(
+            "delete_representative",
+            {id}
+        );
+
+        showToast("نماینده حذف شد");
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
+
+
+async function toggleRepresentative(id,current){
+
+    try{
+
+        await edgeAction(
+            "toggle_representative",
+            {
+                id,
+                is_active:!current
+            }
+        );
+
+        showToast(
+            current
+            ?"نماینده غیرفعال شد"
+            :"نماینده فعال شد"
+        );
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
+
+
+function openProductModal(){
+
+    editingProductId=null;
+
+    document.getElementById("productModalTitle")
+        .textContent="📦 محصول جدید";
+
+    document.getElementById("productName").value="";
+    document.getElementById("productDescription").value="";
+    document.getElementById("productPrice").value="";
+
+    document.getElementById("productModal")
+        .classList.add("show");
+}
+
+
+function editProduct(id){
+
+    const product=
+        products.find(p=>p.id===id);
+
+    if(!product) return;
+
+    editingProductId=id;
+
+    document.getElementById("productModalTitle")
+        .textContent="✏️ ویرایش محصول";
+
+    document.getElementById("productName").value=
+        product.name||"";
+
+    document.getElementById("productDescription").value=
+        product.description||"";
+
+    document.getElementById("productPrice").value=
+        product.price||0;
+
+    document.getElementById("productModal")
+        .classList.add("show");
+}
+
+
+async function saveProduct(){
+
+    const name=
+        document.getElementById("productName")
+        .value.trim();
+
+    const description=
+        document.getElementById("productDescription")
+        .value.trim();
+
+    const price=
+        Number(
+            document.getElementById("productPrice")
+            .value
+        );
+
+    try{
+
+        if(editingProductId){
+
+            await edgeAction(
+                "update_product",
+                {
+                    id:editingProductId,
+                    name,
+                    description,
+                    price
+                }
+            );
+
+            showToast("محصول ویرایش شد ✓");
+
+        }else{
+
+            await edgeAction(
+                "create_product",
+                {
+                    name,
+                    description,
+                    price
+                }
+            );
+
+            showToast("محصول اضافه شد ✓");
+        }
+
+        closeModal("productModal");
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
+
+
+async function deleteProduct(id){
+
+    const product=
+        products.find(p=>p.id===id);
+
+    if(!product) return;
+
+    if(!confirm(
+        `محصول «${product.name}» حذف شود؟`
+    ))
+        return;
+
+    try{
+
+        await edgeAction(
+            "delete_product",
+            {id}
+        );
+
+        showToast("محصول حذف شد");
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
+
+
+async function toggleProduct(id,current){
+
+    try{
+
+        await edgeAction(
+            "toggle_product",
+            {
+                id,
+                is_active:!current
+            }
+        );
+
+        showToast(
+            current
+            ?"محصول غیرفعال شد"
+            :"محصول فعال شد"
+        );
+
+        await loadAll();
+
+    }catch(error){
+
+        showToast(error.message);
+    }
+}
+
+
+function openPayment(id){
+
+    selectedRepresentative=
+        profiles.find(p=>p.id===id);
+
+    if(!selectedRepresentative)
+        return;
+
+    const data=
+        getRepData(selectedRepresentative);
+
+    document.getElementById("selectedRep")
+        .innerHTML=`
+        <strong>
+        ${escapeHtml(
+            selectedRepresentative.name||
+            selectedRepresentative.email||
+            "نماینده"
+        )}
+        </strong>
+
+        <div style="color:#ff6478;margin-top:8px">
+        بدهی: ${money(data.debt)}
+        </div>
+        `;
+
+    document.getElementById("paymentAmount")
+        .value="";
+
+    document.getElementById("paymentAmount")
+        .max=data.debt;
+
+    document.getElementById("paymentDescription")
+        .value="";
+
+    document.getElementById("paymentModal")
+        .classList.add("show");
+}
+
+
+async function submitPayment(){
+
+    if(!selectedRepresentative)
+        return;
+
+    const amount=
+        Number(
+            document.getElementById("paymentAmount")
+            .value
+        );
+
+    const description=
+        document.getElementById("paymentDescription")
+        .value.trim();
+
+    const data=
+        getRepData(selectedRepresentative);
+
+    if(!amount || amount<=0){
+        showToast("مبلغ را وارد کنید");
+        return;
+    }
+
+    if(amount>data.debt){
+        showToast("مبلغ بیشتر از بدهی است");
+        return;
+    }
+
+    const {error}=
+        await supabaseClient
+        .from("payments")
+        .insert({
+            representative_id:
+                selectedRepresentative.id,
+            amount,
+            description:
+                description||"تسویه حساب"
+        });
+
+    if(error){
+        showToast(error.message);
+        return;
+    }
+
+    closeModal("paymentModal");
+
+    showToast("تسویه ثبت شد ✓");
+
+    await loadAll();
+}
+
+
+async function approveOrder(id){
+
+    if(!confirm("این سفارش تأیید شود؟"))
+        return;
+
+    const {error}=
+        await supabaseClient
+        .from("orders")
+        .update({
+            status:"approved"
+        })
+        .eq("id",id);
+
+    if(error){
+        showToast(error.message);
+        return;
+    }
+
+    showToast("سفارش تأیید شد ✓");
+
+    await loadAll();
+}
+
+
+async function cancelOrder(id){
+
+    if(!confirm("این سفارش لغو شود؟"))
+        return;
+
+    const {error}=
+        await supabaseClient
+        .from("orders")
+        .update({
+            status:"cancelled"
+        })
+        .eq("id",id);
+
+    if(error){
+        showToast(error.message);
+        return;
+    }
+
+    showToast("سفارش لغو شد");
+
+    await loadAll();
+}
+
+
+function closeModal(id){
+
+    document.getElementById(id)
+        .classList.remove("show");
+}
+
+
+document.querySelectorAll(".modal")
+.forEach(modal=>{
+
+    modal.addEventListener("click",e=>{
+
+        if(e.target===modal)
+            modal.classList.remove("show");
 
     });
 
-
-    document
-        .getElementById("debt")
-        .textContent =
-            money(debt);
+});
 
 
-    document
-        .getElementById("totalPurchases")
-        .textContent =
-            money(purchases);
+const realtimeChannel=
+    supabaseClient
+    .channel("v2guard-admin-live")
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"orders"
+        },
+        async()=>{
+            await loadOrders();
+            renderOrders();
+            updateStats();
+        }
+    )
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"products"
+        },
+        async()=>{
+            await loadProducts();
+            renderProducts();
+        }
+    )
+
+    .on(
+        "postgres_changes",
+        {
+            event:"*",
+            schema:"public",
+            table:"payments"
+        },
+        async()=>{
+            await loadPayments();
+            renderPayments();
+            renderRepresentatives();
+            updateStats();
+        }
+    )
+
+    .subscribe();
 
 
-    document
-        .getElementById("orderCount")
-        .textContent =
-            Number(
-                (data || []).length
-            ).toLocaleString("fa-IR");
+supabaseClient.auth.onAuthStateChange(
+    async(event,session)=>{
 
-}
+        if(event==="SIGNED_OUT"){
 
+            document.getElementById("app")
+                .style.display="none";
 
-/* =========================
-   خروج
-========================= */
-
-async function logout(){
-
-    await supabaseClient
-        .auth
-        .signOut();
-
-
-    location.href =
-        "login.html";
-
-}
-
-
-/* =========================
-   بستن مودال با کلیک بیرون
-========================= */
-
-document
-    .getElementById("modal")
-    .addEventListener(
-        "click",
-        function(e){
-
-            if(
-                e.target === this
-            ){
-                closeModal();
-            }
+            document.getElementById("loginScreen")
+                .classList.remove("hidden");
 
         }
-    );
+
+    }
+);
 
 
-/* =========================
-   اجرا
-========================= */
-
-init();
+startApp();
 
 </script>
 
